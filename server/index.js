@@ -1,10 +1,15 @@
 // Import necessary modules
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors"); // Import the cors module
 require("dotenv").config();
+
 // Create an Express application
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Enable CORS
+app.use(cors());
 
 // Connect to MongoDB using Mongoose
 mongoose
@@ -21,7 +26,6 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: String,
   password: String,
-
   // Add more fields as needed
 });
 
@@ -57,6 +61,7 @@ app.post("/users", async (req, res) => {
     console.log("-".repeat(process.stdout.columns));
   }
 });
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
