@@ -30,18 +30,54 @@ const userSchema = new Schema({
 });
 
 const User = mongoose.model("User", userSchema);
+
 app.use(express.json()); // <==== parse request body as JSON
 
-// Define a route to handle user creation
-app.post("/users", async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     console.log("-".repeat(process.stdout.columns));
-    console.log("POST /users");
+    console.log("POST /login");
     console.log(req.body);
 
     if (!req.body.username || !req.body.password) {
       throw new Error("Missing username or password");
     }
+
+    const user = await User.findOne({
+      username: req.body.username,
+      password: req.body.password,
+    });
+
+    if (!user) {
+      throw new Error("Invalid username or password");
+    }
+
+    res.status(200).json(user);
+    console.log("User logged in successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    console.log("Error logging in:", error.message);
+  } finally {
+    console.log("-".repeat(process.stdout.columns));
+  }
+});
+// Define a route to handle user creation
+app.post("/register", async (req, res) => {
+  try {
+    console.log("-".repeat(process.stdout.columns));
+    console.log("POST /register");
+    console.log(req.body);
+
+    if (!req.body.username || !req.body.password) {
+      throw new Error("Missing username or password");
+    }
+
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username: req.body.username });
+    if (existingUser) {
+      throw new Error("Username already exists");
+    }
+
     // Create a new user based on the User model
     const newUser = new User({
       username: req.body.username,
