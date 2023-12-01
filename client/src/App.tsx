@@ -14,6 +14,10 @@ function App() {
   };
 
   const handleSubmit = () => {
+    if (!username || !password) {
+      console.log("Username and password are required.");
+      return;
+    }
     // Send the username and password values to Express
     axios
       .post("http://localhost:5000/users", { username, password })
