@@ -6,9 +6,9 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Login from "./Login";
 import Banner from "./Banner";
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, VStack } from "@chakra-ui/react";
 import * as ReactDOM from "react-dom/client";
-
+import Feed from "./Feed";
 // 2. Extend the theme to include custom colors, fonts, etc
 
 function App() {
@@ -27,10 +27,17 @@ function App() {
     <ChakraProvider>
       <Box display="flex" justifyContent="center">
         {/* <Banner /> */}
-        {!loggedIn && (
-          <Login username={username} setUsername={setUsername} setLoggedIn={setLoggedIn} />
-        )}
-        {loggedIn && <Heading as="h1">Logged In</Heading>}
+        <VStack width="75%" alignItems="center">
+          {!loggedIn && (
+            <Login username={username} setUsername={setUsername} setLoggedIn={setLoggedIn} />
+          )}
+          {loggedIn && (
+            <Heading as="h1" size="3xl">
+              Logged In
+            </Heading>
+          )}
+          <Feed />
+        </VStack>
       </Box>
     </ChakraProvider>
   );

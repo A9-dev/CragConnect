@@ -1,6 +1,16 @@
 import { loginUser, uploadUser } from "./dbFunctions";
 import { useState } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  Stack,
+  Text,
+  VStack,
+  InputGroup,
+  InputLeftAddon,
+  Heading,
+} from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 
 function Login({ setLoggedIn, username, setUsername }) {
@@ -46,19 +56,21 @@ function Login({ setLoggedIn, username, setUsername }) {
   return (
     <Box w="30%" p={4}>
       <VStack spacing={2} alignItems="center">
-        <Text fontSize="3xl">Login</Text>
-        <FormControl>
-          <FormLabel>Username</FormLabel>
+        <Heading as="h1" size="3xl">
+          Login
+        </Heading>
+        <InputGroup>
+          <InputLeftAddon children="Username" width="105px" />
           <Input value={username} onChange={(event) => setUsername(event.target.value)} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Password</FormLabel>
+        </InputGroup>
+        <InputGroup>
+          <InputLeftAddon children="Password" width="105px" />
           <Input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-        </FormControl>
+        </InputGroup>
         <Stack direction="row" spacing={2}>
           <Button onClick={handleLogin}>Login</Button>
           <Button onClick={handleRegister}>Register</Button>

@@ -31,6 +31,15 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
+const postSchema = new Schema({
+  title: String,
+  content: String,
+  username: String,
+  // Add more fields as needed
+});
+
+const Post = mongoose.model("Post", postSchema);
+
 app.use(express.json()); // <==== parse request body as JSON
 
 app.post("/login", async (req, res) => {
@@ -93,6 +102,74 @@ app.post("/register", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     console.log("Error creating user:", error.message);
+  } finally {
+    console.log("-".repeat(process.stdout.columns));
+  }
+});
+
+app.post("/posts", async (req, res) => {
+  try {
+    console.log("-".repeat(process.stdout.columns));
+    console.log("POST /posts");
+    console.log(req.body);
+    const newPost = new Post({
+      title: req.body.title,
+      content: req.body.content,
+      username: req.body.username,
+    });
+    const savedPost = await newPost.save();
+    res.status(201).json(savedPost);
+    console.log("Post created successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    console.log("Error creating post:", error.message);
+  }
+});
+
+app.get("/posts", async (req, res) => {
+  try {
+    console.log("-".repeat(process.stdout.columns));
+    console.log("GET /posts");
+
+    const posts = [
+      {
+        id: 1,
+        title: "Post 1",
+        content: "This is the first post",
+        username: "user1",
+      },
+      {
+        id: 2,
+        title: "Post 2",
+        content: "This is the second post",
+        username: "user2",
+      },
+      {
+        id: 3,
+        title: "Post 3",
+        content: "This is the third post",
+        username: "user3",
+      },
+      {
+        id: 4,
+        title: "Post 4",
+        content:
+          "This is the fourth post lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam. printed rubber handle operation master higher attention exclaimed smooth bit town shinning pleasant bound eight gulf program deep mixture physical pure gasoline shot today",
+        username: "user4",
+      },
+      {
+        id: 5,
+        title: "Post 5",
+        content: "This is the fifth post",
+        username: "user5",
+      },
+    ];
+
+    res.status(200).json(posts);
+    console.log("Posts retrieved successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    console.log("Error retrieving posts:", error.message);
   } finally {
     console.log("-".repeat(process.stdout.columns));
   }
