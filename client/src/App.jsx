@@ -5,11 +5,13 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Login from "./Login";
+import Banner from "./Banner";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   return (
     <div>
+      <Banner />
       {!loggedIn && (
         <Login username={username} setUsername={setUsername} setLoggedIn={setLoggedIn} />
       )}
