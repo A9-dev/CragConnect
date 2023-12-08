@@ -1,10 +1,7 @@
 import { loginUser, uploadUser } from "./dbFunctions";
 import { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Alert from "@mui/material/Alert";
+import { Box, Button, FormControl, FormLabel, Input, Stack, Text, VStack } from "@chakra-ui/react";
+import { Alert, AlertIcon } from "@chakra-ui/react";
 
 function Login({ setLoggedIn, username, setUsername }) {
   const [password, setPassword] = useState("");
@@ -47,29 +44,33 @@ function Login({ setLoggedIn, username, setUsername }) {
   };
 
   return (
-    <Stack direction="column" spacing={2} alignItems="center">
-      <Typography variant="h1">Login</Typography>
-      <TextField
-        label="Username"
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <Stack direction="row" spacing={2}>
-        <Button variant="contained" onClick={handleLogin}>
-          Login
-        </Button>
-        <Button variant="contained" onClick={handleRegister}>
-          Register
-        </Button>
-      </Stack>
-      {error && <Alert severity="error">{error}</Alert>}
-    </Stack>
+    <Box w="30%" p={4}>
+      <VStack spacing={2} alignItems="center">
+        <Text fontSize="3xl">Login</Text>
+        <FormControl>
+          <FormLabel>Username</FormLabel>
+          <Input value={username} onChange={(event) => setUsername(event.target.value)} />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Password</FormLabel>
+          <Input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </FormControl>
+        <Stack direction="row" spacing={2}>
+          <Button onClick={handleLogin}>Login</Button>
+          <Button onClick={handleRegister}>Register</Button>
+        </Stack>
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            {error}
+          </Alert>
+        )}
+      </VStack>
+    </Box>
   );
 }
 

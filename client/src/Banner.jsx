@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Paper, TableContainer, Typography } from "@mui/material";
+import { Container, Box, Text } from "@chakra-ui/react";
 
 const bannerStyle = {
   padding: "16px",
@@ -9,11 +9,11 @@ const bannerStyle = {
 
 const Banner = () => {
   return (
-    <TableContainer component={Paper}>
+    <Box as="section" bg="blue.500" color="white" p={4}>
       <Container style={bannerStyle}>
-        <Typography variant="h1">Welcome to the Feed</Typography>
+        <Text fontSize="4xl">Welcome to the Feed</Text>
       </Container>
-    </TableContainer>
+    </Box>
   );
 };
 
