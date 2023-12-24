@@ -3,7 +3,7 @@ import Feed from "./Feed";
 import FeedPost from "./FeedPost";
 import { useState, useEffect } from "react";
 import { getPosts } from "./dbFunctions";
-import { VStack, Box } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 
 const FeedBlock = ({ loggedIn, username }) => {
   var [posts, setPosts] = useState([]);
@@ -22,12 +22,10 @@ const FeedBlock = ({ loggedIn, username }) => {
     populateFeed();
   }, []);
   return (
-    <Box w="30%" p={4}>
-      <VStack spacing={35} alignItems="center">
-        {loggedIn && <FeedPost username={username} populateFeed={populateFeed} />}
-        <Feed posts={posts} />
-      </VStack>
-    </Box>
+    <VStack spacing={35} alignItems="center">
+      {loggedIn && <FeedPost username={username} populateFeed={populateFeed} />}
+      <Feed posts={posts} />
+    </VStack>
   );
 };
 

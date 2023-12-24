@@ -1,7 +1,6 @@
 import { loginUser, uploadUser } from "./dbFunctions";
 import { useState } from "react";
 import {
-  Box,
   Button,
   Input,
   Stack,
@@ -9,6 +8,9 @@ import {
   InputGroup,
   InputLeftAddon,
   Heading,
+  Card,
+  CardBody,
+  CardHeader,
 } from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 
@@ -53,35 +55,37 @@ function Login({ setLoggedIn, username, setUsername }) {
   };
 
   return (
-    <Box w="30%" p={4}>
-      <VStack spacing={2} alignItems="center">
-        <Heading as="h1" size="3xl">
-          Login
-        </Heading>
-        <InputGroup>
-          <InputLeftAddon children="Username" width="105px" />
-          <Input value={username} onChange={(event) => setUsername(event.target.value)} />
-        </InputGroup>
-        <InputGroup>
-          <InputLeftAddon children="Password" width="105px" />
-          <Input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </InputGroup>
-        <Stack direction="row" spacing={2}>
-          <Button onClick={handleLogin}>Login</Button>
-          <Button onClick={handleRegister}>Register</Button>
-        </Stack>
-        {error && (
-          <Alert status="error">
-            <AlertIcon />
-            {error}
-          </Alert>
-        )}
-      </VStack>
-    </Box>
+    <Card>
+      <CardHeader>
+        <Heading>Welcome</Heading>
+      </CardHeader>
+      <CardBody>
+        <VStack spacing={2} alignItems="center" margin="auto" width="50%">
+          <InputGroup>
+            <InputLeftAddon children="Username" width="105px" />
+            <Input value={username} onChange={(event) => setUsername(event.target.value)} />
+          </InputGroup>
+          <InputGroup>
+            <InputLeftAddon children="Password" width="105px" />
+            <Input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </InputGroup>
+          <Stack direction="row" spacing={2}>
+            <Button onClick={handleLogin}>Login</Button>
+            <Button onClick={handleRegister}>Register</Button>
+          </Stack>
+          {error && (
+            <Alert status="error">
+              <AlertIcon />
+              {error}
+            </Alert>
+          )}
+        </VStack>
+      </CardBody>
+    </Card>
   );
 }
 
