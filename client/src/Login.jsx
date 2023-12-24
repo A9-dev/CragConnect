@@ -5,7 +5,6 @@ import {
   Button,
   Input,
   Stack,
-  Text,
   VStack,
   InputGroup,
   InputLeftAddon,

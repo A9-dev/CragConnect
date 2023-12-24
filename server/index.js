@@ -24,17 +24,32 @@ mongoose
 // Define a MongoDB schema and model using Mongoose
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
-  username: String,
-  password: String,
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   // Add more fields as needed
 });
 
 const User = mongoose.model("User", userSchema);
 
 const postSchema = new Schema({
-  title: String,
-  content: String,
-  username: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
   // Add more fields as needed
 });
 
@@ -131,39 +146,7 @@ app.get("/posts", async (req, res) => {
     console.log("-".repeat(process.stdout.columns));
     console.log("GET /posts");
 
-    const posts = [
-      {
-        id: 1,
-        title: "Post 1",
-        content: "This is the first post",
-        username: "user1",
-      },
-      {
-        id: 2,
-        title: "Post 2",
-        content: "This is the second post",
-        username: "user2",
-      },
-      {
-        id: 3,
-        title: "Post 3",
-        content: "This is the third post",
-        username: "user3",
-      },
-      {
-        id: 4,
-        title: "Post 4",
-        content:
-          "This is the fourth post lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam. printed rubber handle operation master higher attention exclaimed smooth bit town shinning pleasant bound eight gulf program deep mixture physical pure gasoline shot today",
-        username: "user4",
-      },
-      {
-        id: 5,
-        title: "Post 5",
-        content: "This is the fifth post",
-        username: "user5",
-      },
-    ];
+    const posts = (await Post.find({})).reverse();
 
     res.status(200).json(posts);
     console.log("Posts retrieved successfully!");

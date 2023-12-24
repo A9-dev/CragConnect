@@ -35,4 +35,16 @@ const getPosts = async () => {
     throw error.response.data.message;
   }
 };
-export { loginUser, uploadUser, getPosts };
+
+const uploadPost = async (username, title, content) => {
+  try {
+    const response = await axios.post("http://localhost:5000/posts", { title, content, username });
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error.response.data.message;
+  }
+};
+export { loginUser, uploadUser, getPosts, uploadPost };
