@@ -8,6 +8,7 @@ import {
   TabPanel,
   Box,
   HStack,
+  Container,
 } from "@chakra-ui/react";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -40,8 +41,6 @@ function App() {
               />
             </>
           )}
-
-          <ToggleColour />
         </HStack>
         <Tabs align="center" variant="line">
           <TabList>
@@ -68,7 +67,9 @@ function App() {
               <p>News</p>
             </TabPanel>
             <TabPanel>
-              <p>Settings</p>
+              <Container>
+                <ToggleColour />
+              </Container>
             </TabPanel>
           </TabPanels>
         </Tabs>

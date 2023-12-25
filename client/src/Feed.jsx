@@ -4,7 +4,7 @@ import { Heading, Text, VStack, Card, CardBody, CardHeader, StackDivider } from 
 
 const Feed = ({ posts }) => {
   return (
-    <VStack spacing="35px" alignItems="normal" divider={<StackDivider />}>
+    <VStack spacing="35px" divider={<StackDivider />}>
       {posts &&
         posts.map((post) => (
           <Card key={post._id} variant="filled" width="100%">
@@ -12,10 +12,12 @@ const Feed = ({ posts }) => {
               <Heading as="h3" size="lg">
                 {post.title}
               </Heading>
-              <Text fontSize="2xl">{post.username}</Text>
+              <Text fontSize="2xl" textAlign="left">
+                {post.username}
+              </Text>
             </CardHeader>
             <CardBody>
-              <Text>{post.content}</Text>
+              <Text textAlign="justify">{post.content}</Text>
             </CardBody>
           </Card>
         ))}

@@ -22,7 +22,7 @@ const FeedBlock = ({ loggedIn, username }) => {
     populateFeed();
   }, []);
   return (
-    <VStack spacing={35} alignItems="center">
+    <VStack spacing={35}>
       {loggedIn && <FeedPost username={username} populateFeed={populateFeed} />}
       <Feed posts={posts} />
     </VStack>
