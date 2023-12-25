@@ -9,6 +9,9 @@ import {
   Box,
   HStack,
   Container,
+  Card,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -28,53 +31,63 @@ function App() {
 
   return (
     <ChakraProvider>
-      <Box width="50%" margin="auto" padding={5}>
-        <HStack>
-          {!loggedIn ? (
-            <Login setLoggedIn={setLoggedIn} username={username} setUsername={setUsername} />
-          ) : (
-            <>
-              <ProfileButton
-                username={username}
-                setLoggedIn={setLoggedIn}
-                setUsername={setUsername}
-              />
-            </>
-          )}
-        </HStack>
-        <Tabs align="center" variant="line">
-          <TabList>
-            <Tab>
-              <HamburgerIcon mr={2} />
-              Feed
-            </Tab>
+      <Grid templateColumns={"repeat(4,1fr)"}>
+        <GridItem colSpan={3}>
+          <Box margin="auto" py={5} px={20}>
+            <Card p={5}>
+              <Tabs align="center" variant="enclosed">
+                <TabList>
+                  <Tab>
+                    <HamburgerIcon mr={2} />
+                    Feed
+                  </Tab>
 
-            <Tab>
-              <CalendarIcon mr={2} />
-              News
-            </Tab>
-            <Tab>
-              <SettingsIcon mr={2} />
-              Settings
-            </Tab>
-          </TabList>
-
-          <TabPanels>
-            <TabPanel>
-              <FeedBlock loggedIn={loggedIn} username={username} />
-            </TabPanel>
-            <TabPanel>
-              <p>News</p>
-            </TabPanel>
-            <TabPanel>
-              <Container>
-                <ToggleColour />
-              </Container>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
-      {/* TODO: Change login to own page */}
+                  <Tab>
+                    <CalendarIcon mr={2} />
+                    News
+                  </Tab>
+                  <Tab>
+                    <SettingsIcon mr={2} />
+                    Settings
+                  </Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <FeedBlock loggedIn={loggedIn} username={username} />
+                  </TabPanel>
+                  <TabPanel>
+                    <p>News</p>
+                  </TabPanel>
+                  <TabPanel>
+                    <Container>
+                      <ToggleColour />
+                    </Container>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Card>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box px={5} py={5}>
+            <Card p={5} alignItems={"center"}>
+              <HStack>
+                {!loggedIn ? (
+                  <Login setLoggedIn={setLoggedIn} username={username} setUsername={setUsername} />
+                ) : (
+                  <>
+                    <ProfileButton
+                      username={username}
+                      setLoggedIn={setLoggedIn}
+                      setUsername={setUsername}
+                    />
+                  </>
+                )}
+              </HStack>
+            </Card>
+          </Box>
+        </GridItem>
+      </Grid>
     </ChakraProvider>
   );
 }
