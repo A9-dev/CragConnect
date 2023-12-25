@@ -18,7 +18,7 @@ import { CalendarIcon, SettingsIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Login from "./Login";
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
-import SignoutButton from "./SignoutButton";
+import ProfileButton from "./ProfileButton";
 // 2. Extend the theme to include custom colors, fonts, etc
 
 function App() {
@@ -32,7 +32,13 @@ function App() {
           {!loggedIn ? (
             <Login setLoggedIn={setLoggedIn} username={username} setUsername={setUsername} />
           ) : (
-            <SignoutButton setLoggedIn={setLoggedIn} setUsername={setUsername} />
+            <>
+              <ProfileButton
+                username={username}
+                setLoggedIn={setLoggedIn}
+                setUsername={setUsername}
+              />
+            </>
           )}
 
           <ToggleColour />

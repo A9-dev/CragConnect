@@ -1,4 +1,4 @@
-import { Input, Button, Heading, VStack, Alert, AlertIcon } from "@chakra-ui/react";
+import { Input, Button, Heading, VStack, Alert, AlertIcon, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 import { uploadPost } from "./dbFunctions";
 
@@ -32,7 +32,7 @@ const FeedPost = ({ username, populateFeed }) => {
   };
 
   return (
-    <VStack spacing={2} alignItems="center">
+    <VStack spacing={2} width="100%" margin="5">
       <Heading as="h1" size="3xl">
         Post
       </Heading>
@@ -43,7 +43,7 @@ const FeedPost = ({ username, populateFeed }) => {
         </Alert>
       )}{" "}
       <Input placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <Input
+      <Textarea
         placeholder="Enter content"
         value={content}
         onChange={(e) => setContent(e.target.value)}

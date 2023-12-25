@@ -10,6 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  InputRightElement,
 } from "@chakra-ui/react";
 
 function Login({ setLoggedIn, username, setUsername }) {
@@ -17,6 +18,9 @@ function Login({ setLoggedIn, username, setUsername }) {
 
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(!show);
   const handleLogin = () => {
     if (!username || !password) {
       console.log("Username and password are required.");
@@ -74,10 +78,15 @@ function Login({ setLoggedIn, username, setUsername }) {
               <InputGroup>
                 <InputLeftAddon children="Password" width="105px" />
                 <Input
-                  type="password"
+                  type={show ? "text" : "password"}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                 />
+                <InputRightElement width="4.5rem">
+                  <Button h="1.75rem" size="sm" onClick={handleShow}>
+                    {show ? "Hide" : "Show"}
+                  </Button>
+                </InputRightElement>
               </InputGroup>
               <Stack direction="row" spacing={2}>
                 <Button onClick={handleLogin}>Login</Button>
