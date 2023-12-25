@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a social media app that allows users to create an account, create posts, and comment on other users posts.
+This is a social media app built for rock climbers to organise and talk about rock climbing.
 
 ## Installation
 
