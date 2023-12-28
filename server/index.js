@@ -71,6 +71,23 @@ const postSchema = new Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
+const newsPostSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  // Add more fields as needed
+});
+
+const NewsPost = mongoose.model("NewsPost", newsPostSchema);
+
 app.use(express.json()); // <==== parse request body as JSON
 
 app.post("/login", async (req, res) => {
@@ -154,6 +171,38 @@ app.get("/posts", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("Error retrieving posts:", error.message);
+  }
+});
+
+app.get("/newsPosts", async (req, res) => {
+  try {
+    logger.info("GET /newsPosts");
+
+    const newsPosts = (await NewsPost.find({})).reverse();
+
+    res.status(200).json(newsPosts);
+    logger.info("News posts retrieved successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("Error retrieving news posts:", error.message);
+  }
+});
+
+app.post("/newsPosts", async (req, res) => {
+  try {
+    logger.info("POST /newsPosts");
+    logger.info(JSON.stringify(req.body));
+    const newPost = new NewsPost({
+      title: req.body.title,
+      content: req.body.content,
+      username: req.body.username,
+    });
+    const savedPost = await newPost.save();
+    res.status(201).json(savedPost);
+    logger.info("Post created successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("Error creating post:", error.message);
   }
 });
 
