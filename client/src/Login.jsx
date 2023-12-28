@@ -15,17 +15,16 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-function Login({ setLoggedIn, username, setUsername }) {
+function Login({ setLoggedIn, username, setUsername, setIsOrganisation }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const [isChecked, setIsChecked] = useState(false);
-
   const [show, setShow] = useState(false);
+
   const handleShow = () => setShow(!show);
+
   const handleLogin = () => {
     if (!username || !password) {
       console.log("Username and password are required.");
@@ -39,12 +38,17 @@ function Login({ setLoggedIn, username, setUsername }) {
         setLoggedIn(true);
         setError("");
         onClose();
+        console.log(result.data.organisation);
+        if (result.data.organisation) {
+          setIsOrganisation(true);
+        }
       })
       .catch((error) => {
         console.error("Login failed:", error);
         setError(error);
       });
   };
+
   const handleRegister = () => {
     if (!username || !password) {
       console.log("Username and password are required.");
@@ -62,7 +66,6 @@ function Login({ setLoggedIn, username, setUsername }) {
           setError(error);
         });
     }
-    // Send the username and password values to Express
   };
 
   const handleSwap = () => {

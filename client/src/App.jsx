@@ -23,11 +23,13 @@ import Login from "./Login";
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import ProfileButton from "./ProfileButton";
+import News from "./News";
 // 2. Extend the theme to include custom colors, fonts, etc
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [isOrganisation, setIsOrganisation] = useState(false);
 
   return (
     <ChakraProvider>
@@ -56,7 +58,7 @@ function App() {
                     <FeedBlock loggedIn={loggedIn} username={username} />
                   </TabPanel>
                   <TabPanel>
-                    <p>News</p>
+                    <News isOrganisation={isOrganisation} />
                   </TabPanel>
                   <TabPanel>
                     <Container>
@@ -73,7 +75,12 @@ function App() {
             <Card p={5} alignItems={"center"}>
               <HStack>
                 {!loggedIn ? (
-                  <Login setLoggedIn={setLoggedIn} username={username} setUsername={setUsername} />
+                  <Login
+                    setLoggedIn={setLoggedIn}
+                    username={username}
+                    setUsername={setUsername}
+                    setIsOrganisation={setIsOrganisation}
+                  />
                 ) : (
                   <>
                     <ProfileButton
