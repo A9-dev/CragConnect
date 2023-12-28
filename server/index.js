@@ -4,6 +4,18 @@ const mongoose = require("mongoose");
 const cors = require("cors"); // Import the cors module
 require("dotenv").config();
 
+const { createLogger, format, transports } = require("winston");
+const { combine, timestamp, label, printf, colorize } = format;
+
+const myFormat = printf(({ level, message, label, timestamp }) => {
+  return `${timestamp} ${level}: ${message}`;
+});
+
+const logger = createLogger({
+  format: combine(colorize(), timestamp(), myFormat),
+  transports: [new transports.Console()],
+});
+
 // Create an Express application
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,10 +27,10 @@ app.use(cors());
 mongoose
   .connect(process.env.ATLAS_URI, {})
   .then(() => {
-    console.log("Connected to MongoDB");
+    logger.info("Connected to MongoDB");
   })
   .catch((err) => {
-    console.error("Error connecting to MongoDB:", err.message);
+    logger.error("Error connecting to MongoDB:", err.message);
   });
 
 // Define a MongoDB schema and model using Mongoose
@@ -30,6 +42,10 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
+    required: true,
+  },
+  organisation: {
+    type: Boolean,
     required: true,
   },
   // Add more fields as needed
@@ -59,13 +75,8 @@ app.use(express.json()); // <==== parse request body as JSON
 
 app.post("/login", async (req, res) => {
   try {
-    console.log("-".repeat(process.stdout.columns));
-    console.log("POST /login");
-    console.log(req.body);
-
-    if (!req.body.username || !req.body.password) {
-      throw new Error("Missing username or password");
-    }
+    logger.info("POST /login");
+    logger.info(JSON.stringify(req.body));
 
     const user = await User.findOne({
       username: req.body.username,
@@ -77,24 +88,17 @@ app.post("/login", async (req, res) => {
     }
 
     res.status(200).json(user);
-    console.log("User logged in successfully!");
+    logger.info("User logged in successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    console.log("Error logging in:", error.message);
-  } finally {
-    console.log("-".repeat(process.stdout.columns));
+    logger.error("Error logging in:", error.message);
   }
 });
 // Define a route to handle user creation
 app.post("/register", async (req, res) => {
   try {
-    console.log("-".repeat(process.stdout.columns));
-    console.log("POST /register");
-    console.log(req.body);
-
-    if (!req.body.username || !req.body.password) {
-      throw new Error("Missing username or password");
-    }
+    logger.info("POST /register");
+    logger.info(JSON.stringify(req.body));
 
     // Check if the username already exists
     const existingUser = await User.findOne({ username: req.body.username });
@@ -106,6 +110,7 @@ app.post("/register", async (req, res) => {
     const newUser = new User({
       username: req.body.username,
       password: req.body.password,
+      organisation: req.body.organisation,
       // Add more fields as needed
     });
 
@@ -113,20 +118,17 @@ app.post("/register", async (req, res) => {
     const savedUser = await newUser.save();
 
     res.status(201).json(savedUser);
-    console.log("User created successfully!");
+    logger.info("User created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    console.log("Error creating user:", error.message);
-  } finally {
-    console.log("-".repeat(process.stdout.columns));
+    logger.error("Error creating user:", error.message);
   }
 });
 
 app.post("/posts", async (req, res) => {
   try {
-    console.log("-".repeat(process.stdout.columns));
-    console.log("POST /posts");
-    console.log(req.body);
+    logger.info("POST /posts");
+    logger.info(JSON.stringify(req.body));
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
@@ -134,31 +136,28 @@ app.post("/posts", async (req, res) => {
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
-    console.log("Post created successfully!");
+    logger.info("Post created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    console.log("Error creating post:", error.message);
+    logger.error("Error creating post:", error.message);
   }
 });
 
 app.get("/posts", async (req, res) => {
   try {
-    console.log("-".repeat(process.stdout.columns));
-    console.log("GET /posts");
+    logger.info("GET /posts");
 
     const posts = (await Post.find({})).reverse();
 
     res.status(200).json(posts);
-    console.log("Posts retrieved successfully!");
+    logger.info("Posts retrieved successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    console.log("Error retrieving posts:", error.message);
-  } finally {
-    console.log("-".repeat(process.stdout.columns));
+    logger.error("Error retrieving posts:", error.message);
   }
 });
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  logger.info(`Server is running on port ${port}`);
 });
