@@ -13,10 +13,6 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
 import { CalendarIcon, SettingsIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 import Login from "./Login";
@@ -24,12 +20,25 @@ import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import ProfileButton from "./ProfileButton";
 import NewsBlock from "./NewsBlock";
+import { getSubscriptions } from "./dbFunctions";
 // 2. Extend the theme to include custom colors, fonts, etc
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [isOrganisation, setIsOrganisation] = useState(false);
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  const onLogin = () => {
+    getSubscriptions(username)
+      .then((result) => {
+        console.log("Subscriptions:", result);
+        setSubscriptions(result.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
   return (
     <ChakraProvider>
@@ -55,7 +64,12 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FeedBlock loggedIn={loggedIn} username={username} />
+                    <FeedBlock
+                      loggedIn={loggedIn}
+                      username={username}
+                      subscriptions={subscriptions}
+                      setSubscriptions={setSubscriptions}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <NewsBlock isOrganisation={isOrganisation} username={username} />
@@ -80,6 +94,7 @@ function App() {
                     username={username}
                     setUsername={setUsername}
                     setIsOrganisation={setIsOrganisation}
+                    onLogin={onLogin}
                   />
                 ) : (
                   <>

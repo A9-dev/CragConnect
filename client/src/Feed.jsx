@@ -1,8 +1,29 @@
 import React from "react";
 
-import { Heading, Text, VStack, Card, CardBody, CardHeader, StackDivider } from "@chakra-ui/react";
+import {
+  Heading,
+  Text,
+  VStack,
+  Card,
+  CardBody,
+  CardHeader,
+  StackDivider,
+  Button,
+} from "@chakra-ui/react";
+import { subscribe, unsubscribe } from "./dbFunctions";
 
-const Feed = ({ posts }) => {
+const Feed = ({ posts, subscriptions, username, setSubscriptions }) => {
+  const handleSubscribe = (username, author) => {
+    subscribe(username, author);
+    if (!subscriptions) setSubscriptions([author]);
+    else setSubscriptions([...subscriptions, author]);
+  };
+
+  const handleUnsubscribe = (username, author) => {
+    unsubscribe(username, author);
+    setSubscriptions(subscriptions.filter((sub) => sub !== author));
+  };
+
   return (
     <VStack spacing="35px" divider={<StackDivider />}>
       {posts &&
@@ -14,6 +35,16 @@ const Feed = ({ posts }) => {
               </Heading>
               <Text fontSize="2xl" textAlign="left">
                 {post.username}
+                {subscriptions && subscriptions.includes(post.username) && " (Subscribed)"}
+                {!subscriptions || !subscriptions.includes(post.username) ? (
+                  <Button onClick={() => handleSubscribe(username, post.username)}>
+                    Subscribe
+                  </Button>
+                ) : (
+                  <Button onClick={() => handleUnsubscribe(username, post.username)}>
+                    Unsubscribe
+                  </Button>
+                )}
               </Text>
             </CardHeader>
             <CardBody>

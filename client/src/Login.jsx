@@ -15,7 +15,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-function Login({ setLoggedIn, username, setUsername, setIsOrganisation }) {
+function Login({ setLoggedIn, username, setUsername, setIsOrganisation, onLogin }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");
@@ -42,6 +42,7 @@ function Login({ setLoggedIn, username, setUsername, setIsOrganisation }) {
         if (result.data.organisation) {
           setIsOrganisation(true);
         }
+        onLogin();
       })
       .catch((error) => {
         console.error("Login failed:", error);

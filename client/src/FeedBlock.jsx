@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { getPosts } from "./dbFunctions";
 import { VStack } from "@chakra-ui/react";
 
-const FeedBlock = ({ loggedIn, username }) => {
+const FeedBlock = ({ loggedIn, username, subscriptions, setSubscriptions }) => {
   var [posts, setPosts] = useState([]);
   const populateFeed = () => {
     getPosts()
@@ -24,7 +24,12 @@ const FeedBlock = ({ loggedIn, username }) => {
   return (
     <VStack spacing={35}>
       {loggedIn && <FeedPost username={username} populateFeed={populateFeed} />}
-      <Feed posts={posts} />
+      <Feed
+        posts={posts}
+        subscriptions={subscriptions}
+        username={username}
+        setSubscriptions={setSubscriptions}
+      />
     </VStack>
   );
 };

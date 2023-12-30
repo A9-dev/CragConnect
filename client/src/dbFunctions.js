@@ -79,4 +79,57 @@ const uploadNewsPost = async (username, title, content) => {
     throw error.response.data.message;
   }
 };
-export { loginUser, uploadUser, getPosts, uploadPost, getNewsPosts, uploadNewsPost };
+
+const getSubscriptions = async (username) => {
+  try {
+    const response = await axios.get("http://localhost:5000/subscriptions", { username });
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error.response.data.message;
+  }
+};
+
+const subscribe = async (subscriberUsername, subscribeeUsername) => {
+  try {
+    const response = await axios.post("http://localhost:5000/subscriptions", {
+      username: subscriberUsername,
+      subscription: subscribeeUsername,
+    });
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error.response.data.message;
+  }
+};
+
+const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
+  try {
+    const response = await axios.delete("http://localhost:5000/subscriptions", {
+      username: subscriberUsername,
+      subscription: subscribeeUsername,
+    });
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error.response.data.message;
+  }
+};
+
+export {
+  loginUser,
+  uploadUser,
+  getPosts,
+  uploadPost,
+  getNewsPosts,
+  uploadNewsPost,
+  subscribe,
+  unsubscribe,
+  getSubscriptions,
+};
