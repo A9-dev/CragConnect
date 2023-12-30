@@ -88,6 +88,20 @@ const newsPostSchema = new Schema({
 
 const NewsPost = mongoose.model("NewsPost", newsPostSchema);
 
+// Subscription schema that will store an array of usernames a specific username is subscribed to
+const subscriptionSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+  },
+  subscriptions: {
+    type: [String],
+    required: true,
+  },
+});
+
+const Subscription = mongoose.model("Subscription", subscriptionSchema);
+
 app.use(express.json()); // <==== parse request body as JSON
 
 app.post("/login", async (req, res) => {
@@ -203,6 +217,48 @@ app.post("/newsPosts", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("Error creating news post:", error.message);
+  }
+});
+
+// Get subscriptions for a specific username
+app.get("/subscriptions/:username", async (req, res) => {
+  try {
+    logger.info("GET /subscriptions");
+    const subscriptions = await Subscription.findOne({
+      username: req.params.username,
+    });
+    res.status(200).json(subscriptions);
+    logger.info("Subscriptions retrieved successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("Error retrieving subscriptions:", error.message);
+  }
+});
+
+// Add a username to the subscriptions array for a specific username if it exists, otherwise create a new subscription document
+app.post("/subscriptions", async (req, res) => {
+  try {
+    logger.info("POST /subscriptions");
+    logger.info(JSON.stringify(req.body));
+    const existingSubscription = await Subscription.findOne({
+      username: req.body.username,
+    });
+    if (existingSubscription) {
+      existingSubscription.subscriptions.push(req.body.subscription);
+      const savedSubscription = await existingSubscription.save();
+      res.status(201).json(savedSubscription);
+    } else {
+      const newSubscription = new Subscription({
+        username: req.body.username,
+        subscriptions: [req.body.subscription],
+      });
+      const savedSubscription = await newSubscription.save();
+      res.status(201).json(savedSubscription);
+    }
+    logger.info("Subscription created successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("Error creating subscription:", error.message);
   }
 });
 
