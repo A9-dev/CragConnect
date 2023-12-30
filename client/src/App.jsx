@@ -23,7 +23,7 @@ import Login from "./Login";
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import ProfileButton from "./ProfileButton";
-import News from "./News";
+import NewsBlock from "./NewsBlock";
 // 2. Extend the theme to include custom colors, fonts, etc
 
 function App() {
@@ -58,7 +58,7 @@ function App() {
                     <FeedBlock loggedIn={loggedIn} username={username} />
                   </TabPanel>
                   <TabPanel>
-                    <News isOrganisation={isOrganisation} />
+                    <NewsBlock isOrganisation={isOrganisation} username={username} />
                   </TabPanel>
                   <TabPanel>
                     <Container>

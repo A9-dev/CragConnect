@@ -51,4 +51,32 @@ const uploadPost = async (username, title, content) => {
     throw error.response.data.message;
   }
 };
-export { loginUser, uploadUser, getPosts, uploadPost };
+
+const getNewsPosts = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/newsPosts");
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error.response.data.message;
+  }
+};
+
+const uploadNewsPost = async (username, title, content) => {
+  try {
+    const response = await axios.post("http://localhost:5000/newsPosts", {
+      title,
+      content,
+      username,
+    });
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error.response.data.message;
+  }
+};
+export { loginUser, uploadUser, getPosts, uploadPost, getNewsPosts, uploadNewsPost };

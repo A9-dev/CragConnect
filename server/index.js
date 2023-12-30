@@ -199,10 +199,10 @@ app.post("/newsPosts", async (req, res) => {
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
-    logger.info("Post created successfully!");
+    logger.info("News post created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating post:", error.message);
+    logger.error("Error creating news post:", error.message);
   }
 });
 
