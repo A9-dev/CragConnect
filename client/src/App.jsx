@@ -13,7 +13,7 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import { CalendarIcon, SettingsIcon, HamburgerIcon, BellIcon } from "@chakra-ui/icons";
+import { CalendarIcon, SettingsIcon, HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
 
 import Login from "./Login";
 import FeedBlock from "./FeedBlock";
@@ -22,7 +22,7 @@ import ProfileButton from "./ProfileButton";
 import NewsBlock from "./NewsBlock";
 import { getPosts } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
-
+import Search from "./Search";
 // Create a context for the states
 export const AppContext = createContext();
 
@@ -92,6 +92,10 @@ const App = () => {
                       News
                     </Tab>
                     <Tab>
+                      <SearchIcon mr={2} />
+                      Search
+                    </Tab>
+                    <Tab>
                       <SettingsIcon mr={2} />
                       Settings
                     </Tab>
@@ -105,6 +109,9 @@ const App = () => {
                     </TabPanel>
                     <TabPanel>
                       <NewsBlock />
+                    </TabPanel>
+                    <TabPanel>
+                      <Search />
                     </TabPanel>
                     <TabPanel>
                       <Container>

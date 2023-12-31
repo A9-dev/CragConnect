@@ -124,6 +124,17 @@ const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
   }
 };
 
+const searchUser = async (searchTerm) => {
+  try {
+    const response = await axios.get("http://localhost:5000/search/" + searchTerm);
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -134,4 +145,5 @@ export {
   subscribe,
   unsubscribe,
   getSubscriptions,
+  searchUser,
 };

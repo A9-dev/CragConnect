@@ -247,10 +247,17 @@ app.post("/subscriptions", async (req, res) => {
     const user = await User.findOne({
       username: req.body.username,
     });
+    const user2 = await User.findOne({
+      username: req.body.subscription,
+    });
     if (user) {
       user.subscribingTo.push(req.body.subscription);
+      user2.subscribers.push(req.body.username);
+
       const savedUser = await user.save();
-      res.status(201).json(savedUser);
+      const savedUser2 = await user2.save();
+
+      res.status(201).json({ savedUser, savedUser2 });
       logger.info("Subscription created successfully!");
     } else {
       throw new Error("User does not exist");
@@ -269,18 +276,44 @@ app.delete("/subscriptions", async (req, res) => {
     const user = await User.findOne({
       username: req.body.username,
     });
+    const user2 = await User.findOne({
+      username: req.body.subscription,
+    });
+
     if (user) {
       user.subscribingTo = user.subscribingTo.filter(
         (username) => username !== req.body.subscription
       );
       const savedUser = await user.save();
-      res.status(200).json(savedUser);
+      user2.subscribers = user2.subscribers.filter((username) => username !== req.body.username);
+      const savedUser2 = await user2.save();
+
+      res.status(200).json({ savedUser, savedUser2 });
     } else {
       throw new Error("User does not exist");
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("Error deleting subscription: " + error.message);
+  }
+});
+
+app.get("/search/:searchTerm", async (req, res) => {
+  try {
+    logger.info("GET /search");
+    logger.info(JSON.stringify(req.params));
+    const users = await User.find({
+      username: { $regex: req.params.searchTerm },
+    });
+    if (users) {
+      res.status(200).json(users);
+      logger.info("Users retrieved successfully!");
+    } else {
+      throw new Error("User does not exist");
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("Error retrieving users: " + error.message);
   }
 });
 
