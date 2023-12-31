@@ -25,7 +25,7 @@ import { getSubscriptions } from "./dbFunctions";
 // Create a context for the states
 export const AppContext = createContext();
 
-function App() {
+const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [isOrganisation, setIsOrganisation] = useState(false);
@@ -113,6 +113,6 @@ function App() {
       </AppContext.Provider>
     </ChakraProvider>
   );
-}
+};
 
 export default App;
