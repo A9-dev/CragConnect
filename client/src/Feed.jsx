@@ -15,7 +15,7 @@ import { useContext } from "react";
 import { AppContext } from "./App";
 
 const Feed = ({ posts }) => {
-  const { username, subscriptions, setSubscriptions } = useContext(AppContext);
+  const { username, subscriptions, setSubscriptions, loggedIn } = useContext(AppContext);
 
   const handleSubscribe = (username, author) => {
     subscribe(username, author);
@@ -40,15 +40,16 @@ const Feed = ({ posts }) => {
               <Text fontSize="2xl" textAlign="left">
                 {post.username}
                 {subscriptions && subscriptions.includes(post.username) && " (Subscribed)"}
-                {!subscriptions || !subscriptions.includes(post.username) ? (
-                  <Button onClick={() => handleSubscribe(username, post.username)}>
-                    Subscribe
-                  </Button>
-                ) : (
-                  <Button onClick={() => handleUnsubscribe(username, post.username)}>
-                    Unsubscribe
-                  </Button>
-                )}
+                {loggedIn && // Check if logged in before rendering buttons
+                  (!subscriptions || !subscriptions.includes(post.username) ? (
+                    <Button onClick={() => handleSubscribe(username, post.username)}>
+                      Subscribe
+                    </Button>
+                  ) : (
+                    <Button onClick={() => handleUnsubscribe(username, post.username)}>
+                      Unsubscribe
+                    </Button>
+                  ))}
               </Text>
             </CardHeader>
             <CardBody>
