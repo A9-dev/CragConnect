@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import {
   ChakraProvider,
   Tabs,
@@ -21,7 +21,9 @@ import ToggleColour from "./ToggleColour";
 import ProfileButton from "./ProfileButton";
 import NewsBlock from "./NewsBlock";
 import { getSubscriptions } from "./dbFunctions";
-// 2. Extend the theme to include custom colors, fonts, etc
+
+// Create a context for the states
+export const AppContext = createContext();
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -42,74 +44,73 @@ function App() {
 
   return (
     <ChakraProvider>
-      <Grid templateColumns={"repeat(4,1fr)"}>
-        <GridItem colSpan={3}>
-          <Box margin="auto" py={5} px={20}>
-            <Card p={5}>
-              <Tabs align="center" variant="enclosed">
-                <TabList>
-                  <Tab>
-                    <HamburgerIcon mr={2} />
-                    Feed
-                  </Tab>
+      {/* Provide the states through the context */}
+      <AppContext.Provider
+        value={{
+          loggedIn,
+          setLoggedIn,
+          username,
+          setUsername,
+          isOrganisation,
+          setIsOrganisation,
+          subscriptions,
+          setSubscriptions,
+        }}
+      >
+        <Grid templateColumns={"repeat(4,1fr)"}>
+          <GridItem colSpan={3}>
+            <Box margin="auto" py={5} px={20}>
+              <Card p={5}>
+                <Tabs align="center" variant="enclosed">
+                  <TabList>
+                    <Tab>
+                      <HamburgerIcon mr={2} />
+                      Feed
+                    </Tab>
 
-                  <Tab>
-                    <CalendarIcon mr={2} />
-                    News
-                  </Tab>
-                  <Tab>
-                    <SettingsIcon mr={2} />
-                    Settings
-                  </Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <FeedBlock
-                      loggedIn={loggedIn}
-                      username={username}
-                      subscriptions={subscriptions}
-                      setSubscriptions={setSubscriptions}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <NewsBlock isOrganisation={isOrganisation} username={username} />
-                  </TabPanel>
-                  <TabPanel>
-                    <Container>
-                      <ToggleColour />
-                    </Container>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Card>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box px={5} py={5}>
-            <Card p={5} alignItems={"center"}>
-              <HStack>
-                {!loggedIn ? (
-                  <Login
-                    setLoggedIn={setLoggedIn}
-                    username={username}
-                    setUsername={setUsername}
-                    setIsOrganisation={setIsOrganisation}
-                    onLogin={onLogin}
-                  />
-                ) : (
-                  <>
-                    <ProfileButton
-                      username={username}
-                      setLoggedIn={setLoggedIn}
-                      setUsername={setUsername}
-                    />
-                  </>
-                )}
-              </HStack>
-            </Card>
-          </Box>
-        </GridItem>
-      </Grid>
+                    <Tab>
+                      <CalendarIcon mr={2} />
+                      News
+                    </Tab>
+                    <Tab>
+                      <SettingsIcon mr={2} />
+                      Settings
+                    </Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                      <FeedBlock />
+                    </TabPanel>
+                    <TabPanel>
+                      <NewsBlock />
+                    </TabPanel>
+                    <TabPanel>
+                      <Container>
+                        <ToggleColour />
+                      </Container>
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </Card>
+            </Box>
+          </GridItem>
+          <GridItem>
+            <Box px={5} py={5}>
+              <Card p={5} alignItems={"center"}>
+                <HStack>
+                  {!loggedIn ? (
+                    <Login onLogin={onLogin} />
+                  ) : (
+                    <>
+                      <ProfileButton />
+                    </>
+                  )}
+                </HStack>
+              </Card>
+            </Box>
+          </GridItem>
+        </Grid>
+      </AppContext.Provider>
     </ChakraProvider>
   );
 }

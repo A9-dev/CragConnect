@@ -11,8 +11,12 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { subscribe, unsubscribe } from "./dbFunctions";
+import { useContext } from "react";
+import { AppContext } from "./App";
 
-const Feed = ({ posts, subscriptions, username, setSubscriptions }) => {
+const Feed = ({ posts }) => {
+  const { username, subscriptions, setSubscriptions } = useContext(AppContext);
+
   const handleSubscribe = (username, author) => {
     subscribe(username, author);
     if (!subscriptions) setSubscriptions([author]);

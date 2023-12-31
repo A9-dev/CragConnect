@@ -14,8 +14,11 @@ import {
   Checkbox,
   Divider,
 } from "@chakra-ui/react";
+import { useContext } from "react";
+import { AppContext } from "./App";
 
-function Login({ setLoggedIn, username, setUsername, setIsOrganisation, onLogin }) {
+const Login = () => {
+  const { setLoggedIn, username, setUsername, setIsOrganisation, onLogin } = useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");
@@ -181,6 +184,6 @@ function Login({ setLoggedIn, username, setUsername, setIsOrganisation, onLogin 
       </Modal>
     </>
   );
-}
+};
 
 export default Login;

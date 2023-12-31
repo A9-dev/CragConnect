@@ -4,8 +4,11 @@ import FeedPost from "./FeedPost";
 import { useState, useEffect } from "react";
 import { getPosts } from "./dbFunctions";
 import { VStack } from "@chakra-ui/react";
+import { useContext } from "react";
+import { AppContext } from "./App";
 
-const FeedBlock = ({ loggedIn, username, subscriptions, setSubscriptions }) => {
+const FeedBlock = () => {
+  const { loggedIn } = useContext(AppContext);
   var [posts, setPosts] = useState([]);
   const populateFeed = () => {
     getPosts()
@@ -23,13 +26,8 @@ const FeedBlock = ({ loggedIn, username, subscriptions, setSubscriptions }) => {
   }, []);
   return (
     <VStack spacing={35}>
-      {loggedIn && <FeedPost username={username} populateFeed={populateFeed} />}
-      <Feed
-        posts={posts}
-        subscriptions={subscriptions}
-        username={username}
-        setSubscriptions={setSubscriptions}
-      />
+      {loggedIn && <FeedPost populateFeed={populateFeed} />}
+      <Feed posts={posts} />
     </VStack>
   );
 };

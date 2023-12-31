@@ -1,8 +1,10 @@
 import { Input, Button, Heading, VStack, Alert, AlertIcon, Textarea } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { uploadNewsPost } from "./dbFunctions";
+import { AppContext } from "./App";
 
-const FeedPost = ({ username, populateFeed }) => {
+const FeedPost = ({ populateFeed }) => {
+  const { username } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");

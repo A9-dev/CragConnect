@@ -1,7 +1,10 @@
 import { Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { AtSignIcon } from "@chakra-ui/icons";
+import { useContext } from "react";
+import { AppContext } from "./App";
 
-const ProfileButton = ({ username, setLoggedIn, setUsername }) => {
+const ProfileButton = () => {
+  const { setLoggedIn, setUsername, username } = useContext(AppContext);
   const handleSignout = () => {
     setLoggedIn(false);
     setUsername("");

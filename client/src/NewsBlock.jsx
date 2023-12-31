@@ -1,11 +1,13 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getNewsPosts } from "./dbFunctions";
 import Feed from "./Feed";
 import NewsPost from "./NewsPost";
 import { VStack } from "@chakra-ui/react";
+import { AppContext } from "./App";
 
-const NewsBlock = ({ isOrganisation, username }) => {
+const NewsBlock = () => {
+  const { isOrganisation } = useContext(AppContext);
   var [newsPosts, setNewsPosts] = useState([]);
   const populateFeed = () => {
     getNewsPosts()
@@ -23,7 +25,7 @@ const NewsBlock = ({ isOrganisation, username }) => {
   }, []);
   return (
     <VStack spacing={35}>
-      {isOrganisation && <NewsPost username={username} populateFeed={populateFeed} />}
+      {isOrganisation && <NewsPost populateFeed={populateFeed} />}
       <Feed posts={newsPosts} />
     </VStack>
   );
