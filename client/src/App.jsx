@@ -35,7 +35,7 @@ const App = () => {
     getSubscriptions(username)
       .then((result) => {
         console.log("Subscriptions:", result);
-        setSubscriptions(result.data);
+        setSubscriptions(result.data.subscriptions);
       })
       .catch((error) => {
         console.error("Error:", error);

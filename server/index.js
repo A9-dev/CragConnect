@@ -221,11 +221,12 @@ app.post("/newsPosts", async (req, res) => {
 });
 
 // Get subscriptions for a specific username
-app.get("/subscriptions/", async (req, res) => {
+app.get("/subscriptions/:username", async (req, res) => {
   try {
     logger.info("GET /subscriptions");
+    logger.info(JSON.stringify(req.body));
     const subscriptions = await Subscription.findOne({
-      username: req.body.username,
+      username: req.params.username,
     });
     res.status(200).json(subscriptions);
     logger.info("Subscriptions retrieved successfully!");

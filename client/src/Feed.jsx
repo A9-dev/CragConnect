@@ -39,15 +39,13 @@ const Feed = ({ posts }) => {
               </Heading>
               <Text fontSize="2xl" textAlign="left">
                 {post.username}
-                {subscriptions && subscriptions.includes(post.username) && " (Subscribed)"}
-                {loggedIn && // Check if logged in before rendering buttons
+                {loggedIn &&
+                  username !== post.username && // Check if logged in before rendering buttons
                   (!subscriptions || !subscriptions.includes(post.username) ? (
-                    <Button onClick={() => handleSubscribe(username, post.username)}>
-                      Subscribe
-                    </Button>
+                    <Button onClick={() => handleSubscribe(username, post.username)}>Follow</Button>
                   ) : (
                     <Button onClick={() => handleUnsubscribe(username, post.username)}>
-                      Unsubscribe
+                      Unfollow
                     </Button>
                   ))}
               </Text>
