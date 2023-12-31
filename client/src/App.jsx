@@ -20,7 +20,7 @@ import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import ProfileButton from "./ProfileButton";
 import NewsBlock from "./NewsBlock";
-import { getSubscriptions, getPosts } from "./dbFunctions";
+import { getPosts } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
 
 // Create a context for the states
