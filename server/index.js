@@ -48,6 +48,14 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  subscribers: {
+    type: [String],
+    required: true,
+  },
+  subscribingTo: {
+    type: [String],
+    required: true,
+  },
   // Add more fields as needed
 });
 
@@ -88,20 +96,6 @@ const newsPostSchema = new Schema({
 
 const NewsPost = mongoose.model("NewsPost", newsPostSchema);
 
-// Subscription schema that will store an array of usernames a specific username is subscribed to
-const subscriptionSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  subscriptions: {
-    type: [String],
-    required: true,
-  },
-});
-
-const Subscription = mongoose.model("Subscription", subscriptionSchema);
-
 app.use(express.json()); // <==== parse request body as JSON
 
 app.post("/login", async (req, res) => {
@@ -122,7 +116,7 @@ app.post("/login", async (req, res) => {
     logger.info("User logged in successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error logging in:", error.message);
+    logger.error("Error logging in: " + error.message);
   }
 });
 // Define a route to handle user creation
@@ -142,6 +136,8 @@ app.post("/register", async (req, res) => {
       username: req.body.username,
       password: req.body.password,
       organisation: req.body.organisation,
+      subscribers: [],
+      subscribingTo: [],
       // Add more fields as needed
     });
 
@@ -152,7 +148,7 @@ app.post("/register", async (req, res) => {
     logger.info("User created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating user:", error.message);
+    logger.error("Error creating user: " + error.message);
   }
 });
 
@@ -170,7 +166,7 @@ app.post("/posts", async (req, res) => {
     logger.info("Post created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating post:", error.message);
+    logger.error("Error creating post: " + error.message);
   }
 });
 
@@ -184,7 +180,7 @@ app.get("/posts", async (req, res) => {
     logger.info("Posts retrieved successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error retrieving posts:", error.message);
+    logger.error("Error retrieving posts: " + error.message);
   }
 });
 
@@ -198,7 +194,7 @@ app.get("/newsPosts", async (req, res) => {
     logger.info("News posts retrieved successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error retrieving news posts:", error.message);
+    logger.error("Error retrieving news posts: " + error.message);
   }
 });
 
@@ -216,7 +212,7 @@ app.post("/newsPosts", async (req, res) => {
     logger.info("News post created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating news post:", error.message);
+    logger.error("Error creating news post: " + error.message);
   }
 });
 
@@ -224,46 +220,44 @@ app.post("/newsPosts", async (req, res) => {
 app.get("/subscriptions/:username", async (req, res) => {
   try {
     logger.info("GET /subscriptions");
-    logger.info(JSON.stringify(req.body));
-    const subscriptions = await Subscription.findOne({
+    logger.info(JSON.stringify(req.params));
+    const user = await User.findOne({
       username: req.params.username,
     });
-    res.status(200).json(subscriptions);
+    if (user) {
+      res.status(200).json(user.subscribingTo);
+      logger.info("Subscriptions: " + user.subscribingTo);
+    } else {
+      throw new Error("Subscription does not exist");
+    }
+
     logger.info("Subscriptions retrieved successfully!");
   } catch (error) {
+    logger.error(error.message);
+    logger.error("Error retrieving subscriptions: " + error.message);
     res.status(400).json({ message: error.message });
-    logger.error("Error retrieving subscriptions:", error.message);
   }
 });
 
-// Add a username to the subscriptions array for a specific username if it exists, otherwise create a new subscription document
+// Add a username to the subscriptions array for a specific username
 app.post("/subscriptions", async (req, res) => {
   try {
     logger.info("POST /subscriptions");
     logger.info(JSON.stringify(req.body));
-    const existingSubscription = await Subscription.findOne({
+    const user = await User.findOne({
       username: req.body.username,
     });
-    if (existingSubscription) {
-      if (existingSubscription.subscriptions.includes(req.body.subscription)) {
-        throw new Error("Subscription already exists");
-      }
-
-      existingSubscription.subscriptions.push(req.body.subscription);
-      const savedSubscription = await existingSubscription.save();
-      res.status(201).json(savedSubscription);
+    if (user) {
+      user.subscribingTo.push(req.body.subscription);
+      const savedUser = await user.save();
+      res.status(201).json(savedUser);
+      logger.info("Subscription created successfully!");
     } else {
-      const newSubscription = new Subscription({
-        username: req.body.username,
-        subscriptions: [req.body.subscription],
-      });
-      const savedSubscription = await newSubscription.save();
-      res.status(201).json(savedSubscription);
+      throw new Error("User does not exist");
     }
-    logger.info("Subscription created successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating subscription:", error.message);
+    logger.error("Error creating subscription: " + error.message);
   }
 });
 
@@ -272,22 +266,21 @@ app.delete("/subscriptions", async (req, res) => {
   try {
     logger.info("DELETE /subscriptions");
     logger.info(JSON.stringify(req.body));
-    const existingSubscription = await Subscription.findOne({
+    const user = await User.findOne({
       username: req.body.username,
     });
-    if (existingSubscription) {
-      existingSubscription.subscriptions = existingSubscription.subscriptions.filter(
-        (subscription) => subscription !== req.body.subscription
+    if (user) {
+      user.subscribingTo = user.subscribingTo.filter(
+        (username) => username !== req.body.subscription
       );
-      const savedSubscription = await existingSubscription.save();
-      res.status(201).json(savedSubscription);
+      const savedUser = await user.save();
+      res.status(200).json(savedUser);
     } else {
-      throw new Error("Subscription does not exist");
+      throw new Error("User does not exist");
     }
-    logger.info("Subscription deleted successfully!");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error deleting subscription:", error.message);
+    logger.error("Error deleting subscription: " + error.message);
   }
 });
 
