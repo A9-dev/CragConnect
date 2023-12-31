@@ -1,4 +1,4 @@
-import { loginUser, uploadUser } from "./dbFunctions";
+import { loginUser, uploadUser, getSubscriptions } from "./dbFunctions";
 import { useState } from "react";
 import { Button, Input, Stack, VStack, InputGroup, InputLeftAddon } from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
@@ -17,8 +17,16 @@ import {
 import { useContext } from "react";
 import { AppContext } from "./App";
 
-const Login = ({ onLogin }) => {
-  const { setLoggedIn, username, setUsername, setIsOrganisation } = useContext(AppContext);
+const Login = () => {
+  const {
+    setLoggedIn,
+    username,
+    setUsername,
+    setIsOrganisation,
+    setSubscriptions,
+    setFollowingPosts,
+    posts,
+  } = useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");
@@ -45,7 +53,15 @@ const Login = ({ onLogin }) => {
         if (result.data.organisation) {
           setIsOrganisation(true);
         }
-        onLogin();
+        getSubscriptions(username)
+          .then((result) => {
+            console.log("Subscriptions:", result);
+            setSubscriptions(result.data);
+            setFollowingPosts(posts.filter((post) => result.data.includes(post.username)));
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       })
       .catch((error) => {
         console.error("Login failed:", error);

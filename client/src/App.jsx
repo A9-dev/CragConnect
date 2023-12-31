@@ -43,17 +43,6 @@ const App = () => {
         console.error("Error:", error);
       });
   };
-  const onLogin = () => {
-    getSubscriptions(username)
-      .then((result) => {
-        console.log("Subscriptions:", result);
-        setSubscriptions(result.data);
-        setFollowingPosts(posts.filter((post) => result.data.includes(post.username)));
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
 
   const refreshFollowingFeed = () => {
     setFollowingPosts(posts.filter((post) => subscriptions.includes(post.username)));
@@ -90,12 +79,12 @@ const App = () => {
                 <Tabs align="center" variant="enclosed">
                   <TabList>
                     <Tab>
-                      <BellIcon mr={2} />
-                      Following
-                    </Tab>
-                    <Tab>
                       <HamburgerIcon mr={2} />
                       Feed
+                    </Tab>
+                    <Tab>
+                      <BellIcon mr={2} />
+                      Following
                     </Tab>
 
                     <Tab>
@@ -109,10 +98,10 @@ const App = () => {
                   </TabList>
                   <TabPanels>
                     <TabPanel>
-                      <FollowingFeed />
+                      <FeedBlock />
                     </TabPanel>
                     <TabPanel>
-                      <FeedBlock />
+                      <FollowingFeed />
                     </TabPanel>
                     <TabPanel>
                       <NewsBlock />
@@ -132,7 +121,7 @@ const App = () => {
               <Card p={5} alignItems={"center"}>
                 <HStack>
                   {!loggedIn ? (
-                    <Login onLogin={onLogin} />
+                    <Login />
                   ) : (
                     <>
                       <ProfileButton />
