@@ -34,6 +34,7 @@ const Feed = ({ posts }) => {
 
   useEffect(() => {
     refreshFollowingFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptions]); // Add refreshFollowingFeed as a dependency
 
   return (
