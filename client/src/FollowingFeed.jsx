@@ -6,12 +6,11 @@ import { useContext } from "react";
 import { AppContext } from "./App";
 
 const FeedBlock = () => {
-  const { loggedIn, posts } = useContext(AppContext);
-
+  const { loggedIn, followingPosts } = useContext(AppContext);
   return (
     <VStack spacing={35}>
       {loggedIn && <FeedPost />}
-      <Feed posts={posts} />
+      <Feed posts={followingPosts} />
     </VStack>
   );
 };

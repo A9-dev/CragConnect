@@ -3,8 +3,8 @@ import { useState, useContext } from "react";
 import { uploadPost } from "./dbFunctions";
 import { AppContext } from "./App";
 
-const FeedPost = ({ populateFeed }) => {
-  const { username } = useContext(AppContext);
+const FeedPost = () => {
+  const { username, populateFeed } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");

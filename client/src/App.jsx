@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import {
   ChakraProvider,
   Tabs,
@@ -13,14 +13,15 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import { CalendarIcon, SettingsIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { CalendarIcon, SettingsIcon, HamburgerIcon, BellIcon } from "@chakra-ui/icons";
 
 import Login from "./Login";
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import ProfileButton from "./ProfileButton";
 import NewsBlock from "./NewsBlock";
-import { getSubscriptions } from "./dbFunctions";
+import { getSubscriptions, getPosts } from "./dbFunctions";
+import FollowingFeed from "./FollowingFeed";
 
 // Create a context for the states
 export const AppContext = createContext();
@@ -30,18 +31,37 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [isOrganisation, setIsOrganisation] = useState(false);
   const [subscriptions, setSubscriptions] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [followingPosts, setFollowingPosts] = useState([]);
 
+  const populateFeed = () => {
+    getPosts()
+      .then((posts) => {
+        setPosts(posts.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
   const onLogin = () => {
     getSubscriptions(username)
       .then((result) => {
         console.log("Subscriptions:", result);
         setSubscriptions(result.data);
+        setFollowingPosts(posts.filter((post) => result.data.includes(post.username)));
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 
+  const refreshFollowingFeed = () => {
+    setFollowingPosts(posts.filter((post) => subscriptions.includes(post.username)));
+  };
+
+  useEffect(() => {
+    populateFeed();
+  }, []);
   return (
     <ChakraProvider>
       {/* Provide the states through the context */}
@@ -55,6 +75,12 @@ const App = () => {
           setIsOrganisation,
           subscriptions,
           setSubscriptions,
+          posts,
+          setPosts,
+          populateFeed,
+          followingPosts,
+          setFollowingPosts,
+          refreshFollowingFeed,
         }}
       >
         <Grid templateColumns={"repeat(4,1fr)"}>
@@ -63,6 +89,10 @@ const App = () => {
               <Card p={5}>
                 <Tabs align="center" variant="enclosed">
                   <TabList>
+                    <Tab>
+                      <BellIcon mr={2} />
+                      Following
+                    </Tab>
                     <Tab>
                       <HamburgerIcon mr={2} />
                       Feed
@@ -78,6 +108,9 @@ const App = () => {
                     </Tab>
                   </TabList>
                   <TabPanels>
+                    <TabPanel>
+                      <FollowingFeed />
+                    </TabPanel>
                     <TabPanel>
                       <FeedBlock />
                     </TabPanel>

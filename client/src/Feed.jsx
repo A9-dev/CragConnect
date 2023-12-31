@@ -11,22 +11,30 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { subscribe, unsubscribe } from "./dbFunctions";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "./App";
 
 const Feed = ({ posts }) => {
-  const { username, subscriptions, setSubscriptions, loggedIn } = useContext(AppContext);
+  const { username, subscriptions, setSubscriptions, loggedIn, refreshFollowingFeed } =
+    useContext(AppContext);
 
+  // ... existing code ...
   const handleSubscribe = (username, author) => {
     subscribe(username, author);
     if (!subscriptions) setSubscriptions([author]);
     else setSubscriptions([...subscriptions, author]);
+    refreshFollowingFeed();
   };
 
   const handleUnsubscribe = (username, author) => {
     unsubscribe(username, author);
     setSubscriptions(subscriptions.filter((sub) => sub !== author));
+    refreshFollowingFeed();
   };
+
+  useEffect(() => {
+    refreshFollowingFeed();
+  }, [subscriptions]); // Add refreshFollowingFeed as a dependency
 
   return (
     <VStack spacing="35px" divider={<StackDivider />}>
