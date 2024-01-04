@@ -66,7 +66,8 @@ function Search() {
                   {user.username}
                 </Heading>
                 <Heading as="h4" size="sm">
-                  {user.subscribers.length} followers
+                  {user.subscribers.length}{" "}
+                  {user.subscribers.length == 1 ? "follower" : "followers"}
                 </Heading>
               </CardHeader>
 

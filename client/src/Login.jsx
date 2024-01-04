@@ -108,7 +108,7 @@ const Login = () => {
           onOpen();
         }}
       >
-        Login
+        Log in
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

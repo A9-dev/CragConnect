@@ -70,9 +70,9 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-  username: {
-    type: String,
-    required: true,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   // Add more fields as needed
 });
@@ -87,9 +87,9 @@ const newsPostSchema = new Schema({
   content: {
     type: String,
   },
-  username: {
-    type: String,
-    required: true,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   // Add more fields as needed
 });
