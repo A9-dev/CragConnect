@@ -1,13 +1,31 @@
 import React from "react";
-import { Box, Flex, Heading, IconButton } from "@chakra-ui/react";
-import { FiMenu } from "react-icons/fi";
+import { Box, Flex, Heading, useColorModeValue, HStack } from "@chakra-ui/react";
+import { AppContext } from "./App";
+import { useContext } from "react";
+import Login from "./Login";
+import ProfileButton from "./ProfileButton";
 
 const Header = () => {
+  const isDarkMode = useColorModeValue(false, true);
+  const bgColor = isDarkMode ? "purple.700" : "blue.500";
+  const textColor = isDarkMode ? "white" : "white";
+  const { loggedIn } = useContext(AppContext);
+
   return (
-    <Box bg="blue.500" py={4} px={6} color="white">
+    <Box bg={bgColor} py={4} px={6} color={textColor}>
       <Flex justify="space-between" align="center">
-        <Heading size="2xl">CragConnect </Heading>
-        <IconButton icon={<FiMenu />} aria-label="Menu" colorScheme="whiteAlpha" />
+        <Heading p={3} size="2xl">
+          CragConnect{" "}
+        </Heading>
+        <HStack>
+          {!loggedIn ? (
+            <Login />
+          ) : (
+            <>
+              <ProfileButton />
+            </>
+          )}
+        </HStack>
         {/* Add more header components here */}
       </Flex>
     </Box>

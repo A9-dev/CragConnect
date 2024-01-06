@@ -7,18 +7,17 @@ import {
   TabPanels,
   TabPanel,
   Box,
-  HStack,
   Container,
   Card,
   Grid,
   GridItem,
+  CardHeader,
+  Heading,
 } from "@chakra-ui/react";
 import { CalendarIcon, SettingsIcon, HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
 
-import Login from "./Login";
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
-import ProfileButton from "./ProfileButton";
 import NewsBlock from "./NewsBlock";
 import { getPosts } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
@@ -75,73 +74,69 @@ const App = () => {
         }}
       >
         <Header />
-        <Grid templateColumns={"repeat(4,1fr)"}>
-          <GridItem colSpan={3}>
-            <Box margin="auto" py={5} px={20}>
-              <Card p={5}>
-                <Tabs align="center" variant="enclosed">
-                  <TabList>
-                    <Tab>
-                      <HamburgerIcon mr={2} />
-                      Feed
-                    </Tab>
-                    <Tab>
-                      <BellIcon mr={2} />
-                      Following
-                    </Tab>
+        <Box p={30}>
+          <Grid templateColumns={"repeat(12,1fr)"} gap={6}>
+            <GridItem colSpan={8}>
+              <Box margin="auto" py={5}>
+                <Card p={5}>
+                  <Tabs align="center" variant="enclosed">
+                    <TabList>
+                      <Tab>
+                        <HamburgerIcon mr={2} />
+                        Feed
+                      </Tab>
+                      <Tab>
+                        <BellIcon mr={2} />
+                        Following
+                      </Tab>
 
-                    <Tab>
-                      <CalendarIcon mr={2} />
-                      News
-                    </Tab>
-                    <Tab>
-                      <SearchIcon mr={2} />
-                      Search
-                    </Tab>
-                    <Tab>
-                      <SettingsIcon mr={2} />
-                      Settings
-                    </Tab>
-                  </TabList>
-                  <TabPanels>
-                    <TabPanel>
-                      <FeedBlock />
-                    </TabPanel>
-                    <TabPanel>
-                      <FollowingFeed />
-                    </TabPanel>
-                    <TabPanel>
-                      <NewsBlock />
-                    </TabPanel>
-                    <TabPanel>
-                      <Search />
-                    </TabPanel>
-                    <TabPanel>
-                      <Container>
-                        <ToggleColour />
-                      </Container>
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
-              </Card>
-            </Box>
-          </GridItem>
-          <GridItem>
-            <Box px={5} py={5}>
-              <Card p={5} alignItems={"center"}>
-                <HStack>
-                  {!loggedIn ? (
-                    <Login />
-                  ) : (
-                    <>
-                      <ProfileButton />
-                    </>
-                  )}
-                </HStack>
-              </Card>
-            </Box>
-          </GridItem>
-        </Grid>
+                      <Tab>
+                        <CalendarIcon mr={2} />
+                        News
+                      </Tab>
+                      <Tab>
+                        <SearchIcon mr={2} />
+                        Search
+                      </Tab>
+                      <Tab>
+                        <SettingsIcon mr={2} />
+                        Settings
+                      </Tab>
+                    </TabList>
+                    <TabPanels>
+                      <TabPanel>
+                        <FeedBlock />
+                      </TabPanel>
+                      <TabPanel>
+                        <FollowingFeed />
+                      </TabPanel>
+                      <TabPanel>
+                        <NewsBlock />
+                      </TabPanel>
+                      <TabPanel>
+                        <Search />
+                      </TabPanel>
+                      <TabPanel>
+                        <Container>
+                          <ToggleColour />
+                        </Container>
+                      </TabPanel>
+                    </TabPanels>
+                  </Tabs>
+                </Card>
+              </Box>
+            </GridItem>
+            <GridItem colSpan={4}>
+              <Box margin="auto" py={5}>
+                <Card p={5} textAlign={"center"}>
+                  <CardHeader>
+                    <Heading>Events</Heading>
+                  </CardHeader>
+                </Card>
+              </Box>
+            </GridItem>
+          </Grid>
+        </Box>
         <Footer />
       </AppContext.Provider>
     </ChakraProvider>

@@ -1,9 +1,18 @@
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, Link, Text, useColorModeValue } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
-
 const Footer = () => {
+  const isDarkMode = useColorModeValue(false, true);
+
   return (
-    <Box bg="gray.200" p={4} textAlign="center" position="fixed" bottom={0} left={0} right={0}>
+    <Box
+      bg={isDarkMode ? "gray.900" : "gray.200"}
+      p={4}
+      textAlign="center"
+      position="fixed"
+      bottom={0}
+      left={0}
+      right={0}
+    >
       <Text fontSize="sm" mt={2}>
         Licensed under the MIT License.
       </Text>

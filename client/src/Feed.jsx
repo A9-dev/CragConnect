@@ -9,6 +9,7 @@ import {
   CardHeader,
   StackDivider,
   Button,
+  HStack,
   Avatar,
 } from "@chakra-ui/react";
 import { subscribe, unsubscribe } from "./dbFunctions";
@@ -47,21 +48,23 @@ const Feed = ({ posts }) => {
               <Heading as="h3" size="lg">
                 {post.title}
               </Heading>
-              <Text fontSize="2xl" textAlign="left">
+              <HStack>
                 <Avatar size="sm" name={post.user.fullName} mr={2} />
-                {post.user.username}
-                {loggedIn &&
-                  username !== post.user.username && // Check if logged in before rendering buttons
-                  (!subscriptions || !subscriptions.includes(post.user.username) ? (
-                    <Button onClick={() => handleSubscribe(username, post.user.username)}>
-                      Follow
-                    </Button>
-                  ) : (
-                    <Button onClick={() => handleUnsubscribe(username, post.user.username)}>
-                      Unfollow
-                    </Button>
-                  ))}
-              </Text>
+                <Text fontSize="2xl" textAlign="left">
+                  {post.user.username}
+                  {loggedIn &&
+                    username !== post.user.username && // Check if logged in before rendering buttons
+                    (!subscriptions || !subscriptions.includes(post.user.username) ? (
+                      <Button onClick={() => handleSubscribe(username, post.user.username)}>
+                        Follow
+                      </Button>
+                    ) : (
+                      <Button onClick={() => handleUnsubscribe(username, post.user.username)}>
+                        Unfollow
+                      </Button>
+                    ))}
+                </Text>
+              </HStack>
             </CardHeader>
             <CardBody>
               <Text textAlign="justify">{post.content}</Text>
