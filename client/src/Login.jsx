@@ -33,7 +33,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [show, setShow] = useState(false);
-
+  const [fullName, setFullName] = useState("");
   const handleShow = () => setShow(!show);
 
   const handleLogin = () => {
@@ -49,7 +49,6 @@ const Login = () => {
         setLoggedIn(true);
         setError("");
         onClose();
-        console.log(result.data.organisation);
         if (result.data.organisation) {
           setIsOrganisation(true);
         }
@@ -74,7 +73,7 @@ const Login = () => {
       console.log("Username and password are required.");
       return;
     } else {
-      uploadUser(username, password, isChecked)
+      uploadUser(username, password, isChecked, fullName)
         .then((result) => {
           console.log("User registered successfully:", result);
           setLoggedIn(true);
@@ -162,6 +161,10 @@ const Login = () => {
                   <InputGroup>
                     <InputLeftAddon children="Username" width="105px" />
                     <Input value={username} onChange={(event) => setUsername(event.target.value)} />
+                  </InputGroup>
+                  <InputGroup>
+                    <InputLeftAddon children="Full Name" width="105px" />
+                    <Input value={fullName} onChange={(event) => setFullName(event.target.value)} />
                   </InputGroup>
                   <InputGroup>
                     <InputLeftAddon children="Password" width="105px" />

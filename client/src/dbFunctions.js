@@ -12,12 +12,13 @@ const loginUser = async (username, password) => {
   }
 };
 
-const uploadUser = async (username, password, orgBool) => {
+const uploadUser = async (username, password, orgBool, fullName) => {
   try {
     const response = await axios.post("http://localhost:5000/register", {
       username,
       password,
       organisation: orgBool,
+      fullName,
     });
     console.log(response.data);
     console.log(response.status);

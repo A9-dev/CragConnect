@@ -39,6 +39,7 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true, // Make sure the username is unique
   },
   password: {
     type: String,
@@ -54,6 +55,10 @@ const userSchema = new Schema({
   },
   subscribingTo: {
     type: [String],
+    required: true,
+  },
+  fullName: {
+    type: String,
     required: true,
   },
   // Add more fields as needed
@@ -138,6 +143,7 @@ app.post("/register", async (req, res) => {
       organisation: req.body.organisation,
       subscribers: [],
       subscribingTo: [],
+      fullName: req.body.fullName,
       // Add more fields as needed
     });
 
@@ -156,11 +162,17 @@ app.post("/posts", async (req, res) => {
   try {
     logger.info("POST /posts");
     logger.info(JSON.stringify(req.body));
+
+    const userThatPosted = await User.findOne({
+      username: req.body.username,
+    });
+
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
-      username: req.body.username,
+      user: userThatPosted._id,
     });
+
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
     logger.info("Post created successfully!");
@@ -174,7 +186,7 @@ app.get("/posts", async (req, res) => {
   try {
     logger.info("GET /posts");
 
-    const posts = (await Post.find({})).reverse();
+    const posts = (await Post.find({}).populate("user", "username fullName")).reverse();
 
     res.status(200).json(posts);
     logger.info("Posts retrieved successfully!");
@@ -188,7 +200,7 @@ app.get("/newsPosts", async (req, res) => {
   try {
     logger.info("GET /newsPosts");
 
-    const newsPosts = (await NewsPost.find({})).reverse();
+    const newsPosts = (await NewsPost.find({}).populate("user", "username fullName")).reverse();
 
     res.status(200).json(newsPosts);
     logger.info("News posts retrieved successfully!");
@@ -202,10 +214,14 @@ app.post("/newsPosts", async (req, res) => {
   try {
     logger.info("POST /newsPosts");
     logger.info(JSON.stringify(req.body));
+    const userThatPosted = await User.findOne({
+      username: req.body.username,
+    });
+
     const newPost = new NewsPost({
       title: req.body.title,
       content: req.body.content,
-      username: req.body.username,
+      user: userThatPosted._id,
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);

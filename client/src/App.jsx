@@ -23,6 +23,8 @@ import NewsBlock from "./NewsBlock";
 import { getPosts } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
 import Search from "./Search";
+import Header from "./Header";
+import Footer from "./Footer";
 // Create a context for the states
 export const AppContext = createContext();
 
@@ -45,7 +47,7 @@ const App = () => {
   };
 
   const refreshFollowingFeed = () => {
-    setFollowingPosts(posts.filter((post) => subscriptions.includes(post.username)));
+    setFollowingPosts(posts.filter((post) => subscriptions.includes(post.user.username)));
   };
 
   useEffect(() => {
@@ -72,6 +74,7 @@ const App = () => {
           refreshFollowingFeed,
         }}
       >
+        <Header />
         <Grid templateColumns={"repeat(4,1fr)"}>
           <GridItem colSpan={3}>
             <Box margin="auto" py={5} px={20}>
@@ -139,6 +142,7 @@ const App = () => {
             </Box>
           </GridItem>
         </Grid>
+        <Footer />
       </AppContext.Provider>
     </ChakraProvider>
   );
