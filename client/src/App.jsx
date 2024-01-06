@@ -73,71 +73,73 @@ const App = () => {
           refreshFollowingFeed,
         }}
       >
-        <Header />
-        <Box p={30}>
-          <Grid templateColumns={"repeat(12,1fr)"} gap={6}>
-            <GridItem colSpan={8}>
-              <Box margin="auto" py={5}>
-                <Card p={5}>
-                  <Tabs align="center" variant="enclosed">
-                    <TabList>
-                      <Tab>
-                        <HamburgerIcon mr={2} />
-                        Feed
-                      </Tab>
-                      <Tab>
-                        <BellIcon mr={2} />
-                        Following
-                      </Tab>
+        <Box pb={"100px"}>
+          <Header />
+          <Box p={30}>
+            <Grid templateColumns={"repeat(12,1fr)"} gap={6}>
+              <GridItem colSpan={8}>
+                <Box margin="auto" py={5}>
+                  <Card p={5}>
+                    <Tabs align="center" variant="enclosed">
+                      <TabList>
+                        <Tab>
+                          <HamburgerIcon mr={2} />
+                          Feed
+                        </Tab>
+                        <Tab>
+                          <BellIcon mr={2} />
+                          Following
+                        </Tab>
 
-                      <Tab>
-                        <CalendarIcon mr={2} />
-                        News
-                      </Tab>
-                      <Tab>
-                        <SearchIcon mr={2} />
-                        Search
-                      </Tab>
-                      <Tab>
-                        <SettingsIcon mr={2} />
-                        Settings
-                      </Tab>
-                    </TabList>
-                    <TabPanels>
-                      <TabPanel>
-                        <FeedBlock />
-                      </TabPanel>
-                      <TabPanel>
-                        <FollowingFeed />
-                      </TabPanel>
-                      <TabPanel>
-                        <NewsBlock />
-                      </TabPanel>
-                      <TabPanel>
-                        <Search />
-                      </TabPanel>
-                      <TabPanel>
-                        <Container>
-                          <ToggleColour />
-                        </Container>
-                      </TabPanel>
-                    </TabPanels>
-                  </Tabs>
-                </Card>
-              </Box>
-            </GridItem>
-            <GridItem colSpan={4}>
-              <Box margin="auto" py={5}>
-                <Card p={5} textAlign={"center"}>
-                  <CardHeader>
-                    <Heading>Events</Heading>
-                  </CardHeader>
-                </Card>
-              </Box>
-            </GridItem>
-          </Grid>
+                        <Tab>
+                          <CalendarIcon mr={2} />
+                          News
+                        </Tab>
+                        <Tab>
+                          <SearchIcon mr={2} />
+                          Search
+                        </Tab>
+                        <Tab>
+                          <SettingsIcon mr={2} />
+                          Settings
+                        </Tab>
+                      </TabList>
+                      <TabPanels>
+                        <TabPanel>
+                          <FeedBlock />
+                        </TabPanel>
+                        <TabPanel>
+                          <FollowingFeed />
+                        </TabPanel>
+                        <TabPanel>
+                          <NewsBlock />
+                        </TabPanel>
+                        <TabPanel>
+                          <Search />
+                        </TabPanel>
+                        <TabPanel>
+                          <Container>
+                            <ToggleColour />
+                          </Container>
+                        </TabPanel>
+                      </TabPanels>
+                    </Tabs>
+                  </Card>
+                </Box>
+              </GridItem>
+              <GridItem colSpan={4}>
+                <Box margin="auto" py={5}>
+                  <Card p={5} textAlign={"center"}>
+                    <CardHeader>
+                      <Heading>Events</Heading>
+                    </CardHeader>
+                  </Card>
+                </Box>
+              </GridItem>
+            </Grid>
+          </Box>
+          <Footer />
         </Box>
-        <Footer />
       </AppContext.Provider>
     </ChakraProvider>
   );
