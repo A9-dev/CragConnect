@@ -172,7 +172,6 @@ app.post("/register", async (req, res) => {
       subscribers: [],
       subscribingTo: [],
       fullName: req.body.fullName,
-      // Add more fields as needed
     });
 
     // Save the user to the database
