@@ -77,7 +77,7 @@ const FeedPost = ({ populateFeed }) => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handlePostData}>Post Data</Button>
+            <Button onClick={handlePostData}>Post</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

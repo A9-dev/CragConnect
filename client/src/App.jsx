@@ -9,6 +9,7 @@ import {
   Box,
   Container,
   Card,
+  CardBody,
   Grid,
   GridItem,
   CardHeader,
@@ -30,6 +31,7 @@ import FollowingFeed from "./FollowingFeed";
 import Search from "./Search";
 import Header from "./Header";
 import Footer from "./Footer";
+import CreateEventButton from "./CreateEventButton";
 // Create a context for the states
 export const AppContext = createContext();
 
@@ -98,7 +100,6 @@ const App = () => {
                           <BellIcon mr={2} />
                           Following
                         </Tab>
-
                         <Tab>
                           <CalendarIcon mr={2} />
                           News
@@ -141,6 +142,9 @@ const App = () => {
                     <CardHeader>
                       <Heading>Events</Heading>
                     </CardHeader>
+                    <CardBody>
+                      {isOrganisation && <CreateEventButton />}
+                    </CardBody>
                   </Card>
                 </Box>
               </GridItem>
