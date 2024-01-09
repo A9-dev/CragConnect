@@ -1,6 +1,13 @@
 import { loginUser, uploadUser, getSubscriptions } from "./dbFunctions";
 import { useState } from "react";
-import { Button, Input, Stack, VStack, InputGroup, InputLeftAddon } from "@chakra-ui/react";
+import {
+  Button,
+  Input,
+  Stack,
+  VStack,
+  InputGroup,
+  InputLeftAddon,
+} from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 import {
   Modal,
@@ -18,8 +25,15 @@ import { useContext } from "react";
 import { AppContext } from "./App";
 
 const Login = () => {
-  const { setLoggedIn, username, setUsername, setIsOrganisation, setSubscriptions, setFollowingPosts, posts } =
-    useContext(AppContext);
+  const {
+    setLoggedIn,
+    username,
+    setUsername,
+    setIsOrganisation,
+    setSubscriptions,
+    setFollowingPosts,
+    posts,
+  } = useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");
@@ -49,7 +63,9 @@ const Login = () => {
           .then((result) => {
             console.log("Subscriptions:", result);
             setSubscriptions(result.data);
-            setFollowingPosts(posts.filter((post) => result.data.includes(post.username)));
+            setFollowingPosts(
+              posts.filter((post) => result.data.includes(post.username))
+            );
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -112,7 +128,10 @@ const Login = () => {
               <VStack spacing={2} alignItems="center" margin="auto">
                 <InputGroup>
                   <InputLeftAddon children="Username" width="105px" />
-                  <Input value={username} onChange={(event) => setUsername(event.target.value)} />
+                  <Input
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                  />
                 </InputGroup>
                 <InputGroup>
                   <InputLeftAddon children="Password" width="105px" />
@@ -153,11 +172,17 @@ const Login = () => {
                 <VStack spacing={2} alignItems="center" margin="auto">
                   <InputGroup>
                     <InputLeftAddon children="Username" width="105px" />
-                    <Input value={username} onChange={(event) => setUsername(event.target.value)} />
+                    <Input
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                    />
                   </InputGroup>
                   <InputGroup>
                     <InputLeftAddon children="Full Name" width="105px" />
-                    <Input value={fullName} onChange={(event) => setFullName(event.target.value)} />
+                    <Input
+                      value={fullName}
+                      onChange={(event) => setFullName(event.target.value)}
+                    />
                   </InputGroup>
                   <InputGroup>
                     <InputLeftAddon children="Password" width="105px" />
@@ -172,7 +197,11 @@ const Login = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  <Checkbox size="lg" isChecked={isChecked} onChange={handleCheckboxChange}>
+                  <Checkbox
+                    size="lg"
+                    isChecked={isChecked}
+                    onChange={handleCheckboxChange}
+                  >
                     Organisation account?
                   </Checkbox>
                   <Divider />

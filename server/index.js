@@ -61,7 +61,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  // Add more fields as needed
 });
 
 const User = mongoose.model("User", userSchema);
@@ -79,7 +78,6 @@ const postSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  // Add more fields as needed
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -96,17 +94,48 @@ const newsPostSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  // Add more fields as needed
 });
 
 const NewsPost = mongoose.model("NewsPost", newsPostSchema);
+
+const eventSchema = new Schema({
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  eventTitle: {
+    type: String,
+    required: true,
+  },
+  eventDescription: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  postcode: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: false,
+  },
+  dateAndTime: {
+    type: String,
+    required: true,
+  },
+});
+
+const Event = mongoose.model("Event", eventSchema);
 
 app.use(express.json()); // <==== parse request body as JSON
 
 app.post("/login", async (req, res) => {
   try {
     logger.info("POST /login");
-    logger.info(JSON.stringify(req.body));
 
     const user = await User.findOne({
       username: req.body.username,
@@ -118,17 +147,16 @@ app.post("/login", async (req, res) => {
     }
 
     res.status(200).json(user);
-    logger.info("User logged in successfully!");
+    logger.info("POST /login 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error logging in: " + error.message);
+    logger.error("POST /login 400 " + error.message);
   }
 });
 // Define a route to handle user creation
 app.post("/register", async (req, res) => {
   try {
     logger.info("POST /register");
-    logger.info(JSON.stringify(req.body));
 
     // Check if the username already exists
     const existingUser = await User.findOne({ username: req.body.username });
@@ -144,24 +172,22 @@ app.post("/register", async (req, res) => {
       subscribers: [],
       subscribingTo: [],
       fullName: req.body.fullName,
-      // Add more fields as needed
     });
 
     // Save the user to the database
     const savedUser = await newUser.save();
 
     res.status(201).json(savedUser);
-    logger.info("User created successfully!");
+    logger.info("POST /register 201");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating user: " + error.message);
+    logger.error("POST /register 400: " + error.message);
   }
 });
 
 app.post("/posts", async (req, res) => {
   try {
     logger.info("POST /posts");
-    logger.info(JSON.stringify(req.body));
 
     const userThatPosted = await User.findOne({
       username: req.body.username,
@@ -175,10 +201,10 @@ app.post("/posts", async (req, res) => {
 
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
-    logger.info("Post created successfully!");
+    logger.info("POST /posts 201");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating post: " + error.message);
+    logger.error("POST /posts 400: " + error.message);
   }
 });
 
@@ -186,13 +212,15 @@ app.get("/posts", async (req, res) => {
   try {
     logger.info("GET /posts");
 
-    const posts = (await Post.find({}).populate("user", "username fullName")).reverse();
+    const posts = (
+      await Post.find({}).populate("user", "username fullName")
+    ).reverse();
 
     res.status(200).json(posts);
-    logger.info("Posts retrieved successfully!");
+    logger.info("GET /posts 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error retrieving posts: " + error.message);
+    logger.error("GET /posts 400: " + error.message);
   }
 });
 
@@ -200,20 +228,21 @@ app.get("/newsPosts", async (req, res) => {
   try {
     logger.info("GET /newsPosts");
 
-    const newsPosts = (await NewsPost.find({}).populate("user", "username fullName")).reverse();
+    const newsPosts = (
+      await NewsPost.find({}).populate("user", "username fullName")
+    ).reverse();
 
     res.status(200).json(newsPosts);
-    logger.info("News posts retrieved successfully!");
+    logger.info("GET /newsPosts 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error retrieving news posts: " + error.message);
+    logger.error("GET /newsPosts 400: " + error.message);
   }
 });
 
 app.post("/newsPosts", async (req, res) => {
   try {
     logger.info("POST /newsPosts");
-    logger.info(JSON.stringify(req.body));
     const userThatPosted = await User.findOne({
       username: req.body.username,
     });
@@ -225,10 +254,10 @@ app.post("/newsPosts", async (req, res) => {
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
-    logger.info("News post created successfully!");
+    logger.info("POST /newsPosts 201");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating news post: " + error.message);
+    logger.error("POST /newsPosts 400: " + error.message);
   }
 });
 
@@ -236,21 +265,19 @@ app.post("/newsPosts", async (req, res) => {
 app.get("/subscriptions/:username", async (req, res) => {
   try {
     logger.info("GET /subscriptions");
-    logger.info(JSON.stringify(req.params));
     const user = await User.findOne({
       username: req.params.username,
     });
-    if (user) {
-      res.status(200).json(user.subscribingTo);
-      logger.info("Subscriptions: " + user.subscribingTo);
-    } else {
+
+    if (!user) {
       throw new Error("Subscription does not exist");
     }
+    res.status(200).json(user.subscribingTo);
 
-    logger.info("Subscriptions retrieved successfully!");
+    logger.info("GET /subscriptions 200");
   } catch (error) {
     logger.error(error.message);
-    logger.error("Error retrieving subscriptions: " + error.message);
+    logger.error("GET /subscriptions 400: " + error.message);
     res.status(400).json({ message: error.message });
   }
 });
@@ -259,7 +286,6 @@ app.get("/subscriptions/:username", async (req, res) => {
 app.post("/subscriptions", async (req, res) => {
   try {
     logger.info("POST /subscriptions");
-    logger.info(JSON.stringify(req.body));
     const user = await User.findOne({
       username: req.body.username,
     });
@@ -274,13 +300,13 @@ app.post("/subscriptions", async (req, res) => {
       const savedUser2 = await user2.save();
 
       res.status(201).json({ savedUser, savedUser2 });
-      logger.info("Subscription created successfully!");
+      logger.info("POST /subscriptions 201");
     } else {
       throw new Error("User does not exist");
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error creating subscription: " + error.message);
+    logger.error("POST /subscriptions 400: " + error.message);
   }
 });
 
@@ -288,7 +314,6 @@ app.post("/subscriptions", async (req, res) => {
 app.delete("/subscriptions", async (req, res) => {
   try {
     logger.info("DELETE /subscriptions");
-    logger.info(JSON.stringify(req.body));
     const user = await User.findOne({
       username: req.body.username,
     });
@@ -301,35 +326,89 @@ app.delete("/subscriptions", async (req, res) => {
         (username) => username !== req.body.subscription
       );
       const savedUser = await user.save();
-      user2.subscribers = user2.subscribers.filter((username) => username !== req.body.username);
+      user2.subscribers = user2.subscribers.filter(
+        (username) => username !== req.body.username
+      );
       const savedUser2 = await user2.save();
 
       res.status(200).json({ savedUser, savedUser2 });
+      logger.info("DELETE /subscriptions 200");
     } else {
       throw new Error("User does not exist");
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error deleting subscription: " + error.message);
+    logger.error("DELETE /subscriptions 400: " + error.message);
   }
 });
 
 app.get("/search/:searchTerm", async (req, res) => {
   try {
     logger.info("GET /search");
-    logger.info(JSON.stringify(req.params));
     const users = await User.find({
       username: { $regex: req.params.searchTerm },
     });
     if (users) {
       res.status(200).json(users);
-      logger.info("Users retrieved successfully!");
+      logger.info("GET /search 200");
     } else {
       throw new Error("User does not exist");
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("Error retrieving users: " + error.message);
+    logger.error("GET /search 400: " + error.message);
+  }
+});
+
+app.post("/events", async (req, res) => {
+  try {
+    logger.info("POST /events");
+    const user = await User.findOne({
+      username: req.body.username,
+    });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (!user.organisation) {
+      throw new Error("User is not an organisation");
+    }
+
+    const newEvent = new Event({
+      creator: user._id,
+      eventTitle: req.body.eventTitle,
+      eventDescription: req.body.eventDescription,
+      address: req.body.address,
+      postcode: req.body.postcode,
+      phoneNumber: req.body.phoneNumber,
+      dateAndTime: req.body.dateAndTime,
+    });
+
+    if (!newEvent) {
+      throw new Error("Event does not exist");
+    }
+
+    const savedEvent = await newEvent.save();
+    res.status(201).json(savedEvent);
+    logger.info("POST /events 201");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("POST /events 400: " + error.message);
+  }
+});
+
+app.get("/events", async (req, res) => {
+  try {
+    logger.info("GET /events");
+    const events = await Event.find({}).populate(
+      "creator",
+      "username fullName"
+    );
+    res.status(200).json(events);
+    logger.info("GET /events 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /events 400: " + error.message);
   }
 });
 

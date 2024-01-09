@@ -2,7 +2,10 @@ import axios from "axios";
 
 const loginUser = async (username, password) => {
   try {
-    const response = await axios.post("http://localhost:5000/login", { username, password });
+    const response = await axios.post("http://localhost:5000/login", {
+      username,
+      password,
+    });
     console.log(response.data);
     console.log(response.status);
     return { data: response.data, status: response.status };
@@ -43,7 +46,11 @@ const getPosts = async () => {
 
 const uploadPost = async (username, title, content) => {
   try {
-    const response = await axios.post("http://localhost:5000/posts", { title, content, username });
+    const response = await axios.post("http://localhost:5000/posts", {
+      title,
+      content,
+      username,
+    });
     console.log(response.data);
     console.log(response.status);
     return { data: response.data, status: response.status };
@@ -83,7 +90,9 @@ const uploadNewsPost = async (username, title, content) => {
 
 const getSubscriptions = async (username) => {
   try {
-    const response = await axios.get("http://localhost:5000/subscriptions/" + username);
+    const response = await axios.get(
+      "http://localhost:5000/subscriptions/" + username
+    );
     console.log(response.data);
     console.log(response.status);
     return { data: response.data, status: response.status };
@@ -127,7 +136,9 @@ const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
 
 const searchUser = async (searchTerm) => {
   try {
-    const response = await axios.get("http://localhost:5000/search/" + searchTerm);
+    const response = await axios.get(
+      "http://localhost:5000/search/" + searchTerm
+    );
     console.log(response.data);
     console.log(response.status);
     return { data: response.data, status: response.status };
@@ -136,6 +147,55 @@ const searchUser = async (searchTerm) => {
   }
 };
 
+const postEvent = async (
+  username,
+  eventTitle,
+  eventDescription,
+  address,
+  postcode,
+  phoneNumber,
+  dateAndTime
+) => {
+  try {
+    const eventData = {
+      username,
+      eventTitle,
+      eventDescription,
+      address,
+      postcode,
+      phoneNumber,
+      dateAndTime,
+    };
+
+    // Remove empty string properties from eventData
+    Object.keys(eventData).forEach((key) => {
+      if (eventData[key] === "") {
+        delete eventData[key];
+      }
+    });
+
+    const response = await axios.post(
+      "http://localhost:5000/events",
+      eventData
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getEvents = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/events");
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
 export {
   loginUser,
   uploadUser,
@@ -147,4 +207,6 @@ export {
   unsubscribe,
   getSubscriptions,
   searchUser,
+  postEvent,
+  getEvents,
 };

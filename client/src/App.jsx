@@ -9,21 +9,31 @@ import {
   Box,
   Container,
   Card,
+  CardBody,
   Grid,
   GridItem,
   CardHeader,
   Heading,
+  VStack,
+  Text,
 } from "@chakra-ui/react";
-import { CalendarIcon, SettingsIcon, HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
+import {
+  CalendarIcon,
+  SettingsIcon,
+  HamburgerIcon,
+  BellIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
 
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import NewsBlock from "./NewsBlock";
-import { getPosts } from "./dbFunctions";
+import { getPosts, getEvents } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
 import Search from "./Search";
 import Header from "./Header";
 import Footer from "./Footer";
+import CreateEventButton from "./CreateEventButton";
 // Create a context for the states
 export const AppContext = createContext();
 
@@ -34,6 +44,7 @@ const App = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const populateFeed = () => {
     getPosts()
@@ -43,10 +54,29 @@ const App = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+    getEvents()
+      .then((events) => {
+        setEvents(events.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const refreshFollowingFeed = () => {
-    setFollowingPosts(posts.filter((post) => subscriptions.includes(post.user.username)));
+    setFollowingPosts(
+      posts.filter((post) => subscriptions.includes(post.user.username))
+    );
+  };
+
+  const refreshEventList = () => {
+    getEvents()
+      .then((events) => {
+        setEvents(events.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   useEffect(() => {
@@ -71,6 +101,9 @@ const App = () => {
           followingPosts,
           setFollowingPosts,
           refreshFollowingFeed,
+          events,
+          setEvents,
+          refreshEventList,
         }}
       >
         <Box pb={"100px"}>
@@ -90,7 +123,6 @@ const App = () => {
                           <BellIcon mr={2} />
                           Following
                         </Tab>
-
                         <Tab>
                           <CalendarIcon mr={2} />
                           News
@@ -131,8 +163,45 @@ const App = () => {
                 <Box margin="auto" py={5}>
                   <Card p={5} textAlign={"center"}>
                     <CardHeader>
-                      <Heading>Events</Heading>
+                      <Heading size="2xl">Events</Heading>
                     </CardHeader>
+                    <CardBody>
+                      {isOrganisation && <CreateEventButton />}
+                      <VStack spacing={5}>
+                        {events.map((event) => (
+                          <Card key={event._id} width={"100%"}>
+                            <CardHeader>
+                              <Heading size="lg">{event.eventTitle}</Heading>
+                            </CardHeader>
+                            <CardBody>
+                              <VStack>
+                                {event.eventDescription && (
+                                  <Text>{event.eventDescription}</Text>
+                                )}
+                                {event.address && (
+                                  <Text>
+                                    <b>Address: </b>
+                                    {event.address}
+                                  </Text>
+                                )}
+                                {event.dateAndTime && (
+                                  <Text>
+                                    <b>Date and time: </b>
+                                    {event.dateAndTime}
+                                  </Text>
+                                )}
+                                {event.postcode && (
+                                  <Text>
+                                    <b>Postcode: </b>
+                                    {event.postcode}
+                                  </Text>
+                                )}
+                              </VStack>
+                            </CardBody>
+                          </Card>
+                        ))}
+                      </VStack>
+                    </CardBody>
                   </Card>
                 </Box>
               </GridItem>
