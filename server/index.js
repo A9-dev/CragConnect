@@ -397,6 +397,21 @@ app.post("/events", async (req, res) => {
   }
 });
 
+app.get("/events", async (req, res) => {
+  try {
+    logger.info("GET /events");
+    const events = await Event.find({}).populate(
+      "creator",
+      "username fullName"
+    );
+    res.status(200).json(events);
+    logger.info("GET /events 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /events 400: " + error.message);
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);

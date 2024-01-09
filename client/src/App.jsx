@@ -14,6 +14,8 @@ import {
   GridItem,
   CardHeader,
   Heading,
+  VStack,
+  Text,
 } from "@chakra-ui/react";
 import {
   CalendarIcon,
@@ -26,7 +28,7 @@ import {
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import NewsBlock from "./NewsBlock";
-import { getPosts } from "./dbFunctions";
+import { getPosts, getEvents } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
 import Search from "./Search";
 import Header from "./Header";
@@ -42,11 +44,19 @@ const App = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const populateFeed = () => {
     getPosts()
       .then((posts) => {
         setPosts(posts.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    getEvents()
+      .then((events) => {
+        setEvents(events.data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -81,6 +91,8 @@ const App = () => {
           followingPosts,
           setFollowingPosts,
           refreshFollowingFeed,
+          events,
+          setEvents,
         }}
       >
         <Box pb={"100px"}>
@@ -140,10 +152,30 @@ const App = () => {
                 <Box margin="auto" py={5}>
                   <Card p={5} textAlign={"center"}>
                     <CardHeader>
-                      <Heading>Events</Heading>
+                      <Heading size="2xl">Events</Heading>
                     </CardHeader>
                     <CardBody>
                       {isOrganisation && <CreateEventButton />}
+                      {events.map((event) => (
+                        <Card key={event._id}>
+                          <CardHeader>
+                            <Heading size="lg">{event.eventTitle}</Heading>
+                          </CardHeader>
+                          <CardBody>
+                            <VStack>
+                              <Text>{event.eventDescription}</Text>
+                              <Text>
+                                <b>Address: </b>
+                                {event.address}
+                              </Text>
+                              <Text>
+                                <b>Date and time: </b>
+                                {event.dateAndTime}
+                              </Text>
+                            </VStack>
+                          </CardBody>
+                        </Card>
+                      ))}
                     </CardBody>
                   </Card>
                 </Box>

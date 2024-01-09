@@ -185,6 +185,17 @@ const postEvent = async (
     console.log(error);
   }
 };
+
+const getEvents = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/events");
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
 export {
   loginUser,
   uploadUser,
@@ -197,4 +208,5 @@ export {
   getSubscriptions,
   searchUser,
   postEvent,
+  getEvents,
 };
