@@ -17,8 +17,7 @@ import { useContext, useEffect } from "react";
 import { AppContext } from "./App";
 
 const Feed = ({ posts }) => {
-  const { username, subscriptions, setSubscriptions, loggedIn, refreshFollowingFeed } =
-    useContext(AppContext);
+  const { username, subscriptions, setSubscriptions, loggedIn, refreshFollowingFeed } = useContext(AppContext);
 
   // ... existing code ...
   const handleSubscribe = (username, author) => {
@@ -55,13 +54,9 @@ const Feed = ({ posts }) => {
                   {loggedIn &&
                     username !== post.user.username && // Check if logged in before rendering buttons
                     (!subscriptions || !subscriptions.includes(post.user.username) ? (
-                      <Button onClick={() => handleSubscribe(username, post.user.username)}>
-                        Follow
-                      </Button>
+                      <Button onClick={() => handleSubscribe(username, post.user.username)}>Follow</Button>
                     ) : (
-                      <Button onClick={() => handleUnsubscribe(username, post.user.username)}>
-                        Unfollow
-                      </Button>
+                      <Button onClick={() => handleUnsubscribe(username, post.user.username)}>Unfollow</Button>
                     ))}
                 </Text>
               </HStack>

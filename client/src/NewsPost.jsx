@@ -1,10 +1,24 @@
-import { Input, Button, Heading, VStack, Alert, AlertIcon, Textarea } from "@chakra-ui/react";
 import { useState, useContext } from "react";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  Input,
+  Textarea,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 import { uploadNewsPost } from "./dbFunctions";
 import { AppContext } from "./App";
 
 const FeedPost = ({ populateFeed }) => {
   const { username } = useContext(AppContext);
+  const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
@@ -22,6 +36,7 @@ const FeedPost = ({ populateFeed }) => {
         console.log("Post uploaded successfully:", result);
         populateFeed();
         setError("");
+        setIsOpen(false);
       })
       .catch((error) => {
         console.error("Post upload failed:", error);
@@ -34,24 +49,30 @@ const FeedPost = ({ populateFeed }) => {
   };
 
   return (
-    <VStack spacing={2} width="100%" margin="5">
-      <Heading as="h1" size="3xl">
-        Post
-      </Heading>
-      {error && (
-        <Alert status="error">
-          <AlertIcon />
-          {error}
-        </Alert>
-      )}{" "}
-      <Input placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <Textarea
-        placeholder="Enter content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <Button onClick={handlePostData}>Post Data</Button>
-    </VStack>
+    <>
+      <Button onClick={() => setIsOpen(true)}>Create a Post</Button>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create a Post</ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody>
+            {error && (
+              <Alert status="error">
+                <AlertIcon />
+                {error}
+              </Alert>
+            )}
+            <Input placeholder="Enter title" value={title} mb={3} onChange={(e) => setTitle(e.target.value)} />
+            <Textarea placeholder="Enter content" value={content} onChange={(e) => setContent(e.target.value)} />
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handlePostData}>Post Data</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
