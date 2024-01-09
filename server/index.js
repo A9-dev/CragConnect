@@ -123,6 +123,10 @@ const eventSchema = new Schema({
     type: String,
     required: false,
   },
+  dateAndTime: {
+    type: String,
+    required: true,
+  },
 });
 
 const Event = mongoose.model("Event", eventSchema);
@@ -387,6 +391,7 @@ app.post("/events", async (req, res) => {
       address: req.body.address,
       postcode: req.body.postcode,
       phoneNumber: req.body.phoneNumber,
+      dateAndTime: req.body.dateAndTime,
     });
 
     if (!newEvent) {

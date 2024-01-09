@@ -153,7 +153,8 @@ const postEvent = async (
   eventDescription,
   address,
   postcode,
-  phoneNumber
+  phoneNumber,
+  dateAndTime
 ) => {
   try {
     const eventData = {
@@ -163,6 +164,7 @@ const postEvent = async (
       address,
       postcode,
       phoneNumber,
+      dateAndTime,
     };
 
     // Remove empty string properties from eventData

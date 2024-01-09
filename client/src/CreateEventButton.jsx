@@ -26,6 +26,7 @@ const CreateEventButton = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [postcode, setPostcode] = useState("");
+  const [dateAndTime, setDateAndTime] = useState("");
   const [error, setError] = useState("");
 
   const { username } = useContext(AppContext);
@@ -45,9 +46,16 @@ const CreateEventButton = () => {
     console.log("Address:", address);
     console.log("Postcode:", postcode);
     console.log("Description:", eventDescription);
+    console.log("Date and Time:", dateAndTime);
 
     // Send the event details to Express
-    if (!eventTitle || !eventDescription || !address || !postcode) {
+    if (
+      !eventTitle ||
+      !eventDescription ||
+      !address ||
+      !postcode ||
+      !dateAndTime
+    ) {
       setError("Please enter all required fields");
       return;
     }
@@ -60,7 +68,8 @@ const CreateEventButton = () => {
       eventDescription,
       address,
       postcode,
-      phoneNumber
+      phoneNumber,
+      dateAndTime
     )
       .then((result) => {
         console.log("Event created successfully:", result);
@@ -130,6 +139,17 @@ const CreateEventButton = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="Enter phone number"
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Date and time</FormLabel>
+                <Input
+                  placeholder="Select Date and Time"
+                  size="md"
+                  type="datetime-local"
+                  onChange={(e) => {
+                    setDateAndTime(e.target.value);
+                  }}
                 />
               </FormControl>
             </VStack>
