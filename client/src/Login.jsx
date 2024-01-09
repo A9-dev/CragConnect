@@ -18,15 +18,8 @@ import { useContext } from "react";
 import { AppContext } from "./App";
 
 const Login = () => {
-  const {
-    setLoggedIn,
-    username,
-    setUsername,
-    setIsOrganisation,
-    setSubscriptions,
-    setFollowingPosts,
-    posts,
-  } = useContext(AppContext);
+  const { setLoggedIn, username, setUsername, setIsOrganisation, setSubscriptions, setFollowingPosts, posts } =
+    useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");

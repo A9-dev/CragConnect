@@ -1,14 +1,4 @@
-import {
-  Input,
-  Button,
-  Flex,
-  VStack,
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Input, Button, Flex, VStack, Card, CardBody, CardHeader, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { searchUser, subscribe, unsubscribe } from "./dbFunctions";
 import { useContext } from "react";
@@ -16,8 +6,7 @@ import { AppContext } from "./App";
 function Search() {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);
-  const { username, subscriptions, setSubscriptions, refreshFollowingFeed, loggedIn } =
-    useContext(AppContext);
+  const { username, subscriptions, setSubscriptions, refreshFollowingFeed, loggedIn } = useContext(AppContext);
 
   const handleChange = (event) => {
     setSearch(event.target.value);
@@ -66,8 +55,7 @@ function Search() {
                   {user.username}
                 </Heading>
                 <Heading as="h4" size="sm">
-                  {user.subscribers.length}{" "}
-                  {user.subscribers.length == 1 ? "follower" : "followers"}
+                  {user.subscribers.length} {user.subscribers.length == 1 ? "follower" : "followers"}
                 </Heading>
               </CardHeader>
 
