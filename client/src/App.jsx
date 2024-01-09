@@ -14,7 +14,13 @@ import {
   CardHeader,
   Heading,
 } from "@chakra-ui/react";
-import { CalendarIcon, SettingsIcon, HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
+import {
+  CalendarIcon,
+  SettingsIcon,
+  HamburgerIcon,
+  BellIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
 
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
@@ -46,7 +52,9 @@ const App = () => {
   };
 
   const refreshFollowingFeed = () => {
-    setFollowingPosts(posts.filter((post) => subscriptions.includes(post.user.username)));
+    setFollowingPosts(
+      posts.filter((post) => subscriptions.includes(post.user.username))
+    );
   };
 
   useEffect(() => {

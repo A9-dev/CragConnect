@@ -22,9 +22,21 @@ const Footer = () => {
           A9-dev
         </Link>{" "}
         /{" "}
-        <Link href="https://github.com/A9-dev/partIII" color="blue.500" fontSize="sm" mt={2} isExternal>
+        <Link
+          href="https://github.com/A9-dev/partIII"
+          color="blue.500"
+          fontSize="sm"
+          mt={2}
+          isExternal
+        >
           GitHub Repository
-          <FaGithub style={{ display: "inline-block", verticalAlign: "middle", marginLeft: "0.5rem" }} />
+          <FaGithub
+            style={{
+              display: "inline-block",
+              verticalAlign: "middle",
+              marginLeft: "0.5rem",
+            }}
+          />
         </Link>
       </Text>
     </Box>

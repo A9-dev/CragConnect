@@ -64,8 +64,17 @@ const FeedPost = () => {
                 {error}
               </Alert>
             )}
-            <Input placeholder="Enter title" value={title} mb={3} onChange={(e) => setTitle(e.target.value)} />
-            <Textarea placeholder="Enter content" value={content} onChange={(e) => setContent(e.target.value)} />
+            <Input
+              placeholder="Enter title"
+              value={title}
+              mb={3}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Textarea
+              placeholder="Enter content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
           </ModalBody>
           <ModalFooter>
             <Button onClick={handlePostData}>Post Data</Button>
