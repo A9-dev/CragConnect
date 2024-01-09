@@ -61,7 +61,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  // Add more fields as needed
 });
 
 const User = mongoose.model("User", userSchema);
@@ -79,7 +78,6 @@ const postSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  // Add more fields as needed
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -96,10 +94,38 @@ const newsPostSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  // Add more fields as needed
 });
 
 const NewsPost = mongoose.model("NewsPost", newsPostSchema);
+
+const eventSchema = new Schema({
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  eventTitle: {
+    type: String,
+    required: true,
+  },
+  eventDescription: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  postcode: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: false,
+  },
+});
+
+const Event = mongoose.model("Event", eventSchema);
 
 app.use(express.json()); // <==== parse request body as JSON
 
@@ -186,7 +212,9 @@ app.get("/posts", async (req, res) => {
   try {
     logger.info("GET /posts");
 
-    const posts = (await Post.find({}).populate("user", "username fullName")).reverse();
+    const posts = (
+      await Post.find({}).populate("user", "username fullName")
+    ).reverse();
 
     res.status(200).json(posts);
     logger.info("Posts retrieved successfully!");
@@ -200,7 +228,9 @@ app.get("/newsPosts", async (req, res) => {
   try {
     logger.info("GET /newsPosts");
 
-    const newsPosts = (await NewsPost.find({}).populate("user", "username fullName")).reverse();
+    const newsPosts = (
+      await NewsPost.find({}).populate("user", "username fullName")
+    ).reverse();
 
     res.status(200).json(newsPosts);
     logger.info("News posts retrieved successfully!");
@@ -301,7 +331,9 @@ app.delete("/subscriptions", async (req, res) => {
         (username) => username !== req.body.subscription
       );
       const savedUser = await user.save();
-      user2.subscribers = user2.subscribers.filter((username) => username !== req.body.username);
+      user2.subscribers = user2.subscribers.filter(
+        (username) => username !== req.body.username
+      );
       const savedUser2 = await user2.save();
 
       res.status(200).json({ savedUser, savedUser2 });
@@ -330,6 +362,43 @@ app.get("/search/:searchTerm", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("Error retrieving users: " + error.message);
+  }
+});
+
+app.post("/events", async (req, res) => {
+  try {
+    logger.info("POST /events");
+    logger.info(JSON.stringify(req.body));
+    const user = await User.findOne({
+      username: req.body.username,
+    });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (!user.organisation) {
+      throw new Error("User is not an organisation");
+    }
+
+    const newEvent = new Event({
+      creator: user._id,
+      eventTitle: req.body.eventTitle,
+      eventDescription: req.body.eventDescription,
+      address: req.body.address,
+      postcode: req.body.postcode,
+      phoneNumber: req.body.phoneNumber,
+    });
+
+    if (!newEvent) {
+      throw new Error("Event does not exist");
+    }
+
+    const savedEvent = await newEvent.save();
+    res.status(201).json(savedEvent);
+    logger.info("Event created successfully!");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("Error creating event: " + error.message);
   }
 });
 

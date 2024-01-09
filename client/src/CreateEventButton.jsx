@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Modal,
@@ -16,6 +16,8 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
+import { postEvent } from "./dbFunctions";
+import { AppContext } from "./App";
 
 const CreateEventButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +28,8 @@ const CreateEventButton = () => {
   const [postcode, setPostcode] = useState("");
   const [error, setError] = useState("");
 
+  const { username } = useContext(AppContext);
+
   const handleOpenModal = () => {
     setIsOpen(true);
   };
@@ -35,6 +39,7 @@ const CreateEventButton = () => {
   };
 
   const handleCreateEvent = () => {
+    console.log("Username", username);
     console.log("Creating event:", eventTitle);
     console.log("Phone Number:", phoneNumber);
     console.log("Address:", address);
@@ -46,8 +51,26 @@ const CreateEventButton = () => {
       setError("Please enter all required fields");
       return;
     }
-    setError("");
-    handleCloseModal();
+
+    // Send the event details to Express
+
+    postEvent(
+      username,
+      eventTitle,
+      eventDescription,
+      address,
+      postcode,
+      phoneNumber
+    )
+      .then((result) => {
+        console.log("Event created successfully:", result);
+        setError("");
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.error("Event creation failed:", error);
+        setError(error);
+      });
     // ...
   };
 
