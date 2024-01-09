@@ -69,6 +69,16 @@ const App = () => {
     );
   };
 
+  const refreshEventList = () => {
+    getEvents()
+      .then((events) => {
+        setEvents(events.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   useEffect(() => {
     populateFeed();
   }, []);
@@ -93,6 +103,7 @@ const App = () => {
           refreshFollowingFeed,
           events,
           setEvents,
+          refreshEventList,
         }}
       >
         <Box pb={"100px"}>
@@ -156,26 +167,40 @@ const App = () => {
                     </CardHeader>
                     <CardBody>
                       {isOrganisation && <CreateEventButton />}
-                      {events.map((event) => (
-                        <Card key={event._id}>
-                          <CardHeader>
-                            <Heading size="lg">{event.eventTitle}</Heading>
-                          </CardHeader>
-                          <CardBody>
-                            <VStack>
-                              <Text>{event.eventDescription}</Text>
-                              <Text>
-                                <b>Address: </b>
-                                {event.address}
-                              </Text>
-                              <Text>
-                                <b>Date and time: </b>
-                                {event.dateAndTime}
-                              </Text>
-                            </VStack>
-                          </CardBody>
-                        </Card>
-                      ))}
+                      <VStack spacing={5}>
+                        {events.map((event) => (
+                          <Card key={event._id} width={"100%"}>
+                            <CardHeader>
+                              <Heading size="lg">{event.eventTitle}</Heading>
+                            </CardHeader>
+                            <CardBody>
+                              <VStack>
+                                {event.eventDescription && (
+                                  <Text>{event.eventDescription}</Text>
+                                )}
+                                {event.address && (
+                                  <Text>
+                                    <b>Address: </b>
+                                    {event.address}
+                                  </Text>
+                                )}
+                                {event.dateAndTime && (
+                                  <Text>
+                                    <b>Date and time: </b>
+                                    {event.dateAndTime}
+                                  </Text>
+                                )}
+                                {event.postcode && (
+                                  <Text>
+                                    <b>Postcode: </b>
+                                    {event.postcode}
+                                  </Text>
+                                )}
+                              </VStack>
+                            </CardBody>
+                          </Card>
+                        ))}
+                      </VStack>
                     </CardBody>
                   </Card>
                 </Box>

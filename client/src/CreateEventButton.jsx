@@ -29,7 +29,7 @@ const CreateEventButton = () => {
   const [dateAndTime, setDateAndTime] = useState("");
   const [error, setError] = useState("");
 
-  const { username } = useContext(AppContext);
+  const { username, refreshEventList } = useContext(AppContext);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -73,8 +73,10 @@ const CreateEventButton = () => {
     )
       .then((result) => {
         console.log("Event created successfully:", result);
+
         setError("");
         handleCloseModal();
+        refreshEventList();
       })
       .catch((error) => {
         console.error("Event creation failed:", error);
@@ -85,7 +87,9 @@ const CreateEventButton = () => {
 
   return (
     <>
-      <Button onClick={handleOpenModal}>Create an event</Button>
+      <Button onClick={handleOpenModal} m={3}>
+        Create an event
+      </Button>
 
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
         <ModalOverlay />
