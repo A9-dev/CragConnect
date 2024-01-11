@@ -6,26 +6,33 @@ import {
   MenuItem,
   useColorModeValue,
   Box,
-  Heading,
-  Center,
-} from "@chakra-ui/react";
-import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  Text,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Heading,
+  Center,
+  Text,
+  Spacer,
+  Flex,
 } from "@chakra-ui/react";
+import { unsubscribe } from "./dbFunctions";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { AppContext } from "./App";
 
 const ProfileButton = () => {
-  const { setLoggedIn, setUsername, username, subscriptions } =
-    useContext(AppContext);
+  const {
+    setLoggedIn,
+    setUsername,
+    username,
+    subscriptions,
+    fullName,
+    setSubscriptions,
+  } = useContext(AppContext);
   const isDarkMode = useColorModeValue(false, true);
 
   const handleSignout = () => {
@@ -36,6 +43,17 @@ const ProfileButton = () => {
   const handleProfile = () => {
     onOpen();
     // TODO: Add functionality to profile button
+  };
+
+  const handleUnfollowButton = (userToUnfollow) => {
+    unsubscribe(username, userToUnfollow)
+      .then((result) => {
+        setSubscriptions(subscriptions.filter((sub) => sub !== userToUnfollow));
+        console.log("Unsubscribed successfully:", result);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -60,16 +78,30 @@ const ProfileButton = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg={isDarkMode ? "gray.800" : "gray.200"}>
-          <ModalHeader>Profile</ModalHeader>
+          <ModalHeader>{fullName}'s Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Center>
-              <Heading>{username}</Heading>
+              <Heading size="md" mb={5}>
+                Following
+              </Heading>
             </Center>
-            <Text>Following:</Text>
-            {subscriptions.map((subscription) => {
-              return <Text key={subscription}>{subscription}</Text>;
-            })}
+
+            <Box width="75%" margin="auto">
+              {subscriptions.map((subscription) => (
+                <Flex mb={3}>
+                  <Text key={subscription}>{subscription}</Text>
+                  <Spacer />
+                  <Button
+                    onClick={() => {
+                      handleUnfollowButton(subscription);
+                    }}
+                  >
+                    Unfollow
+                  </Button>
+                </Flex>
+              ))}
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>

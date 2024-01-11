@@ -33,6 +33,7 @@ const Login = () => {
     setSubscriptions,
     setFollowingPosts,
     posts,
+    setFullName,
   } = useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
@@ -40,7 +41,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [show, setShow] = useState(false);
-  const [fullName, setFullName] = useState("");
+  const [fullNameInput, setFullNameInput] = useState("");
   const handleShow = () => setShow(!show);
 
   const handleLogin = () => {
@@ -59,6 +60,8 @@ const Login = () => {
         if (result.data.organisation) {
           setIsOrganisation(true);
         }
+        setFullName(result.data.fullName);
+
         getSubscriptions(username)
           .then((result) => {
             console.log("Subscriptions:", result);
@@ -82,7 +85,7 @@ const Login = () => {
       console.log("Username and password are required.");
       return;
     } else {
-      uploadUser(username, password, isChecked, fullName)
+      uploadUser(username, password, isChecked, fullNameInput)
         .then((result) => {
           console.log("User registered successfully:", result);
           setLoggedIn(true);
@@ -180,8 +183,8 @@ const Login = () => {
                   <InputGroup>
                     <InputLeftAddon children="Full Name" width="105px" />
                     <Input
-                      value={fullName}
-                      onChange={(event) => setFullName(event.target.value)}
+                      value={fullNameInput}
+                      onChange={(event) => setFullNameInput(event.target.value)}
                     />
                   </InputGroup>
                   <InputGroup>
