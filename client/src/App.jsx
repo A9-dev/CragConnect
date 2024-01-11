@@ -45,6 +45,7 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
   const [events, setEvents] = useState([]);
+  const [fullName, setFullName] = useState("");
 
   const populateFeed = () => {
     getPosts()
@@ -104,6 +105,8 @@ const App = () => {
           events,
           setEvents,
           refreshEventList,
+          fullName,
+          setFullName,
         }}
       >
         <Box pb={"100px"}>

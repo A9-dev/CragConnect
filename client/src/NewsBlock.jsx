@@ -12,7 +12,6 @@ const NewsBlock = () => {
   const populateFeed = () => {
     getNewsPosts()
       .then((posts) => {
-        console.log("Posts:", posts);
         setNewsPosts(posts.data);
       })
       .catch((error) => {
