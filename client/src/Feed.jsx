@@ -11,10 +11,14 @@ import {
   Button,
   HStack,
   Avatar,
+  Flex,
+  Spacer,
+  IconButton,
 } from "@chakra-ui/react";
-import { subscribe, unsubscribe } from "./dbFunctions";
+import { subscribe, unsubscribe, deletePost } from "./dbFunctions";
 import { useContext, useEffect } from "react";
 import { AppContext } from "./App";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const Feed = ({ posts }) => {
   const {
@@ -22,6 +26,7 @@ const Feed = ({ posts }) => {
     subscriptions,
     setSubscriptions,
     loggedIn,
+    refreshFeed,
     refreshFollowingFeed,
   } = useContext(AppContext);
 
@@ -39,6 +44,17 @@ const Feed = ({ posts }) => {
     refreshFollowingFeed();
   };
 
+  const handleDeletePost = (postId) => {
+    deletePost(postId)
+      .then((result) => {
+        console.log("Deleted post successfully:", result);
+        refreshFeed();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   useEffect(() => {
     refreshFollowingFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,32 +69,47 @@ const Feed = ({ posts }) => {
               <Heading as="h3" size="lg">
                 {post.title}
               </Heading>
-              <HStack>
-                <Avatar size="sm" name={post.user.fullName} mr={2} />
-                <Text fontSize="2xl" textAlign="left">
-                  {post.user.username}
-                  {loggedIn &&
-                    username !== post.user.username && // Check if logged in before rendering buttons
-                    (!subscriptions ||
-                    !subscriptions.includes(post.user.username) ? (
-                      <Button
-                        onClick={() =>
-                          handleSubscribe(username, post.user.username)
-                        }
-                      >
-                        Follow
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() =>
-                          handleUnsubscribe(username, post.user.username)
-                        }
-                      >
-                        Unfollow
-                      </Button>
-                    ))}
-                </Text>
-              </HStack>
+              <Flex>
+                <HStack>
+                  <Avatar size="sm" name={post.user.fullName} mr={2} />
+                  <Text fontSize="2xl" textAlign="left">
+                    {post.user.username}
+                    {loggedIn &&
+                      username !== post.user.username && // Check if logged in before rendering buttons
+                      (!subscriptions ||
+                      !subscriptions.includes(post.user.username) ? (
+                        <Button
+                          onClick={() =>
+                            handleSubscribe(username, post.user.username)
+                          }
+                        >
+                          Follow
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() =>
+                            handleUnsubscribe(username, post.user.username)
+                          }
+                        >
+                          Unfollow
+                        </Button>
+                      ))}
+                  </Text>
+                </HStack>
+                <Spacer />
+                {
+                  // only show delete button if the post belongs to the logged in user
+                  loggedIn && username === post.user.username && (
+                    <IconButton
+                      onClick={() => {
+                        handleDeletePost(post._id);
+                      }}
+                      aria-label="Delete"
+                      icon={<DeleteIcon />}
+                    />
+                  )
+                }
+              </Flex>
             </CardHeader>
             <CardBody>
               <Text textAlign="justify">{post.content}</Text>

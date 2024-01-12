@@ -17,7 +17,7 @@ import { uploadPost } from "./dbFunctions";
 import { AppContext } from "./App";
 
 const FeedPost = () => {
-  const { username, populateFeed } = useContext(AppContext);
+  const { username, refreshFeed } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -34,7 +34,7 @@ const FeedPost = () => {
     uploadPost(username, title, content)
       .then((result) => {
         console.log("Post uploaded successfully:", result);
-        populateFeed();
+        refreshFeed();
         setError("");
         setIsOpen(false);
       })
