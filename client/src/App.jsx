@@ -9,13 +9,8 @@ import {
   Box,
   Container,
   Card,
-  CardBody,
   Grid,
   GridItem,
-  CardHeader,
-  Heading,
-  VStack,
-  Text,
 } from "@chakra-ui/react";
 import {
   CalendarIcon,
@@ -24,16 +19,16 @@ import {
   BellIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
+import { getPosts, getEvents } from "./dbFunctions";
 
 import FeedBlock from "./FeedBlock";
 import ToggleColour from "./ToggleColour";
 import NewsBlock from "./NewsBlock";
-import { getPosts, getEvents } from "./dbFunctions";
 import FollowingFeed from "./FollowingFeed";
 import Search from "./Search";
 import Header from "./Header";
 import Footer from "./Footer";
-import CreateEventButton from "./CreateEventButton";
+import EventList from "./EventList";
 // Create a context for the states
 export const AppContext = createContext();
 
@@ -163,50 +158,7 @@ const App = () => {
                 </Box>
               </GridItem>
               <GridItem colSpan={4}>
-                <Box margin="auto" py={5}>
-                  <Card p={5} textAlign={"center"}>
-                    <CardHeader>
-                      <Heading size="2xl">Events</Heading>
-                    </CardHeader>
-                    <CardBody>
-                      {isOrganisation && <CreateEventButton />}
-                      <VStack spacing={5}>
-                        {events.map((event) => (
-                          <Card key={event._id} width={"100%"}>
-                            <CardHeader>
-                              <Heading size="lg">{event.eventTitle}</Heading>
-                            </CardHeader>
-                            <CardBody>
-                              <VStack>
-                                {event.eventDescription && (
-                                  <Text>{event.eventDescription}</Text>
-                                )}
-                                {event.address && (
-                                  <Text>
-                                    <b>Address: </b>
-                                    {event.address}
-                                  </Text>
-                                )}
-                                {event.dateAndTime && (
-                                  <Text>
-                                    <b>Date and time: </b>
-                                    {event.dateAndTime}
-                                  </Text>
-                                )}
-                                {event.postcode && (
-                                  <Text>
-                                    <b>Postcode: </b>
-                                    {event.postcode}
-                                  </Text>
-                                )}
-                              </VStack>
-                            </CardBody>
-                          </Card>
-                        ))}
-                      </VStack>
-                    </CardBody>
-                  </Card>
-                </Box>
+                <EventList />
               </GridItem>
             </Grid>
           </Box>
