@@ -19,6 +19,7 @@ import {
   BellIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
+
 import { getPosts, getEvents } from "./dbFunctions";
 
 import FeedBlock from "./FeedBlock";

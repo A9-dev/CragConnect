@@ -196,6 +196,18 @@ const getEvents = async () => {
     console.log(error);
   }
 };
+const deletePost = async (postId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/posts/" + postId
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
 export {
   loginUser,
   uploadUser,
@@ -209,4 +221,5 @@ export {
   searchUser,
   postEvent,
   getEvents,
+  deletePost,
 };

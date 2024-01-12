@@ -89,7 +89,7 @@ const ProfileButton = () => {
 
             <Box width="75%" margin="auto">
               {subscriptions.map((subscription) => (
-                <Flex mb={3}>
+                <Flex mb={3} key={subscription}>
                   <Text key={subscription}>{subscription}</Text>
                   <Spacer />
                   <Button
