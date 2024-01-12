@@ -412,6 +412,18 @@ app.get("/events", async (req, res) => {
   }
 });
 
+app.delete("/posts/:id", async (req, res) => {
+  try {
+    logger.info("DELETE /posts");
+    const post = await Post.findByIdAndDelete(req.params.id);
+    res.status(200).json(post);
+    logger.info("DELETE /posts 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /posts 400: " + error.message);
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);

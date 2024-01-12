@@ -26,6 +26,7 @@ const Feed = ({ posts }) => {
     subscriptions,
     setSubscriptions,
     loggedIn,
+    refreshFeed,
     refreshFollowingFeed,
   } = useContext(AppContext);
 
@@ -47,8 +48,7 @@ const Feed = ({ posts }) => {
     deletePost(postId)
       .then((result) => {
         console.log("Deleted post successfully:", result);
-        // Refresh the feed
-        refreshFollowingFeed();
+        refreshFeed();
       })
       .catch((error) => {
         console.error("Error:", error);

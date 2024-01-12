@@ -9,7 +9,7 @@ import { AppContext } from "./App";
 const NewsBlock = () => {
   const { isOrganisation } = useContext(AppContext);
   var [newsPosts, setNewsPosts] = useState([]);
-  const populateFeed = () => {
+  const refreshNewsPosts = () => {
     getNewsPosts()
       .then((posts) => {
         setNewsPosts(posts.data);
@@ -20,11 +20,11 @@ const NewsBlock = () => {
   };
 
   useEffect(() => {
-    populateFeed();
+    refreshNewsPosts();
   }, []);
   return (
     <VStack spacing={35}>
-      {isOrganisation && <NewsPost populateFeed={populateFeed} />}
+      {isOrganisation && <NewsPost refreshNewsPosts={refreshNewsPosts} />}
       <Feed posts={newsPosts} />
     </VStack>
   );

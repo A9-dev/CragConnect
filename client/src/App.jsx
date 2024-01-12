@@ -43,7 +43,7 @@ const App = () => {
   const [events, setEvents] = useState([]);
   const [fullName, setFullName] = useState("");
 
-  const populateFeed = () => {
+  const refreshFeed = () => {
     getPosts()
       .then((posts) => {
         setPosts(posts.data);
@@ -77,7 +77,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    populateFeed();
+    refreshFeed();
   }, []);
   return (
     <ChakraProvider>
@@ -94,7 +94,7 @@ const App = () => {
           setSubscriptions,
           posts,
           setPosts,
-          populateFeed,
+          refreshFeed,
           followingPosts,
           setFollowingPosts,
           refreshFollowingFeed,
