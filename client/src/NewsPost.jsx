@@ -23,6 +23,12 @@ const FeedPost = ({ refreshNewsPosts }) => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handlePostData();
+    }
+  }
+
   const handlePostData = () => {
     console.time("uploadPost");
 
@@ -69,11 +75,13 @@ const FeedPost = ({ refreshNewsPosts }) => {
               value={title}
               mb={3}
               onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <Textarea
               placeholder="Enter content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </ModalBody>
           <ModalFooter>
