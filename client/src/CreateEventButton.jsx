@@ -31,6 +31,12 @@ const CreateEventButton = () => {
 
   const { username, refreshEventList } = useContext(AppContext);
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleCreateEvent();
+    }
+  }
+
   const handleOpenModal = () => {
     setIsOpen(true);
   };
@@ -110,6 +116,7 @@ const CreateEventButton = () => {
                   value={eventTitle}
                   onChange={(e) => setEventTitle(e.target.value)}
                   placeholder="Enter event name"
+                  onKeyDown={handleKeyDown}
                 />
               </FormControl>
               <FormControl isRequired>
@@ -119,6 +126,7 @@ const CreateEventButton = () => {
                   value={eventDescription}
                   onChange={(e) => setEventDescription(e.target.value)}
                   placeholder="Enter event description"
+
                 />
               </FormControl>
               <FormControl isRequired>
@@ -127,6 +135,8 @@ const CreateEventButton = () => {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter address"
+                  onKeyDown={handleKeyDown}
+
                 />
               </FormControl>
               <FormControl isRequired>
@@ -135,6 +145,8 @@ const CreateEventButton = () => {
                   value={postcode}
                   onChange={(e) => setPostcode(e.target.value)}
                   placeholder="Enter postcode"
+                  onKeyDown={handleKeyDown}
+
                 />
               </FormControl>
               <FormControl>
@@ -143,6 +155,8 @@ const CreateEventButton = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="Enter phone number"
+                  onKeyDown={handleKeyDown}
+
                 />
               </FormControl>
               <FormControl isRequired>
@@ -154,6 +168,8 @@ const CreateEventButton = () => {
                   onChange={(e) => {
                     setDateAndTime(e.target.value);
                   }}
+                  onKeyDown={handleKeyDown}
+
                 />
               </FormControl>
             </VStack>

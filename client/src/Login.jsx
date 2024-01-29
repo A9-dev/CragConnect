@@ -142,6 +142,11 @@ const Login = () => {
                     type={show ? "text" : "password"}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        handleLogin();
+                      }
+                    }}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShow}>

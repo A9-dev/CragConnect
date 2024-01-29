@@ -28,6 +28,12 @@ function Search() {
     setSearch(event.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleClick();
+    }
+  }
+
   const handleClick = () => {
     searchUser(search)
       .then((result) => {
@@ -62,7 +68,7 @@ function Search() {
   return (
     <VStack>
       <Flex align="center" width="50%" margin="auto">
-        <Input placeholder="Search for users" onChange={handleChange} />
+        <Input placeholder="Search for users" onChange={handleChange} onKeyDown={handleKeyDown}/>
         <Button ml={2} onClick={handleClick}>
           Search
         </Button>
