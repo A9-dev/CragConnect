@@ -10,7 +10,8 @@ import { AppContext } from "./App";
 import { useContext } from "react";
 import Login from "./Login";
 import ProfileButton from "./ProfileButton";
-
+import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ChakraLink } from "@chakra-ui/react";
 const Header = () => {
   const isDarkMode = useColorModeValue(false, true);
   const bgColor = isDarkMode ? "purple.700" : "blue.500";
@@ -24,6 +25,22 @@ const Header = () => {
           CragConnect{" "}
         </Heading>
         <HStack>
+          <ChakraLink as={ReactRouterLink} to={`/`}>
+            Home
+          </ChakraLink>
+          <ChakraLink as={ReactRouterLink} to={`/news`}>
+            News
+          </ChakraLink>
+          <ChakraLink as={ReactRouterLink} to={`/events`}>
+            Events
+          </ChakraLink>
+          <ChakraLink as={ReactRouterLink} to={`/gearShare`}>
+            GearShare
+          </ChakraLink>
+          <ChakraLink as={ReactRouterLink} to={`/settings`}>
+            Settings
+          </ChakraLink>
+
           {!loggedIn ? (
             <Login />
           ) : (
