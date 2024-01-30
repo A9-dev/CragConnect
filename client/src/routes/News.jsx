@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
-import { getNewsPosts } from "./dbFunctions";
-import Feed from "./Feed";
-import NewsPost from "./NewsPost";
+import { getNewsPosts } from "../dbFunctions";
+import Feed from "../Feed";
+import NewsPost from "../NewsPost";
 import { VStack } from "@chakra-ui/react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 
-const NewsBlock = () => {
+const News = () => {
   const { isOrganisation } = useContext(AppContext);
   var [newsPosts, setNewsPosts] = useState([]);
   const refreshNewsPosts = () => {
@@ -30,4 +30,4 @@ const NewsBlock = () => {
   );
 };
 
-export default NewsBlock;
+export default News;

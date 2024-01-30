@@ -1,37 +1,54 @@
 import { useState, createContext, useEffect } from "react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
+
 import {
-  ChakraProvider,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Box,
-  Container,
-  Card,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
-import {
-  CalendarIcon,
-  SettingsIcon,
-  HamburgerIcon,
-  BellIcon,
-  SearchIcon,
-} from "@chakra-ui/icons";
+  createBrowserRouter,
+  Router,
+  RouterProvider,
+  Outlet,
+} from "react-router-dom";
 
 import { getPosts, getEvents } from "./dbFunctions";
+import MainPage from "./routes/MainPage";
+import Root from "./routes/Root";
+import Events from "./routes/Events";
+import News from "./routes/News";
+import Settings from "./routes/Settings";
+import GearShare from "./routes/GearShare";
+import ErrorPage from "./ErrorPage";
 
-import FeedBlock from "./FeedBlock";
-import ToggleColour from "./ToggleColour";
-import NewsBlock from "./NewsBlock";
-import FollowingFeed from "./FollowingFeed";
-import Search from "./Search";
-import Header from "./Header";
-import Footer from "./Footer";
-import EventList from "./EventList";
 // Create a context for the states
 export const AppContext = createContext();
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <MainPage />,
+      },
+      {
+        path: "/events",
+        element: <Events />,
+      },
+      {
+        path: "/news",
+        element: <News />,
+      },
+      {
+        path: "/gearShare",
+        element: <GearShare />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
+    ],
+  },
+]);
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -105,66 +122,7 @@ const App = () => {
           setFullName,
         }}
       >
-        <Box pb={"100px"}>
-          <Header />
-          <Box p={30}>
-            <Grid templateColumns={"repeat(12,1fr)"} gap={6}>
-              <GridItem colSpan={8}>
-                <Box margin="auto" py={5}>
-                  <Card p={5}>
-                    <Tabs align="center" variant="enclosed">
-                      <TabList>
-                        <Tab>
-                          <HamburgerIcon mr={2} />
-                          Feed
-                        </Tab>
-                        <Tab>
-                          <BellIcon mr={2} />
-                          Following
-                        </Tab>
-                        <Tab>
-                          <CalendarIcon mr={2} />
-                          News
-                        </Tab>
-                        <Tab>
-                          <SearchIcon mr={2} />
-                          Search
-                        </Tab>
-                        <Tab>
-                          <SettingsIcon mr={2} />
-                          Settings
-                        </Tab>
-                      </TabList>
-                      <TabPanels>
-                        <TabPanel>
-                          <FeedBlock />
-                        </TabPanel>
-                        <TabPanel>
-                          <FollowingFeed />
-                        </TabPanel>
-                        <TabPanel>
-                          <NewsBlock />
-                        </TabPanel>
-                        <TabPanel>
-                          <Search />
-                        </TabPanel>
-                        <TabPanel>
-                          <Container>
-                            <ToggleColour />
-                          </Container>
-                        </TabPanel>
-                      </TabPanels>
-                    </Tabs>
-                  </Card>
-                </Box>
-              </GridItem>
-              <GridItem colSpan={4}>
-                <EventList />
-              </GridItem>
-            </Grid>
-          </Box>
-          <Footer />
-        </Box>
+        <RouterProvider router={router} />
       </AppContext.Provider>
     </ChakraProvider>
   );
