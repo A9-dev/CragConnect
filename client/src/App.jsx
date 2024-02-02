@@ -64,6 +64,7 @@ const App = () => {
   const [followingPosts, setFollowingPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [fullName, setFullName] = useState("");
+  const [userData, setUserData] = useState({});
 
   const refreshFeed = () => {
     getPosts()
@@ -125,6 +126,8 @@ const App = () => {
           refreshEventList,
           fullName,
           setFullName,
+          userData,
+          setUserData,
         }}
       >
         <RouterProvider router={router} />

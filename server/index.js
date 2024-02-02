@@ -5,6 +5,7 @@ const cors = require("cors"); // Import the cors module
 require("dotenv").config();
 
 const { createLogger, format, transports } = require("winston");
+const { AutoEncryptionLoggerLevel } = require("mongodb");
 const { combine, timestamp, label, printf, colorize } = format;
 
 const myFormat = printf(({ level, message, label, timestamp }) => {
@@ -58,6 +59,10 @@ const userSchema = new Schema({
     required: true,
   },
   fullName: {
+    type: String,
+    required: true,
+  },
+  fitnessPlan: {
     type: String,
     required: true,
   },
@@ -172,6 +177,7 @@ app.post("/register", async (req, res) => {
       subscribers: [],
       subscribingTo: [],
       fullName: req.body.fullName,
+      fitnessPlan: "Strength",
     });
 
     // Save the user to the database
@@ -421,6 +427,51 @@ app.delete("/posts/:id", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("DELETE /posts 400: " + error.message);
+  }
+});
+
+app.get("/user/:username", async (req, res) => {
+  try {
+    logger.info("GET /user");
+    const user = await User.findOne({
+      username: req.params.username,
+    });
+    // remove password from user object
+    user.password = undefined;
+    res.status(200).json(user);
+    logger.info("GET /user 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /user 400: " + error.message);
+  }
+});
+
+app.put("/user/:username", async (req, res) => {
+  logger.info("DOIGN THIS ");
+  try {
+    logger.info("PUT /user");
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+
+    console.log(req.body.data);
+    if (user) {
+      // Update user fields if provided in the request body
+
+      const savedUser = await User.findOneAndUpdate(
+        { username: req.params.username },
+        req.body.data,
+        {
+          new: true,
+        }
+      );
+      res.status(200).json(savedUser);
+      logger.info("PUT /user 200");
+    } else {
+      throw new Error("User does not exist");
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /user 400: " + error.message);
   }
 });
 

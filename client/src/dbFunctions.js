@@ -208,6 +208,36 @@ const deletePost = async (postId) => {
     console.log(error);
   }
 };
+
+const getUserData = async (username) => {
+  try {
+    const response = await axios.get("http://localhost:5000/user/" + username);
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateUserData = async (userData) => {
+  console.log("From update user data:", userData);
+  try {
+    const response = await axios.put(
+      "http://localhost:5000/user/" + userData.username,
+
+      {
+        data: userData,
+      }
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -222,4 +252,6 @@ export {
   postEvent,
   getEvents,
   deletePost,
+  getUserData,
+  updateUserData,
 };
