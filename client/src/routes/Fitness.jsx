@@ -15,7 +15,6 @@ import {
   Th,
   Td,
   TableContainer,
-  Stack,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
