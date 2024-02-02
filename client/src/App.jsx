@@ -16,6 +16,7 @@ import News from "./routes/News";
 import Settings from "./routes/Settings";
 import GearShare from "./routes/GearShare";
 import ErrorPage from "./ErrorPage";
+import Fitness from "./routes/Fitness";
 
 // Create a context for the states
 export const AppContext = createContext();
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Settings />,
+      },
+      {
+        path: "/fitness",
+        element: <Fitness />,
       },
     ],
   },

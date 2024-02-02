@@ -18,46 +18,38 @@ import {
 
 const MainPage = () => (
   <Box p={30}>
-    <Grid templateColumns={"repeat(12,1fr)"} gap={6}>
-      <GridItem colSpan={8}>
-        <Box margin="auto" py={5}>
-          <Card p={5}>
-            <Tabs align="center" variant="enclosed">
-              <TabList>
-                <Tab>
-                  <HamburgerIcon mr={2} />
-                  Feed
-                </Tab>
-                <Tab>
-                  <BellIcon mr={2} />
-                  Following
-                </Tab>
+    <Box margin="auto" py={5}>
+      <Card p={5}>
+        <Tabs align="center" variant="enclosed">
+          <TabList>
+            <Tab>
+              <HamburgerIcon mr={2} />
+              Feed
+            </Tab>
+            <Tab>
+              <BellIcon mr={2} />
+              Following
+            </Tab>
 
-                <Tab>
-                  <SearchIcon mr={2} />
-                  Search
-                </Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <FeedBlock />
-                </TabPanel>
-                <TabPanel>
-                  <FollowingFeed />
-                </TabPanel>
-
-                <TabPanel>
-                  <Search />
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Card>
-        </Box>
-      </GridItem>
-      <GridItem colSpan={4}>
-        <EventList />
-      </GridItem>
-    </Grid>
+            <Tab>
+              <SearchIcon mr={2} />
+              Search
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <FeedBlock />
+            </TabPanel>
+            <TabPanel>
+              <FollowingFeed />
+            </TabPanel>
+            <TabPanel>
+              <Search />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Card>
+    </Box>
   </Box>
 );
 
