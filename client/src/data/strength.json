@@ -1,0 +1,101 @@
+{
+  "1": {
+    "day": "Push",
+    "exercises": [
+      {
+        "name": "Push Press",
+        "sets": 4,
+        "reps": "6-8",
+        "rest": "90 seconds"
+      },
+      {
+        "name": "Bench Press",
+        "sets": 4,
+        "reps": "8-10",
+        "rest": "90 seconds"
+      },
+      {
+        "name": "Overhead Shoulder Press",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      },
+      {
+        "name": "Dumbbell Incline Press",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      },
+      {
+        "name": "Dips",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      }
+    ]
+  },
+  "3": {
+    "day": "Pull",
+    "exercises": [
+      {
+        "name": "Deadlift",
+        "sets": 4,
+        "reps": "5-6",
+        "rest": "120 seconds"
+      },
+      {
+        "name": "Lat Pulldown",
+        "sets": 4,
+        "reps": "8-10",
+        "rest": "90 seconds"
+      },
+      {
+        "name": "Seated Cable Rows",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      },
+      {
+        "name": "Barbell Bicep Curls",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      }
+    ]
+  },
+  "5": {
+    "day": "Legs",
+    "exercises": [
+      {
+        "name": "Squats",
+        "sets": 4,
+        "reps": "8-10",
+        "rest": "120 seconds"
+      },
+      {
+        "name": "Romanian Deadlifts",
+        "sets": 4,
+        "reps": "8-10",
+        "rest": "120 seconds"
+      },
+      {
+        "name": "Leg Press",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      },
+      {
+        "name": "Calf Raises",
+        "sets": 3,
+        "reps": "12-15",
+        "rest": "60 seconds"
+      },
+      {
+        "name": "Leg Curls",
+        "sets": 3,
+        "reps": "10-12",
+        "rest": "60 seconds"
+      }
+    ]
+  }
+}

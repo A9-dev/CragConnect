@@ -1,0 +1,117 @@
+{
+  "1": {
+    "day": "Lower Body",
+    "exercises": [
+      {
+        "name": "Hamstring Stretch",
+        "description": "Sit on the floor with one leg extended straight and reach towards your toes, keeping your back straight.",
+        "duration": "30 seconds",
+        "rest": "15 seconds"
+      },
+      {
+        "name": "Calf Stretch",
+        "description": "Stand facing a wall with one foot forward and one foot back. Lean into the wall, keeping the back leg straight, to stretch the calf muscles.",
+        "duration": "30 seconds",
+        "rest": "15 seconds"
+      },
+      {
+        "name": "Deep Squats",
+        "description": "Perform deep squats to improve flexibility in the hips, knees, and ankles.",
+        "duration": "1 minute",
+        "rest": "30 seconds"
+      }
+    ]
+  },
+  "2": {
+    "day": "Upper Body",
+    "exercises": [
+      {
+        "name": "Shoulder Stretch",
+        "description": "Extend one arm across your chest and gently pull it towards your body with the opposite hand.",
+        "duration": "30 seconds",
+        "rest": "15 seconds"
+      },
+      {
+        "name": "Triceps Stretch",
+        "description": "Bring one arm overhead and bend the elbow, reaching your hand down your back. Use the opposite hand to gently push on the bent elbow.",
+        "duration": "30 seconds",
+        "rest": "15 seconds"
+      },
+      {
+        "name": "Wrist Flexor Stretch",
+        "description": "Extend one arm with the palm facing down, gently pulling the fingers towards your body with the opposite hand.",
+        "duration": "30 seconds",
+        "rest": "15 seconds"
+      }
+    ]
+  },
+  "3": {
+    "day": "Core",
+    "exercises": [
+      {
+        "name": "Cat-Cow Stretch",
+        "description": "Get on your hands and knees, arch your back up towards the ceiling (cat), then lower it down and lift your head and tailbone towards the ceiling (cow).",
+        "duration": "1 minute",
+        "rest": "30 seconds"
+      },
+      {
+        "name": "Side Planks",
+        "description": "Hold a side plank on each side to strengthen and stretch the obliques.",
+        "duration": "45 seconds each side",
+        "rest": "15 seconds"
+      },
+      {
+        "name": "Seated Twist",
+        "description": "Sit on the floor, cross one leg over the other, and twist your torso to the side, placing the opposite elbow outside the bent knee.",
+        "duration": "30 seconds each side",
+        "rest": "15 seconds"
+      }
+    ]
+  },
+  "4": {
+    "day": "Full Body",
+    "exercises": [
+      {
+        "name": "Dynamic Lunges",
+        "description": "Perform dynamic lunges to engage the muscles in your legs and hips.",
+        "duration": "1 minute",
+        "rest": "30 seconds"
+      },
+      {
+        "name": "Dynamic Arm Swings",
+        "description": "Swing your arms in circular motions to improve flexibility in the shoulders and upper back.",
+        "duration": "1 minute",
+        "rest": "30 seconds"
+      },
+      {
+        "name": "Full Body Stretch",
+        "description": "Finish with a full-body stretch, reaching towards the sky and lengthening your entire body.",
+        "duration": "2 minutes",
+        "rest": "45 seconds"
+      }
+    ]
+  },
+  "5": {
+    "day": "Balance and Stability",
+    "exercises": [
+      {
+        "name": "Single Leg Balancing",
+        "description": "Stand on one leg and hold for 30 seconds, then switch to the other leg.",
+        "duration": "30 seconds each leg",
+        "rest": "15 seconds"
+      },
+      {
+        "name": "Ankle Circles",
+        "description": "Rotate your ankles in circular motions to improve ankle flexibility and stability.",
+        "duration": "1 minute",
+        "rest": "30 seconds"
+      },
+      {
+        "name": "Balance Board Exercises",
+        "description": "Incorporate balance board exercises to enhance overall stability.",
+        "duration": "5 minutes",
+        "rest": "1 minute"
+      }
+    ]
+  }
+}

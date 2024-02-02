@@ -6,14 +6,8 @@ import {
   StackDivider,
   VStack,
   Text,
-  Image,
   Checkbox,
   Progress,
-  Menu,
-  MenuButton,
-  MenuList,
-  Button,
-  MenuItem,
   Table,
   Tbody,
   Tr,
@@ -21,75 +15,66 @@ import {
   Th,
   Td,
   TableContainer,
+  Stack,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
+import strength from "../data/strength.json";
+import flexibility from "../data/flexibility.json";
 
 const Fitness = () => {
   const { userData } = useContext(AppContext);
   const fitnessPlan = userData.fitnessPlan;
+  const dayAsNumber = new Date().getDay().toString();
+
+  // Function to get the routine based on the day
+
+  const sRoutine = strength[dayAsNumber];
+  const sExercises = sRoutine.exercises;
+
+  const fRoutine = flexibility[dayAsNumber];
+  const fExercises = fRoutine.exercises;
+
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
-      <Heading textAlign={"center"}>
-        Today's {fitnessPlan && <>{fitnessPlan}</>} Workout
-      </Heading>
-      <Progress mt={30} value={80} hasStripe size="lg" />
-      <Card mt={5}>
-        <Box p={5}>
-          <HStack divider={<StackDivider />} justify={"space-evenly"}>
-            <VStack>
-              <Text fontSize={"xl"}>Exercise 1</Text>
-              <Text fontSize={"sm"}>3 sets of 8-12 reps</Text>
-              <Text fontSize={"sm"}>Rest: 2 minutes</Text>
-              <Image
-                src="https://via.placeholder.com/150"
-                alt="Placeholder Image"
-              />
-              <Checkbox size="lg" />
-            </VStack>
-            <VStack>
-              <Text>Exercise 2</Text>
-              <Text fontSize={"sm"}>3 sets of 8-12 reps</Text>
-              <Text fontSize={"sm"}>Rest: 2 minutes</Text>
-              <Image
-                src="https://via.placeholder.com/150"
-                alt="Placeholder Image"
-              />
-              <Checkbox size="lg" />
-            </VStack>
-            <VStack>
-              <Text>Exercise 3</Text>
-              <Text fontSize={"sm"}>3 sets of 8-12 reps</Text>
-              <Text fontSize={"sm"}>Rest: 2 minutes</Text>
-              <Image
-                src="https://via.placeholder.com/150"
-                alt="Placeholder Image"
-              />
-              <Checkbox size="lg" />
-            </VStack>
-            <VStack>
-              <Text>Exercise 4</Text>
-              <Text fontSize={"sm"}>3 sets of 8-12 reps</Text>
-              <Text fontSize={"sm"}>Rest: 2 minutes</Text>
-              <Image
-                src="https://via.placeholder.com/150"
-                alt="Placeholder Image"
-              />
-              <Checkbox size="lg" />
-            </VStack>
-            <VStack>
-              <Text>Exercise 5</Text>
-              <Text fontSize={"sm"}>3 sets of 8-12 reps</Text>
-              <Text fontSize={"sm"}>Rest: 2 minutes</Text>
-              <Image
-                src="https://via.placeholder.com/150"
-                alt="Placeholder Image"
-              />
-              <Checkbox size="lg" />
-            </VStack>
-          </HStack>
-        </Box>
-      </Card>
+      {fitnessPlan && (
+        <>
+          <Heading textAlign={"center"}>
+            Today's {fitnessPlan && <>{fitnessPlan}</>} Workout:{" "}
+            {fitnessPlan == "Strength" && <>{sRoutine.day}</>}
+            {fitnessPlan == "Flexibility" && <>{fRoutine.day}</>}
+          </Heading>
+          <Progress mt={30} value={80} hasStripe size="lg" />
+          <Card mt={5}>
+            <Box p={5}>
+              <HStack divider={<StackDivider />} justify={"space-evenly"}>
+                {fitnessPlan == "Strength" &&
+                  sExercises.map((exercise, index) => (
+                    <VStack key={index}>
+                      <Text fontSize={"xl"}>{exercise.name}</Text>
+                      <Text fontSize={"sm"}>Sets: {exercise.sets}</Text>
+                      <Text fontSize={"sm"}>Reps: {exercise.reps}</Text>
+                      <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                      {/* <Image src={exercise.image} alt={exercise.name} /> */}
+                      <Checkbox size="lg" />
+                    </VStack>
+                  ))}
+                {fitnessPlan == "Flexibility" &&
+                  fExercises.map((exercise, index) => (
+                    <VStack key={index}>
+                      <Text fontSize={"xl"}>{exercise.name}</Text>
+                      <Text fontSize={"sm"}>{exercise.description}</Text>
+                      <Text fontSize={"sm"}>Duration: {exercise.duration}</Text>
+                      <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                      {/* <Image src={exercise.image} alt={exercise.name} /> */}
+                      <Checkbox size="lg" />
+                    </VStack>
+                  ))}
+              </HStack>
+            </Box>
+          </Card>
+        </>
+      )}
 
       <VStack mt={5}>
         <Heading>Leaderboard</Heading>
