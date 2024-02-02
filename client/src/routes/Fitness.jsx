@@ -22,13 +22,17 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 const Fitness = () => {
+  const { userData } = useContext(AppContext);
+  const fitnessPlan = userData.fitnessPlan;
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
-      <Heading textAlign={"center"}>Today's Workout</Heading>
+      <Heading textAlign={"center"}>
+        Today's {fitnessPlan && <>{fitnessPlan}</>} Workout
+      </Heading>
       <Progress mt={30} value={80} hasStripe size="lg" />
       <Card mt={5}>
         <Box p={5}>
