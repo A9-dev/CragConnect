@@ -26,8 +26,6 @@ const Fitness = () => {
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
 
-  // Function to get the routine based on the day
-
   const sRoutine = strength[dayAsNumber];
   const sExercises = sRoutine.exercises;
 
