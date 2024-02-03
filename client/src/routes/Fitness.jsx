@@ -22,9 +22,11 @@ import { useContext } from "react";
 import { AppContext } from "../App";
 import strength from "../data/strength.json";
 import flexibility from "../data/flexibility.json";
+import { increaseFitnessScore } from "../dbFunctions";
 
 const Fitness = () => {
-  const { userData, exercisesDone, setExercisesDone } = useContext(AppContext);
+  const { userData, exercisesDone, setExercisesDone, username } =
+    useContext(AppContext);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
   const isDarkMode = useColorModeValue(false, true);
@@ -41,6 +43,17 @@ const Fitness = () => {
 
   const handleLogWorkout = () => {
     console.log("Handling workout!");
+    increaseFitnessScore(username)
+      .then((res) => {
+        console.log("Increased fitness score!", res);
+      })
+      .catch((err) => {
+        console.log("Error increasing fitness score!", err);
+        if (err.data.message == "User already worked out today") {
+          alert("You've already worked out today!");
+          // TODO: improve this alert
+        }
+      });
   };
 
   return (
@@ -51,20 +64,21 @@ const Fitness = () => {
             Today's {fitnessPlan && <>{fitnessPlan}</>} Workout:{" "}
             {fitnessPlan == "Strength" && <>{sRoutine.day}</>}
             {fitnessPlan == "Flexibility" && <>{fRoutine.day}</>}
-            Exercises done: {exercisesDone}
           </Heading>
 
           <Progress mt={30} value={80} hasStripe size="lg" />
           {/* If fitnessPlan is strength then show button when exercisesDone is sExercises.length */}
           {/* If fitnessPlan is flexibility then show button when exercisesDone is fExercises.length */}
           {fitnessPlan == "Strength" && exercisesDone == sExercises.length && (
-            <Card bg={isDarkMode ? "green.800" : "green.100"} p={15}>
+            <Card bg={isDarkMode ? "green.800" : "green.100"} p={15} m={5}>
               <VStack mt={5}>
                 <Heading size="lg">
                   Great job! You've completed your workout for today!
                 </Heading>
                 <Text>Would you like to log your workout?</Text>
-                <Checkbox size="lg" />
+                <Button size="lg" onClick={handleLogWorkout}>
+                  Log Workout
+                </Button>{" "}
               </VStack>
             </Card>
           )}

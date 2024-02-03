@@ -66,6 +66,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  fitnessScore: {
+    type: Number,
+    required: true,
+  },
+  lastWorkedOutDate: {
+    type: String,
+    required: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
@@ -178,6 +186,8 @@ app.post("/register", async (req, res) => {
       subscribingTo: [],
       fullName: req.body.fullName,
       fitnessPlan: "Strength",
+      fitnessScore: 0,
+      lastWorkedOutDate: "2000-01-01",
     });
 
     // Save the user to the database
@@ -453,7 +463,6 @@ app.put("/user/:username", async (req, res) => {
     const { username } = req.params;
     const user = await User.findOne({ username });
 
-    console.log(req.body.data);
     if (user) {
       // Update user fields if provided in the request body
 
@@ -472,6 +481,31 @@ app.put("/user/:username", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("PUT /user 400: " + error.message);
+  }
+});
+
+app.put("/user/fitnessScore/:username", async (req, res) => {
+  try {
+    logger.info("PUT /user/fitnessScore");
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+
+    // If the date is today, the user has already worked out
+    if (user.lastWorkedOutDate === new Date().toISOString().split("T")[0]) {
+      throw new Error("User already worked out today");
+    }
+
+    user.fitnessScore = user.fitnessScore + 1;
+    user.lastWorkedOutDate = new Date().toISOString().split("T")[0];
+    const savedUser = await user.save();
+    res.status(200).json(savedUser);
+    logger.info("PUT /user/fitnessScore 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /user/fitnessScore 400: " + error.message);
   }
 });
 
