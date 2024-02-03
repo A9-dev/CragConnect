@@ -26,6 +26,10 @@ const Fitness = () => {
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
 
+  console.log("dayAsNumber", dayAsNumber);
+  console.log("strength", strength);
+  console.log("flexibility", flexibility);
+
   const sRoutine = strength[dayAsNumber];
   const sExercises = sRoutine.exercises;
 
@@ -41,6 +45,7 @@ const Fitness = () => {
             {fitnessPlan == "Strength" && <>{sRoutine.day}</>}
             {fitnessPlan == "Flexibility" && <>{fRoutine.day}</>}
           </Heading>
+
           <Progress mt={30} value={80} hasStripe size="lg" />
           <Card mt={5}>
             <Box p={5}>
@@ -49,9 +54,18 @@ const Fitness = () => {
                   sExercises.map((exercise, index) => (
                     <VStack key={index}>
                       <Text fontSize={"xl"}>{exercise.name}</Text>
-                      <Text fontSize={"sm"}>Sets: {exercise.sets}</Text>
-                      <Text fontSize={"sm"}>Reps: {exercise.reps}</Text>
-                      <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                      {exercise.sets && (
+                        <Text fontSize={"sm"}>Sets: {exercise.sets}</Text>
+                      )}
+                      {exercise.reps && (
+                        <Text fontSize={"sm"}>Reps: {exercise.reps}</Text>
+                      )}
+                      {exercise.rest && (
+                        <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                      )}
+                      {exercise.description && (
+                        <Text fontSize={"sm"}>{exercise.description}</Text>
+                      )}
                       {/* <Image src={exercise.image} alt={exercise.name} /> */}
                       <Checkbox size="lg" />
                     </VStack>
@@ -60,9 +74,17 @@ const Fitness = () => {
                   fExercises.map((exercise, index) => (
                     <VStack key={index}>
                       <Text fontSize={"xl"}>{exercise.name}</Text>
-                      <Text fontSize={"sm"}>{exercise.description}</Text>
-                      <Text fontSize={"sm"}>Duration: {exercise.duration}</Text>
-                      <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                      {exercise.description && (
+                        <Text fontSize={"sm"}>{exercise.description}</Text>
+                      )}
+                      {exercise.duration && (
+                        <Text fontSize={"sm"}>
+                          Duration: {exercise.duration}
+                        </Text>
+                      )}
+                      {exercise.rest && (
+                        <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                      )}
                       {/* <Image src={exercise.image} alt={exercise.name} /> */}
                       <Checkbox size="lg" />
                     </VStack>

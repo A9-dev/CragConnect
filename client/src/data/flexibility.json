@@ -113,5 +113,23 @@
         "rest": "1 minute"
       }
     ]
+  },
+  "6": {
+    "day": "Rest and Recovery",
+    "exercises": [
+      {
+        "name": "Rest Day",
+        "description": "Take a day off from structured exercise to allow your body to recover and repair."
+      }
+    ]
+  },
+  "7": {
+    "day": "Rest and Recovery",
+    "exercises": [
+      {
+        "name": "Rest Day",
+        "description": "Take a day off from structured exercise to allow your body to recover and repair."
+      }
+    ]
   }
 }
