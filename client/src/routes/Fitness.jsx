@@ -34,15 +34,14 @@ const Fitness = () => {
   const isDarkMode = useColorModeValue(false, true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  console.log("dayAsNumber", dayAsNumber);
-  console.log("strength", strength);
-  console.log("flexibility", flexibility);
-
   const sRoutine = strength[dayAsNumber];
   const sExercises = sRoutine.exercises;
 
   const fRoutine = flexibility[dayAsNumber];
   const fExercises = fRoutine.exercises;
+
+  const numExercises =
+    fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
   const handleLogWorkout = () => {
     console.log("Handling workout!");
@@ -75,7 +74,12 @@ const Fitness = () => {
             </Alert>
           )}
 
-          <Progress mt={30} value={80} hasStripe size="lg" />
+          <Progress
+            mt={30}
+            value={(exercisesDone * 100) / numExercises}
+            hasStripe
+            size="lg"
+          />
           {/* If fitnessPlan is strength then show button when exercisesDone is sExercises.length */}
           {/* If fitnessPlan is flexibility then show button when exercisesDone is fExercises.length */}
           {fitnessPlan == "Strength" && exercisesDone == sExercises.length && (
