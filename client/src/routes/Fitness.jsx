@@ -82,7 +82,8 @@ const Fitness = () => {
           />
           {/* If fitnessPlan is strength then show button when exercisesDone is sExercises.length */}
           {/* If fitnessPlan is flexibility then show button when exercisesDone is fExercises.length */}
-          {fitnessPlan == "Strength" && exercisesDone == sExercises.length && (
+
+          {exercisesDone == numExercises && (
             <Card bg={isDarkMode ? "green.800" : "green.100"} p={15} m={5}>
               <VStack mt={5}>
                 <Heading size="lg">
@@ -91,24 +92,10 @@ const Fitness = () => {
                 <Text>Would you like to log your workout?</Text>
                 <Button size="lg" onClick={handleLogWorkout}>
                   Log Workout
-                </Button>{" "}
+                </Button>
               </VStack>
             </Card>
           )}
-          {fitnessPlan == "Flexibility" &&
-            exercisesDone == fExercises.length && (
-              <Card bg={isDarkMode ? "green.800" : "green.100"} p={15} m={5}>
-                <VStack mt={5}>
-                  <Heading size="lg">
-                    Great job! You've completed your workout for today!
-                  </Heading>
-                  <Text>Would you like to log your workout?</Text>
-                  <Button size="lg" onClick={handleLogWorkout}>
-                    Log Workout
-                  </Button>
-                </VStack>
-              </Card>
-            )}
 
           <Card mt={5}>
             <Box p={5}>
