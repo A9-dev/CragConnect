@@ -17,8 +17,10 @@ import {
   TableContainer,
   useColorModeValue,
   Button,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import strength from "../data/strength.json";
 import flexibility from "../data/flexibility.json";
@@ -30,6 +32,7 @@ const Fitness = () => {
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
   const isDarkMode = useColorModeValue(false, true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   console.log("dayAsNumber", dayAsNumber);
   console.log("strength", strength);
@@ -50,7 +53,7 @@ const Fitness = () => {
       .catch((err) => {
         console.log("Error increasing fitness score!", err);
         if (err.data.message == "User already worked out today") {
-          alert("You've already worked out today!");
+          setErrorMessage("You've already logged your workout for today.");
           // TODO: improve this alert
         }
       });
@@ -65,6 +68,12 @@ const Fitness = () => {
             {fitnessPlan == "Strength" && <>{sRoutine.day}</>}
             {fitnessPlan == "Flexibility" && <>{fRoutine.day}</>}
           </Heading>
+          {errorMessage && (
+            <Alert status="error" mt={5}>
+              <AlertIcon />
+              {errorMessage}
+            </Alert>
+          )}
 
           <Progress mt={30} value={80} hasStripe size="lg" />
           {/* If fitnessPlan is strength then show button when exercisesDone is sExercises.length */}
