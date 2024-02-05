@@ -1,4 +1,9 @@
-import { loginUser, uploadUser, getSubscriptions } from "./dbFunctions";
+import {
+  loginUser,
+  uploadUser,
+  getSubscriptions,
+  getUserData,
+} from "./dbFunctions";
 import { useState } from "react";
 import {
   Button,
@@ -34,6 +39,7 @@ const Login = () => {
     setFollowingPosts,
     posts,
     setFullName,
+    setUserData,
   } = useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
@@ -73,6 +79,11 @@ const Login = () => {
           .catch((error) => {
             console.error("Error:", error);
           });
+
+        getUserData(username).then((result) => {
+          console.log("User data:", result);
+          setUserData(result.data);
+        });
       })
       .catch((error) => {
         console.error("Login failed:", error);

@@ -37,6 +37,9 @@ const Header = () => {
           <ChakraLink as={ReactRouterLink} to={`/gearShare`}>
             GearShare
           </ChakraLink>
+          <ChakraLink as={ReactRouterLink} to={`/fitness`}>
+            Fitness
+          </ChakraLink>
           <ChakraLink as={ReactRouterLink} to={`/settings`}>
             Settings
           </ChakraLink>

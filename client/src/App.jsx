@@ -16,6 +16,7 @@ import News from "./routes/News";
 import Settings from "./routes/Settings";
 import GearShare from "./routes/GearShare";
 import ErrorPage from "./ErrorPage";
+import Fitness from "./routes/Fitness";
 
 // Create a context for the states
 export const AppContext = createContext();
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         path: "/settings",
         element: <Settings />,
       },
+      {
+        path: "/fitness",
+        element: <Fitness />,
+      },
     ],
   },
 ]);
@@ -59,6 +64,8 @@ const App = () => {
   const [followingPosts, setFollowingPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [fullName, setFullName] = useState("");
+  const [userData, setUserData] = useState({});
+  const [exercisesDone, setExercisesDone] = useState(0);
 
   const refreshFeed = () => {
     getPosts()
@@ -120,6 +127,10 @@ const App = () => {
           refreshEventList,
           fullName,
           setFullName,
+          userData,
+          setUserData,
+          exercisesDone,
+          setExercisesDone,
         }}
       >
         <RouterProvider router={router} />
