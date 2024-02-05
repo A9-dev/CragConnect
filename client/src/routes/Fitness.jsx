@@ -20,7 +20,7 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import strength from "../data/strength.json";
 import flexibility from "../data/flexibility.json";
@@ -57,6 +57,10 @@ const Fitness = () => {
         }
       });
   };
+
+  useEffect(() => {
+    setExercisesDone(0); // Reset exercisesDone to 0 when the page is loaded
+  }, []);
 
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
