@@ -31,7 +31,8 @@ const Fitness = () => {
     useContext(AppContext);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
-  console.log("Day as number:", dayAsNumber);
+
+  const bgColor = useColorModeValue("green.200", "green.800");
 
   const isDarkMode = useColorModeValue(false, true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -90,7 +91,7 @@ const Fitness = () => {
           {/* If fitnessPlan is flexibility then show button when exercisesDone is fExercises.length */}
 
           {exercisesDone == numExercises && (
-            <Card bg={isDarkMode ? "green.800" : "green.100"} p={15} m={5}>
+            <Card bg={bgColor} p={15} m={5}>
               <VStack mt={5}>
                 <Heading size="lg">
                   Great job! You've completed your workout for today!

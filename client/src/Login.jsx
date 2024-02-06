@@ -6,15 +6,6 @@ import {
 } from "./dbFunctions";
 import { useState } from "react";
 import {
-  Button,
-  Input,
-  Stack,
-  VStack,
-  InputGroup,
-  InputLeftAddon,
-} from "@chakra-ui/react";
-import { Alert, AlertIcon } from "@chakra-ui/react";
-import {
   Modal,
   ModalOverlay,
   ModalContent,
@@ -25,6 +16,15 @@ import {
   InputRightElement,
   Checkbox,
   Divider,
+  Alert,
+  AlertIcon,
+  Button,
+  Input,
+  Stack,
+  VStack,
+  InputGroup,
+  useColorModeValue,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AppContext } from "./App";
@@ -49,6 +49,7 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const [fullNameInput, setFullNameInput] = useState("");
   const handleShow = () => setShow(!show);
+  const buttonColor = useColorModeValue("blue.600", "purple.600");
 
   const handleLogin = () => {
     if (!username || !password) {
@@ -125,6 +126,8 @@ const Login = () => {
   return (
     <>
       <Button
+        bg={buttonColor}
+        color={"white"}
         onClick={() => {
           handleOpen();
           onOpen();

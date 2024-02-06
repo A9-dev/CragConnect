@@ -21,9 +21,6 @@ const EventList = () => {
   return (
     <Box margin="auto" py={5}>
       <Card p={5} textAlign={"center"}>
-        <CardHeader>
-          <Heading size="2xl">Events</Heading>
-        </CardHeader>
         <CardBody>
           {isOrganisation && <CreateEventButton />}
           <VStack spacing={5}>

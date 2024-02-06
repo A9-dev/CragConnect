@@ -33,7 +33,8 @@ const ProfileButton = () => {
     fullName,
     setSubscriptions,
   } = useContext(AppContext);
-  const isDarkMode = useColorModeValue(false, true);
+  const bgColor = useColorModeValue("gray.200", "gray.800");
+  const color = useColorModeValue("black", "white");
 
   const handleSignout = () => {
     setLoggedIn(false);
@@ -62,22 +63,19 @@ const ProfileButton = () => {
         <MenuButton
           as={Button}
           leftIcon={<AtSignIcon />}
-          bg={isDarkMode ? "gray.800" : "gray.200"}
-          color={isDarkMode ? "white" : "black"}
+          bg={bgColor}
+          color={color}
         >
           {username}
         </MenuButton>
-        <MenuList
-          bg={isDarkMode ? "gray.800" : "gray.200"}
-          color={isDarkMode ? "white" : "black"}
-        >
+        <MenuList bg={bgColor} color={color}>
           <MenuItem onClick={handleProfile}>Profile</MenuItem>
           <MenuItem onClick={handleSignout}>Sign out</MenuItem>
         </MenuList>
       </Menu>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent bg={isDarkMode ? "gray.800" : "gray.200"}>
+        <ModalContent bg={bgColor}>
           <ModalHeader>{fullName}'s Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
