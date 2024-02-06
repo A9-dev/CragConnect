@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { getNewsPosts } from "../dbFunctions";
 import Feed from "../Feed";
 import NewsPost from "../NewsPost";
-import { VStack } from "@chakra-ui/react";
+import { VStack, Box } from "@chakra-ui/react";
 import { AppContext } from "../App";
 
 const News = () => {
@@ -23,10 +23,12 @@ const News = () => {
     refreshNewsPosts();
   }, []);
   return (
-    <VStack spacing={35}>
-      {isOrganisation && <NewsPost refreshNewsPosts={refreshNewsPosts} />}
-      <Feed posts={newsPosts} />
-    </VStack>
+    <Box p={5} width={"50%"} m={"auto"}>
+      <VStack spacing={35}>
+        {isOrganisation && <NewsPost refreshNewsPosts={refreshNewsPosts} />}
+        <Feed posts={newsPosts} />
+      </VStack>
+    </Box>
   );
 };
 

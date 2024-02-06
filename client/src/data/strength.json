@@ -115,5 +115,23 @@
         "description": "Take a day off from structured exercise to allow your body to recover and repair."
       }
     ]
+  },
+  "2": {
+    "day": "Rest and Recovery",
+    "exercises": [
+      {
+        "name": "Rest Day",
+        "description": "Take a day off from structured exercise to allow your body to recover and repair."
+      }
+    ]
+  },
+  "4": {
+    "day": "Rest and Recovery",
+    "exercises": [
+      {
+        "name": "Rest Day",
+        "description": "Take a day off from structured exercise to allow your body to recover and repair."
+      }
+    ]
   }
 }

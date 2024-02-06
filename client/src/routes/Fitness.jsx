@@ -31,6 +31,8 @@ const Fitness = () => {
     useContext(AppContext);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
+  console.log("Day as number:", dayAsNumber);
+
   const isDarkMode = useColorModeValue(false, true);
   const [errorMessage, setErrorMessage] = useState("");
 
