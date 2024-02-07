@@ -91,6 +91,10 @@ const postSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  dateAndTime: {
+    type: String,
+    required: true,
+  },
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -106,6 +110,10 @@ const newsPostSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+  },
+  dateAndTime: {
+    type: String,
+    required: true,
   },
 });
 
@@ -209,10 +217,13 @@ app.post("/posts", async (req, res) => {
       username: req.body.username,
     });
 
+    const timestamp = new Date().toISOString();
+
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
       user: userThatPosted._id,
+      dateAndTime: timestamp,
     });
 
     const savedPost = await newPost.save();
@@ -263,10 +274,13 @@ app.post("/newsPosts", async (req, res) => {
       username: req.body.username,
     });
 
+    const timestamp = new Date().toISOString();
+
     const newPost = new NewsPost({
       title: req.body.title,
       content: req.body.content,
       user: userThatPosted._id,
+      dateAndTime: timestamp,
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
