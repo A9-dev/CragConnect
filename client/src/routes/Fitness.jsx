@@ -46,18 +46,11 @@ const Fitness = () => {
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
   const handleLogWorkout = () => {
-    console.log("Handling workout!");
-    increaseFitnessScore(username)
-      .then((res) => {
-        console.log("Increased fitness score!", res);
-      })
-      .catch((err) => {
-        console.log("Error increasing fitness score!", err);
-        if (err.data.message == "User already worked out today") {
-          setErrorMessage("You've already logged your workout for today.");
-          // TODO: improve this alert
-        }
-      });
+    increaseFitnessScore(username).catch((err) => {
+      if (err.data.message == "User already worked out today") {
+        setErrorMessage("You've already logged your workout for today.");
+      }
+    });
   };
 
   useEffect(() => {
@@ -127,10 +120,6 @@ const Fitness = () => {
                         <Checkbox
                           size="lg"
                           onChange={(event) => {
-                            console.log(
-                              "Setting exercisesDone to",
-                              exercisesDone + (event.target.checked ? 1 : -1)
-                            );
                             setExercisesDone(
                               exercisesDone + (event.target.checked ? 1 : -1)
                             );
@@ -159,10 +148,6 @@ const Fitness = () => {
                         <Checkbox
                           size="lg"
                           onChange={(event) => {
-                            console.log(
-                              "Setting exercisesDone to",
-                              exercisesDone + (event.target.checked ? 1 : -1)
-                            );
                             setExercisesDone(
                               exercisesDone + (event.target.checked ? 1 : -1)
                             );

@@ -54,14 +54,12 @@ const Login = () => {
 
   const handleLogin = () => {
     if (!username || !password) {
-      console.log("Username and password are required.");
       return;
     }
     // Send the username and password values to Express
 
     loginUser(username, password)
       .then((result) => {
-        console.log("Logged in successfully:", result);
         setLoggedIn(true);
         setError("");
         onClose();
@@ -72,7 +70,6 @@ const Login = () => {
 
         getSubscriptions(username)
           .then((result) => {
-            console.log("Subscriptions:", result);
             setSubscriptions(result.data);
             setFollowingPosts(
               posts.filter((post) => result.data.includes(post.username))
@@ -83,7 +80,6 @@ const Login = () => {
           });
 
         getUserData(username).then((result) => {
-          console.log("User data:", result);
           setUserData(result.data);
         });
       })
@@ -95,12 +91,10 @@ const Login = () => {
 
   const handleRegister = () => {
     if (!username || !password) {
-      console.log("Username and password are required.");
       return;
     } else {
       uploadUser(username, password, isChecked, fullNameInput)
-        .then((result) => {
-          console.log("User registered successfully:", result);
+        .then(() => {
           setLoggedIn(true);
           setError("");
           onClose();

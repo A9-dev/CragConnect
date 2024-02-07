@@ -19,9 +19,6 @@ const Settings = () => {
   const fitnessPlan = userData.fitnessPlan;
 
   const setFitnessPlan = (plan) => {
-    // Send the plan to Express
-    console.log("Setting fitness plan to", plan);
-    // Update the user data
     setUserData({ ...userData, fitnessPlan: plan });
     updateUserData({ ...userData, fitnessPlan: plan });
   };

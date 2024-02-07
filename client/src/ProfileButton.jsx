@@ -48,9 +48,8 @@ const ProfileButton = () => {
 
   const handleUnfollowButton = (userToUnfollow) => {
     unsubscribe(username, userToUnfollow)
-      .then((result) => {
+      .then(() => {
         setSubscriptions(subscriptions.filter((sub) => sub !== userToUnfollow));
-        console.log("Unsubscribed successfully:", result);
       })
       .catch((error) => {
         console.error("Error:", error);

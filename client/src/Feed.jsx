@@ -46,8 +46,7 @@ const Feed = ({ posts }) => {
 
   const handleDeletePost = (postId) => {
     deletePost(postId)
-      .then((result) => {
-        console.log("Deleted post successfully:", result);
+      .then(() => {
         refreshFeed();
       })
       .catch((error) => {

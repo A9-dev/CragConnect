@@ -27,7 +27,7 @@ const FeedPost = ({ refreshNewsPosts }) => {
     if (event.key === "Enter") {
       handlePostData();
     }
-  }
+  };
 
   const handlePostData = () => {
     console.time("uploadPost");
@@ -38,8 +38,7 @@ const FeedPost = ({ refreshNewsPosts }) => {
     }
 
     uploadNewsPost(username, title, content)
-      .then((result) => {
-        console.log("Post uploaded successfully:", result);
+      .then(() => {
         refreshNewsPosts();
         setError("");
         setIsOpen(false);

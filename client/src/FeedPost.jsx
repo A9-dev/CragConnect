@@ -23,30 +23,25 @@ const FeedPost = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
-
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handlePostData();
     }
-  }
+  };
 
   const handlePostData = () => {
-    console.time("uploadPost");
-
     if (title === "" || content === "") {
       setError("Please enter a title and content");
       return;
     }
 
     uploadPost(username, title, content)
-      .then((result) => {
-        console.log("Post uploaded successfully:", result);
+      .then(() => {
         refreshFeed();
         setError("");
         setIsOpen(false);
       })
       .catch((error) => {
-        console.error("Post upload failed:", error);
         setError(error);
       });
 

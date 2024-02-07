@@ -35,7 +35,7 @@ const CreateEventButton = () => {
     if (event.key === "Enter") {
       handleCreateEvent();
     }
-  }
+  };
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -46,14 +46,6 @@ const CreateEventButton = () => {
   };
 
   const handleCreateEvent = () => {
-    console.log("Username", username);
-    console.log("Creating event:", eventTitle);
-    console.log("Phone Number:", phoneNumber);
-    console.log("Address:", address);
-    console.log("Postcode:", postcode);
-    console.log("Description:", eventDescription);
-    console.log("Date and Time:", dateAndTime);
-
     // Send the event details to Express
     if (
       !eventTitle ||
@@ -77,15 +69,12 @@ const CreateEventButton = () => {
       phoneNumber,
       dateAndTime
     )
-      .then((result) => {
-        console.log("Event created successfully:", result);
-
+      .then(() => {
         setError("");
         handleCloseModal();
         refreshEventList();
       })
       .catch((error) => {
-        console.error("Event creation failed:", error);
         setError(error);
       });
     // ...
@@ -126,7 +115,6 @@ const CreateEventButton = () => {
                   value={eventDescription}
                   onChange={(e) => setEventDescription(e.target.value)}
                   placeholder="Enter event description"
-
                 />
               </FormControl>
               <FormControl isRequired>
@@ -136,7 +124,6 @@ const CreateEventButton = () => {
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter address"
                   onKeyDown={handleKeyDown}
-
                 />
               </FormControl>
               <FormControl isRequired>
@@ -146,7 +133,6 @@ const CreateEventButton = () => {
                   onChange={(e) => setPostcode(e.target.value)}
                   placeholder="Enter postcode"
                   onKeyDown={handleKeyDown}
-
                 />
               </FormControl>
               <FormControl>
@@ -156,7 +142,6 @@ const CreateEventButton = () => {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="Enter phone number"
                   onKeyDown={handleKeyDown}
-
                 />
               </FormControl>
               <FormControl isRequired>
@@ -169,7 +154,6 @@ const CreateEventButton = () => {
                     setDateAndTime(e.target.value);
                   }}
                   onKeyDown={handleKeyDown}
-
                 />
               </FormControl>
             </VStack>
