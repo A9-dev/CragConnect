@@ -25,12 +25,14 @@ const EventList = () => {
         {events.map((event) => (
           <Card key={event._id} width={"100%"}>
             <CardHeader>
-              <Heading size="lg">{event.eventTitle}</Heading>
+              <Heading size="lg" textAlign={"center"}>
+                {event.eventTitle}
+              </Heading>
             </CardHeader>
             <CardBody>
               <VStack>
                 {event.eventDescription && (
-                  <Text>{event.eventDescription}</Text>
+                  <Text textAlign={"justify"}>{event.eventDescription}</Text>
                 )}
                 {event.address && (
                   <Text>
