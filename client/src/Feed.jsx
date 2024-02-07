@@ -87,15 +87,13 @@ const Feed = ({ posts }) => {
         posts.map((post) => (
           <Card key={post._id} variant="filled" width="850px">
             <CardHeader>
-              <Heading as="h3" size="lg">
+              <Heading as="h3" size="lg" textAlign={"center"}>
                 {post.title}
               </Heading>
               <Flex>
                 <HStack>
                   <Avatar size="sm" name={post.user.fullName} mr={2} />
-                  <Text fontSize="2xl" textAlign="left">
-                    {post.user.username}
-                  </Text>
+                  <Text fontSize="2xl">{post.user.username}</Text>
 
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
                   {loggedIn &&
