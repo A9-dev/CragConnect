@@ -85,7 +85,7 @@ const Feed = ({ posts }) => {
     <VStack spacing="35px" divider={<StackDivider />}>
       {posts &&
         posts.map((post) => (
-          <Card key={post._id} variant="filled" width="100%">
+          <Card key={post._id} variant="filled" width="850px">
             <CardHeader>
               <Heading as="h3" size="lg">
                 {post.title}
