@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 
 const Events = () => {
   return (
-    <Box p={30} width={"65%"} margin="auto" py={5}>
+    <Box width={"50%"} margin={"auto"} p={5}>
       <EventList />
     </Box>
   );
