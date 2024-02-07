@@ -95,28 +95,30 @@ const Feed = ({ posts }) => {
                   <Avatar size="sm" name={post.user.fullName} mr={2} />
                   <Text fontSize="2xl" textAlign="left">
                     {post.user.username}
-                    {loggedIn &&
-                      username !== post.user.username && // Check if logged in before rendering buttons
-                      (!subscriptions ||
-                      !subscriptions.includes(post.user.username) ? (
-                        <Button
-                          onClick={() =>
-                            handleSubscribe(username, post.user.username)
-                          }
-                        >
-                          Follow
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={() =>
-                            handleUnsubscribe(username, post.user.username)
-                          }
-                        >
-                          Unfollow
-                        </Button>
-                      ))}
                   </Text>
+
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
+                  {loggedIn &&
+                    username !== post.user.username && // Check if logged in before rendering buttons
+                    (!subscriptions ||
+                    !subscriptions.includes(post.user.username) ? (
+                      <Button
+                        m={5}
+                        onClick={() =>
+                          handleSubscribe(username, post.user.username)
+                        }
+                      >
+                        Follow
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          handleUnsubscribe(username, post.user.username)
+                        }
+                      >
+                        Unfollow
+                      </Button>
+                    ))}
                 </HStack>
                 <Spacer />
                 {
