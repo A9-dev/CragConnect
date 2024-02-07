@@ -34,7 +34,6 @@ const Fitness = () => {
 
   const bgColor = useColorModeValue("green.200", "green.800");
 
-  const isDarkMode = useColorModeValue(false, true);
   const [errorMessage, setErrorMessage] = useState("");
 
   const sRoutine = strength[dayAsNumber];

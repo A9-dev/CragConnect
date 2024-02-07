@@ -50,6 +50,7 @@ const Login = () => {
   const [fullNameInput, setFullNameInput] = useState("");
   const handleShow = () => setShow(!show);
   const buttonColor = useColorModeValue("blue.600", "purple.600");
+  const length = isChecked ? "162px" : "105px";
 
   const handleLogin = () => {
     if (!username || !password) {
@@ -193,25 +194,33 @@ const Login = () => {
               <ModalBody mb={3}>
                 <VStack spacing={2} alignItems="center" margin="auto">
                   <InputGroup>
-                    <InputLeftAddon children="Username" width="105px" />
+                    <InputLeftAddon children="Username" width={length} />
                     <Input
                       value={username}
                       onChange={(event) => setUsername(event.target.value)}
                     />
                   </InputGroup>
                   <InputGroup>
-                    <InputLeftAddon children="Full Name" width="105px" />
+                    <InputLeftAddon
+                      children={isChecked ? "Organisation Name" : "Full Name"}
+                      width={length}
+                    />
                     <Input
                       value={fullNameInput}
                       onChange={(event) => setFullNameInput(event.target.value)}
                     />
                   </InputGroup>
                   <InputGroup>
-                    <InputLeftAddon children="Password" width="105px" />
+                    <InputLeftAddon children="Password" width={length} />
                     <Input
                       type={show ? "text" : "password"}
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          handleRegister();
+                        }
+                      }}
                     />
                     <InputRightElement width="4.5rem">
                       <Button h="1.75rem" size="sm" onClick={handleShow}>
