@@ -58,7 +58,6 @@ const router = createBrowserRouter([
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
-  const [isOrganisation, setIsOrganisation] = useState(false);
   const [subscriptions, setSubscriptions] = useState([]);
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
@@ -112,8 +111,6 @@ const App = () => {
           setLoggedIn,
           username,
           setUsername,
-          isOrganisation,
-          setIsOrganisation,
           subscriptions,
           setSubscriptions,
           posts,

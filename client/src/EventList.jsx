@@ -17,10 +17,10 @@ const iso8601ToHumanReadable = (iso8601) => {
 };
 
 const EventList = () => {
-  const { events, isOrganisation } = useContext(AppContext);
+  const { events, userData } = useContext(AppContext);
   return (
     <Box margin="auto" py={5}>
-      {isOrganisation && <CreateEventButton />}
+      {userData.organisation && <CreateEventButton />}
       <VStack spacing={5}>
         {events.map((event) => (
           <Card key={event._id} width={"100%"}>

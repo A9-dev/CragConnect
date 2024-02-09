@@ -34,7 +34,6 @@ const Login = () => {
     setLoggedIn,
     username,
     setUsername,
-    setIsOrganisation,
     setSubscriptions,
     setFollowingPosts,
     posts,
@@ -63,11 +62,8 @@ const Login = () => {
         setLoggedIn(true);
         setError("");
         onClose();
-        if (result.data.organisation) {
-          setIsOrganisation(true);
-        }
-        setFullName(result.data.fullName);
 
+        setFullName(result.data.fullName);
         getSubscriptions(username)
           .then((result) => {
             setSubscriptions(result.data);
@@ -81,6 +77,7 @@ const Login = () => {
 
         getUserData(username).then((result) => {
           setUserData(result.data);
+          console.log("Result:", result.data);
         });
       })
       .catch((error) => {

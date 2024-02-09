@@ -22,6 +22,8 @@ function Search() {
     setSubscriptions,
     refreshFollowingFeed,
     loggedIn,
+    setUserData,
+    userData,
   } = useContext(AppContext);
 
   const handleChange = (event) => {
@@ -32,7 +34,7 @@ function Search() {
     if (event.key === "Enter") {
       handleClick();
     }
-  }
+  };
 
   const handleClick = () => {
     searchUser(search)
@@ -45,19 +47,25 @@ function Search() {
   };
 
   const handleSubscribe = (toSubscribeUsername) => {
+    // set the userData subscribingTo array
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      subscribingTo: [...prevUserData.subscribingTo, toSubscribeUsername],
+    }));
     subscribe(username, toSubscribeUsername);
-    setSubscriptions([...subscriptions, toSubscribeUsername]);
     userList
       .find((user) => user.username === toSubscribeUsername)
       .subscribers.push(username);
-
     refreshFollowingFeed();
   };
 
   const handleUnsubscribe = (toUnsubscribeUsername) => {
-    setSubscriptions(
-      subscriptions.filter((sub) => sub !== toUnsubscribeUsername)
-    );
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      subscribingTo: prevUserData.subscribingTo.filter(
+        (sub) => sub !== toUnsubscribeUsername
+      ),
+    }));
     unsubscribe(username, toUnsubscribeUsername);
     userList
       .find((user) => user.username === toUnsubscribeUsername)
@@ -68,7 +76,11 @@ function Search() {
   return (
     <VStack>
       <Flex align="center" width="50%" margin="auto">
-        <Input placeholder="Search for users" onChange={handleChange} onKeyDown={handleKeyDown}/>
+        <Input
+          placeholder="Search for users"
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
         <Button ml={2} onClick={handleClick}>
           Search
         </Button>
@@ -90,7 +102,7 @@ function Search() {
 
               <CardBody>
                 <Text fontSize="sm" textAlign="center" mb="5px">
-                  {user.isOrganisation ? "Organisation" : "Individual"}
+                  {user.organisation ? "Organisation" : "Individual"}
                 </Text>
                 {loggedIn &&
                   (subscriptions && subscriptions.includes(user.username) ? (
