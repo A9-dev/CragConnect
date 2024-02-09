@@ -471,7 +471,6 @@ app.get("/user/:username", async (req, res) => {
 });
 
 app.put("/user/:username", async (req, res) => {
-  logger.info("DOIGN THIS ");
   try {
     logger.info("PUT /user");
     const { username } = req.params;
