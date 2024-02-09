@@ -30,16 +30,10 @@ import { useContext } from "react";
 import { AppContext } from "./App";
 
 const Login = () => {
-  const {
-    setLoggedIn,
-    username,
-    setUsername,
-    setSubscriptions,
-    setFollowingPosts,
-    posts,
-    setFullName,
-    setUserData,
-  } = useContext(AppContext);
+  const { setLoggedIn, setFollowingPosts, posts, userData, setUserData } =
+    useContext(AppContext);
+
+  const [usernameInput, setUsernameInput] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isRegister, setIsRegister] = useState(false);
   const [password, setPassword] = useState("");
@@ -52,21 +46,19 @@ const Login = () => {
   const length = isChecked ? "162px" : "105px";
 
   const handleLogin = () => {
-    if (!username || !password) {
+    if (!usernameInput || !password) {
       return;
     }
     // Send the username and password values to Express
 
-    loginUser(username, password)
-      .then((result) => {
+    loginUser(usernameInput, password)
+      .then(() => {
         setLoggedIn(true);
         setError("");
         onClose();
-
-        setFullName(result.data.fullName);
-        getSubscriptions(username)
+        getSubscriptions(usernameInput)
           .then((result) => {
-            setSubscriptions(result.data);
+            setUserData({ ...getUserData, subscribingTo: result.data });
             setFollowingPosts(
               posts.filter((post) => result.data.includes(post.username))
             );
@@ -75,7 +67,7 @@ const Login = () => {
             console.error("Error:", error);
           });
 
-        getUserData(username).then((result) => {
+        getUserData(usernameInput).then((result) => {
           setUserData(result.data);
           console.log("Result:", result.data);
         });
@@ -87,10 +79,10 @@ const Login = () => {
   };
 
   const handleRegister = () => {
-    if (!username || !password) {
+    if (!userData.username || !password) {
       return;
     } else {
-      uploadUser(username, password, isChecked, fullNameInput)
+      uploadUser(userData.username, password, isChecked, fullNameInput)
         .then(() => {
           setLoggedIn(true);
           setError("");
@@ -138,8 +130,8 @@ const Login = () => {
                 <InputGroup>
                   <InputLeftAddon children="Username" width="105px" />
                   <Input
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
+                    value={usernameInput}
+                    onChange={(event) => setUsernameInput(event.target.value)}
                   />
                 </InputGroup>
                 <InputGroup>
@@ -187,8 +179,8 @@ const Login = () => {
                   <InputGroup>
                     <InputLeftAddon children="Username" width={length} />
                     <Input
-                      value={username}
-                      onChange={(event) => setUsername(event.target.value)}
+                      value={usernameInput}
+                      onChange={(event) => setUsernameInput(event.target.value)}
                     />
                   </InputGroup>
                   <InputGroup>

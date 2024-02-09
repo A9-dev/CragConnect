@@ -16,15 +16,8 @@ import { AppContext } from "./App";
 function Search() {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);
-  const {
-    username,
-    subscriptions,
-    setSubscriptions,
-    refreshFollowingFeed,
-    loggedIn,
-    setUserData,
-    userData,
-  } = useContext(AppContext);
+  const { refreshFollowingFeed, loggedIn, setUserData, userData } =
+    useContext(AppContext);
 
   const handleChange = (event) => {
     setSearch(event.target.value);
@@ -52,10 +45,10 @@ function Search() {
       ...prevUserData,
       subscribingTo: [...prevUserData.subscribingTo, toSubscribeUsername],
     }));
-    subscribe(username, toSubscribeUsername);
+    subscribe(userData.username, toSubscribeUsername);
     userList
       .find((user) => user.username === toSubscribeUsername)
-      .subscribers.push(username);
+      .subscribers.push(userData.username);
     refreshFollowingFeed();
   };
 
@@ -66,10 +59,10 @@ function Search() {
         (sub) => sub !== toUnsubscribeUsername
       ),
     }));
-    unsubscribe(username, toUnsubscribeUsername);
+    unsubscribe(userData.username, toUnsubscribeUsername);
     userList
       .find((user) => user.username === toUnsubscribeUsername)
-      .subscribers.pop(username);
+      .subscribers.pop(userData.username);
     refreshFollowingFeed();
   };
 
@@ -87,7 +80,7 @@ function Search() {
       </Flex>
       <VStack width="50%">
         {userList
-          .filter((user) => user.username !== username)
+          .filter((user) => user.username !== userData.username)
           .map((user) => (
             <Card variant={"outline"} key={user._id} width="100%">
               <CardHeader>
@@ -105,7 +98,8 @@ function Search() {
                   {user.organisation ? "Organisation" : "Individual"}
                 </Text>
                 {loggedIn &&
-                  (subscriptions && subscriptions.includes(user.username) ? (
+                  (userData.subscribingTo &&
+                  userData.subscribingTo.includes(user.username) ? (
                     <Button
                       ml={2}
                       width="100%"

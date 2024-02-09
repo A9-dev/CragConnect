@@ -23,24 +23,33 @@ import { DeleteIcon } from "@chakra-ui/icons";
 const Feed = ({ posts }) => {
   const {
     username,
-    subscriptions,
-    setSubscriptions,
     loggedIn,
     refreshFeed,
     refreshFollowingFeed,
+    userData,
+    setUserData,
   } = useContext(AppContext);
 
   // ... existing code ...
   const handleSubscribe = (username, author) => {
     subscribe(username, author);
-    if (!subscriptions) setSubscriptions([author]);
-    else setSubscriptions([...subscriptions, author]);
+
+    if (!userData.subscribingTo)
+      setUserData({ ...userData, subscribingTo: [author] });
+    else
+      setUserData({
+        ...userData,
+        subscribingTo: [...userData.subscribingTo, author],
+      });
     refreshFollowingFeed();
   };
 
   const handleUnsubscribe = (username, author) => {
     unsubscribe(username, author);
-    setSubscriptions(subscriptions.filter((sub) => sub !== author));
+    setUserData({
+      ...userData,
+      subscribingTo: userData.subscribingTo.filter((sub) => sub !== author),
+    });
     refreshFollowingFeed();
   };
 
@@ -79,7 +88,7 @@ const Feed = ({ posts }) => {
   useEffect(() => {
     refreshFollowingFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subscriptions]); // Add refreshFollowingFeed as a dependency
+  }, [userData.subscribingTo]); // Add refreshFollowingFeed as a dependency
 
   return (
     <VStack spacing="35px" divider={<StackDivider />}>
@@ -98,8 +107,8 @@ const Feed = ({ posts }) => {
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
                   {loggedIn &&
                     username !== post.user.username && // Check if logged in before rendering buttons
-                    (!subscriptions ||
-                    !subscriptions.includes(post.user.username) ? (
+                    (!userData.subscribingTo ||
+                    !userData.subscribingTo.includes(post.user.username) ? (
                       <Button
                         m={5}
                         onClick={() =>

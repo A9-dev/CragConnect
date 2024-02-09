@@ -1,12 +1,7 @@
 import { useState, createContext, useEffect } from "react";
-import { ChakraProvider, Box } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 
-import {
-  createBrowserRouter,
-  Router,
-  RouterProvider,
-  Outlet,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { getPosts, getEvents } from "./dbFunctions";
 import MainPage from "./routes/MainPage";
@@ -58,7 +53,6 @@ const router = createBrowserRouter([
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
-  const [subscriptions, setSubscriptions] = useState([]);
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
   const [events, setEvents] = useState([]);
@@ -85,7 +79,9 @@ const App = () => {
 
   const refreshFollowingFeed = () => {
     setFollowingPosts(
-      posts.filter((post) => subscriptions.includes(post.user.username))
+      posts.filter((post) =>
+        userData.subscribingTo.includes(post.user.username)
+      )
     );
   };
 
@@ -111,8 +107,6 @@ const App = () => {
           setLoggedIn,
           username,
           setUsername,
-          subscriptions,
-          setSubscriptions,
           posts,
           setPosts,
           refreshFeed,
