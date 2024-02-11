@@ -86,23 +86,24 @@ const App = () => {
   useEffect(() => {
     refreshFeed();
   }, []);
+
+  const contextValue = {
+    loggedIn,
+    setLoggedIn,
+    posts,
+    setPosts,
+    refreshFeed,
+    events,
+    setEvents,
+    refreshEventList,
+    userData,
+    setUserData,
+  };
+
   return (
     <ChakraProvider>
       {/* Provide the states through the context */}
-      <AppContext.Provider
-        value={{
-          loggedIn,
-          setLoggedIn,
-          posts,
-          setPosts,
-          refreshFeed,
-          events,
-          setEvents,
-          refreshEventList,
-          userData,
-          setUserData,
-        }}
-      >
+      <AppContext.Provider value={contextValue}>
         <RouterProvider router={router} />
       </AppContext.Provider>
     </ChakraProvider>
