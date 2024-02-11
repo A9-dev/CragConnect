@@ -19,10 +19,10 @@ import {
   Spacer,
   Flex,
 } from "@chakra-ui/react";
-import { unsubscribe } from "./dbFunctions";
+import { unsubscribe } from "../dbFunctions";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 
 const ProfileButton = () => {
   const { setLoggedIn, userData, setUserData } = useContext(AppContext);

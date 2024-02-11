@@ -2,7 +2,7 @@ import React from "react";
 import Feed from "./Feed";
 import { VStack, Text } from "@chakra-ui/react";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 
 const FeedBlock = () => {
   const { loggedIn, posts, userData } = useContext(AppContext);

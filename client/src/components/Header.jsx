@@ -8,7 +8,7 @@ import {
   Button,
   IconButton,
 } from "@chakra-ui/react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 import { useContext } from "react";
 import Login from "./Login";
 import ProfileButton from "./ProfileButton";

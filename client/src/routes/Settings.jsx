@@ -1,4 +1,4 @@
-import ToggleColour from "../ToggleColour";
+import ToggleColour from "../components/ToggleColour";
 import { Container } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AppContext } from "../App";

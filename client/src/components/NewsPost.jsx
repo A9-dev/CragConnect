@@ -13,8 +13,8 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { uploadNewsPost } from "./dbFunctions";
-import { AppContext } from "./App";
+import { uploadNewsPost } from "../dbFunctions";
+import { AppContext } from "../App";
 
 const FeedPost = ({ refreshNewsPosts }) => {
   const { userData } = useContext(AppContext);

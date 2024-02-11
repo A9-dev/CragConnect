@@ -1,6 +1,6 @@
-import FeedBlock from "../FeedBlock";
-import FollowingFeed from "../FollowingFeed";
-import Search from "../Search";
+import FeedBlock from "../components/FeedBlock";
+import FollowingFeed from "../components/FollowingFeed";
+import Search from "../components/Search";
 import { HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
 import { Tabs, Tab, TabList, TabPanels, TabPanel, Box } from "@chakra-ui/react";
 

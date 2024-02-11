@@ -3,7 +3,7 @@ import {
   uploadUser,
   getSubscriptions,
   getUserData,
-} from "./dbFunctions";
+} from "../dbFunctions";
 import { useState } from "react";
 import {
   Modal,
@@ -27,7 +27,7 @@ import {
   InputLeftAddon,
 } from "@chakra-ui/react";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 
 const Login = () => {
   const { setLoggedIn, userData, setUserData } = useContext(AppContext);

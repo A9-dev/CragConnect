@@ -5,7 +5,7 @@ import Events from "./routes/Events";
 import News from "./routes/News";
 import Settings from "./routes/Settings";
 import GearShare from "./routes/GearShare";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from "./routes/ErrorPage";
 import Fitness from "./routes/Fitness";
 
 const router = createBrowserRouter([

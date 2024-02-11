@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 import CreateEventButton from "./CreateEventButton";
 
 const iso8601ToHumanReadable = (iso8601) => {

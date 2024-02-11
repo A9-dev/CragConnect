@@ -10,9 +10,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { searchUser, subscribe, unsubscribe } from "./dbFunctions";
+import { searchUser, subscribe, unsubscribe } from "../dbFunctions";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 function Search() {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);

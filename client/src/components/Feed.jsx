@@ -15,9 +15,9 @@ import {
   Spacer,
   IconButton,
 } from "@chakra-ui/react";
-import { subscribe, unsubscribe, deletePost } from "./dbFunctions";
+import { subscribe, unsubscribe, deletePost } from "../dbFunctions";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const Feed = ({ posts }) => {
