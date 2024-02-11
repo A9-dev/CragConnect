@@ -16,8 +16,8 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { postEvent } from "./dbFunctions";
-import { AppContext } from "./App";
+import { postEvent } from "../dbFunctions";
+import { AppContext } from "../App";
 
 const CreateEventButton = () => {
   const [isOpen, setIsOpen] = useState(false);

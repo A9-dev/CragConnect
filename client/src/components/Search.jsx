@@ -10,19 +10,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { searchUser, subscribe, unsubscribe } from "./dbFunctions";
+import { searchUser, subscribe, unsubscribe } from "../dbFunctions";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 function Search() {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);
-  const {
-    username,
-    subscriptions,
-    setSubscriptions,
-    refreshFollowingFeed,
-    loggedIn,
-  } = useContext(AppContext);
+  const { loggedIn, setUserData, userData } = useContext(AppContext);
 
   const handleChange = (event) => {
     setSearch(event.target.value);
@@ -32,7 +26,7 @@ function Search() {
     if (event.key === "Enter") {
       handleClick();
     }
-  }
+  };
 
   const handleClick = () => {
     searchUser(search)
@@ -45,37 +39,45 @@ function Search() {
   };
 
   const handleSubscribe = (toSubscribeUsername) => {
-    subscribe(username, toSubscribeUsername);
-    setSubscriptions([...subscriptions, toSubscribeUsername]);
+    // set the userData subscribingTo array
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      subscribingTo: [...prevUserData.subscribingTo, toSubscribeUsername],
+    }));
+    subscribe(userData.username, toSubscribeUsername);
     userList
       .find((user) => user.username === toSubscribeUsername)
-      .subscribers.push(username);
-
-    refreshFollowingFeed();
+      .subscribers.push(userData.username);
   };
 
   const handleUnsubscribe = (toUnsubscribeUsername) => {
-    setSubscriptions(
-      subscriptions.filter((sub) => sub !== toUnsubscribeUsername)
-    );
-    unsubscribe(username, toUnsubscribeUsername);
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      subscribingTo: prevUserData.subscribingTo.filter(
+        (sub) => sub !== toUnsubscribeUsername
+      ),
+    }));
+    unsubscribe(userData.username, toUnsubscribeUsername);
     userList
       .find((user) => user.username === toUnsubscribeUsername)
-      .subscribers.pop(username);
-    refreshFollowingFeed();
+      .subscribers.pop(userData.username);
   };
 
   return (
     <VStack>
       <Flex align="center" width="50%" margin="auto">
-        <Input placeholder="Search for users" onChange={handleChange} onKeyDown={handleKeyDown}/>
+        <Input
+          placeholder="Search for users"
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
         <Button ml={2} onClick={handleClick}>
           Search
         </Button>
       </Flex>
       <VStack width="50%">
         {userList
-          .filter((user) => user.username !== username)
+          .filter((user) => user.username !== userData.username)
           .map((user) => (
             <Card variant={"outline"} key={user._id} width="100%">
               <CardHeader>
@@ -90,10 +92,11 @@ function Search() {
 
               <CardBody>
                 <Text fontSize="sm" textAlign="center" mb="5px">
-                  {user.isOrganisation ? "Organisation" : "Individual"}
+                  {user.organisation ? "Organisation" : "Individual"}
                 </Text>
                 {loggedIn &&
-                  (subscriptions && subscriptions.includes(user.username) ? (
+                  (userData.subscribingTo &&
+                  userData.subscribingTo.includes(user.username) ? (
                     <Button
                       ml={2}
                       width="100%"

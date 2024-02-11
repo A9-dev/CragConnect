@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { getNewsPosts } from "../dbFunctions";
-import Feed from "../Feed";
-import NewsPost from "../NewsPost";
+import Feed from "../components/Feed";
+import NewsPost from "../components/NewsPost";
 import { VStack, Box } from "@chakra-ui/react";
 import { AppContext } from "../App";
 
 const News = () => {
-  const { isOrganisation } = useContext(AppContext);
+  const { userData } = useContext(AppContext);
   var [newsPosts, setNewsPosts] = useState([]);
   const refreshNewsPosts = () => {
     getNewsPosts()
@@ -25,7 +25,9 @@ const News = () => {
   return (
     <Box p={5} width={"50%"} m={"auto"}>
       <VStack spacing={35}>
-        {isOrganisation && <NewsPost refreshNewsPosts={refreshNewsPosts} />}
+        {userData.organisation && (
+          <NewsPost refreshNewsPosts={refreshNewsPosts} />
+        )}
         <Feed posts={newsPosts} />
       </VStack>
     </Box>

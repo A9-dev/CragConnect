@@ -19,26 +19,19 @@ import {
   Spacer,
   Flex,
 } from "@chakra-ui/react";
-import { unsubscribe } from "./dbFunctions";
+import { unsubscribe } from "../dbFunctions";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext } from "../App";
 
 const ProfileButton = () => {
-  const {
-    setLoggedIn,
-    setUsername,
-    username,
-    subscriptions,
-    fullName,
-    setSubscriptions,
-  } = useContext(AppContext);
+  const { setLoggedIn, userData, setUserData } = useContext(AppContext);
   const bgColor = useColorModeValue("gray.200", "gray.800");
   const color = useColorModeValue("black", "white");
 
   const handleSignout = () => {
     setLoggedIn(false);
-    setUsername("");
+    setUserData({});
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleProfile = () => {
@@ -47,9 +40,14 @@ const ProfileButton = () => {
   };
 
   const handleUnfollowButton = (userToUnfollow) => {
-    unsubscribe(username, userToUnfollow)
+    unsubscribe(userData.username, userToUnfollow)
       .then(() => {
-        setSubscriptions(subscriptions.filter((sub) => sub !== userToUnfollow));
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          subscribingTo: prevUserData.subscribingTo.filter(
+            (sub) => sub !== userToUnfollow
+          ),
+        }));
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -65,7 +63,7 @@ const ProfileButton = () => {
           bg={bgColor}
           color={color}
         >
-          {username}
+          {userData.username}
         </MenuButton>
         <MenuList bg={bgColor} color={color}>
           <MenuItem onClick={handleProfile}>Profile</MenuItem>
@@ -75,7 +73,7 @@ const ProfileButton = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg={bgColor}>
-          <ModalHeader>{fullName}'s Profile</ModalHeader>
+          <ModalHeader>{userData.fullName}'s Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Center>
@@ -85,19 +83,20 @@ const ProfileButton = () => {
             </Center>
 
             <Box width="75%" margin="auto">
-              {subscriptions.map((subscription) => (
-                <Flex mb={3} key={subscription}>
-                  <Text key={subscription}>{subscription}</Text>
-                  <Spacer />
-                  <Button
-                    onClick={() => {
-                      handleUnfollowButton(subscription);
-                    }}
-                  >
-                    Unfollow
-                  </Button>
-                </Flex>
-              ))}
+              {userData.subscribingTo &&
+                userData.subscribingTo.map((subscription) => (
+                  <Flex mb={3} key={subscription}>
+                    <Text key={subscription}>{subscription}</Text>
+                    <Spacer />
+                    <Button
+                      onClick={() => {
+                        handleUnfollowButton(subscription);
+                      }}
+                    >
+                      Unfollow
+                    </Button>
+                  </Flex>
+                ))}
             </Box>
           </ModalBody>
         </ModalContent>

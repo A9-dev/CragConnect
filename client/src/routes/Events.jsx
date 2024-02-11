@@ -1,4 +1,4 @@
-import EventList from "../EventList";
+import EventList from "../components/EventList";
 import { Box } from "@chakra-ui/react";
 
 const Events = () => {

@@ -13,11 +13,11 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { uploadNewsPost } from "./dbFunctions";
-import { AppContext } from "./App";
+import { uploadNewsPost } from "../dbFunctions";
+import { AppContext } from "../App";
 
 const FeedPost = ({ refreshNewsPosts }) => {
-  const { username } = useContext(AppContext);
+  const { userData } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -37,7 +37,7 @@ const FeedPost = ({ refreshNewsPosts }) => {
       return;
     }
 
-    uploadNewsPost(username, title, content)
+    uploadNewsPost(userData.username, title, content)
       .then(() => {
         refreshNewsPosts();
         setError("");
