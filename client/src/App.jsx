@@ -52,11 +52,9 @@ const router = createBrowserRouter([
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
   const [events, setEvents] = useState([]);
-  const [fullName, setFullName] = useState("");
   const [userData, setUserData] = useState({});
   const [exercisesDone, setExercisesDone] = useState(0);
 
@@ -76,7 +74,6 @@ const App = () => {
         console.error("Error:", error);
       });
   };
-
   const refreshFollowingFeed = () => {
     setFollowingPosts(
       posts.filter((post) =>
@@ -84,7 +81,6 @@ const App = () => {
       )
     );
   };
-
   const refreshEventList = () => {
     getEvents()
       .then((events) => {
@@ -105,8 +101,6 @@ const App = () => {
         value={{
           loggedIn,
           setLoggedIn,
-          username,
-          setUsername,
           posts,
           setPosts,
           refreshFeed,
@@ -116,8 +110,6 @@ const App = () => {
           events,
           setEvents,
           refreshEventList,
-          fullName,
-          setFullName,
           userData,
           setUserData,
           exercisesDone,
