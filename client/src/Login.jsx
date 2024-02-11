@@ -65,7 +65,6 @@ const Login = () => {
 
         getUserData(usernameInput).then((result) => {
           setUserData(result.data);
-          console.log("Result:", result.data);
         });
       })
       .catch((error) => {

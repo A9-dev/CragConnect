@@ -55,7 +55,6 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [userData, setUserData] = useState({});
-  const [exercisesDone, setExercisesDone] = useState(0);
 
   const refreshFeed = () => {
     getPosts()
@@ -102,8 +101,6 @@ const App = () => {
           refreshEventList,
           userData,
           setUserData,
-          exercisesDone,
-          setExercisesDone,
         }}
       >
         <RouterProvider router={router} />

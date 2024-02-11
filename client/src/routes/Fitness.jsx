@@ -27,8 +27,8 @@ import flexibility from "../data/flexibility.json";
 import { increaseFitnessScore } from "../dbFunctions";
 
 const Fitness = () => {
-  const { userData, exercisesDone, setExercisesDone, username } =
-    useContext(AppContext);
+  const { userData } = useContext(AppContext);
+  const [exercisesDone, setExercisesDone] = useState(0);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
 
@@ -46,7 +46,7 @@ const Fitness = () => {
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
   const handleLogWorkout = () => {
-    increaseFitnessScore(username).catch((err) => {
+    increaseFitnessScore(userData.username).catch((err) => {
       if (err.data.message == "User already worked out today") {
         setErrorMessage("You've already logged your workout for today.");
       }
