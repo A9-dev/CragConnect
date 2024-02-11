@@ -30,8 +30,7 @@ import { useContext } from "react";
 import { AppContext } from "./App";
 
 const Login = () => {
-  const { setLoggedIn, setFollowingPosts, posts, userData, setUserData } =
-    useContext(AppContext);
+  const { setLoggedIn, userData, setUserData } = useContext(AppContext);
 
   const [usernameInput, setUsernameInput] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,10 +57,7 @@ const Login = () => {
         onClose();
         getSubscriptions(usernameInput)
           .then((result) => {
-            setUserData({ ...getUserData, subscribingTo: result.data });
-            setFollowingPosts(
-              posts.filter((post) => result.data.includes(post.username))
-            );
+            setUserData({ ...userData, subscribingTo: result.data });
           })
           .catch((error) => {
             console.error("Error:", error);

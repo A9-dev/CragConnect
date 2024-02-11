@@ -16,8 +16,7 @@ import { AppContext } from "./App";
 function Search() {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);
-  const { refreshFollowingFeed, loggedIn, setUserData, userData } =
-    useContext(AppContext);
+  const { loggedIn, setUserData, userData } = useContext(AppContext);
 
   const handleChange = (event) => {
     setSearch(event.target.value);
@@ -49,7 +48,6 @@ function Search() {
     userList
       .find((user) => user.username === toSubscribeUsername)
       .subscribers.push(userData.username);
-    refreshFollowingFeed();
   };
 
   const handleUnsubscribe = (toUnsubscribeUsername) => {
@@ -63,7 +61,6 @@ function Search() {
     userList
       .find((user) => user.username === toUnsubscribeUsername)
       .subscribers.pop(userData.username);
-    refreshFollowingFeed();
   };
 
   return (

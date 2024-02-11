@@ -16,19 +16,13 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { subscribe, unsubscribe, deletePost } from "./dbFunctions";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AppContext } from "./App";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const Feed = ({ posts }) => {
-  const {
-    username,
-    loggedIn,
-    refreshFeed,
-    refreshFollowingFeed,
-    userData,
-    setUserData,
-  } = useContext(AppContext);
+  const { loggedIn, refreshFeed, userData, setUserData } =
+    useContext(AppContext);
 
   // ... existing code ...
   const handleSubscribe = (username, author) => {
@@ -41,7 +35,6 @@ const Feed = ({ posts }) => {
         ...userData,
         subscribingTo: [...userData.subscribingTo, author],
       });
-    refreshFollowingFeed();
   };
 
   const handleUnsubscribe = (username, author) => {
@@ -50,7 +43,6 @@ const Feed = ({ posts }) => {
       ...userData,
       subscribingTo: userData.subscribingTo.filter((sub) => sub !== author),
     });
-    refreshFollowingFeed();
   };
 
   const handleDeletePost = (postId) => {
@@ -85,11 +77,6 @@ const Feed = ({ posts }) => {
     return "just now";
   };
 
-  useEffect(() => {
-    refreshFollowingFeed();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData.subscribingTo]); // Add refreshFollowingFeed as a dependency
-
   return (
     <VStack spacing="35px" divider={<StackDivider />}>
       {posts &&
@@ -106,13 +93,13 @@ const Feed = ({ posts }) => {
 
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
                   {loggedIn &&
-                    username !== post.user.username && // Check if logged in before rendering buttons
+                    userData.username !== post.user.username && // Check if logged in before rendering buttons
                     (!userData.subscribingTo ||
                     !userData.subscribingTo.includes(post.user.username) ? (
                       <Button
                         m={5}
                         onClick={() =>
-                          handleSubscribe(username, post.user.username)
+                          handleSubscribe(userData.username, post.user.username)
                         }
                       >
                         Follow
@@ -120,7 +107,10 @@ const Feed = ({ posts }) => {
                     ) : (
                       <Button
                         onClick={() =>
-                          handleUnsubscribe(username, post.user.username)
+                          handleUnsubscribe(
+                            userData.username,
+                            post.user.username
+                          )
                         }
                       >
                         Unfollow
@@ -130,7 +120,7 @@ const Feed = ({ posts }) => {
                 <Spacer />
                 {
                   // only show delete button if the post belongs to the logged in user
-                  loggedIn && username === post.user.username && (
+                  loggedIn && userData.username === post.user.username && (
                     <IconButton
                       onClick={() => {
                         handleDeletePost(post._id);

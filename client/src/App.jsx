@@ -53,7 +53,6 @@ const router = createBrowserRouter([
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [followingPosts, setFollowingPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [userData, setUserData] = useState({});
   const [exercisesDone, setExercisesDone] = useState(0);
@@ -74,13 +73,7 @@ const App = () => {
         console.error("Error:", error);
       });
   };
-  const refreshFollowingFeed = () => {
-    setFollowingPosts(
-      posts.filter((post) =>
-        userData.subscribingTo.includes(post.user.username)
-      )
-    );
-  };
+
   const refreshEventList = () => {
     getEvents()
       .then((events) => {
@@ -104,9 +97,6 @@ const App = () => {
           posts,
           setPosts,
           refreshFeed,
-          followingPosts,
-          setFollowingPosts,
-          refreshFollowingFeed,
           events,
           setEvents,
           refreshEventList,
