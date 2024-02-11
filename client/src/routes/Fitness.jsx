@@ -32,7 +32,6 @@ const Fitness = () => {
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
 
-  console.log("Day as number: ", dayAsNumber);
   const bgColor = useColorModeValue("green.200", "green.800");
 
   const [errorMessage, setErrorMessage] = useState("");
