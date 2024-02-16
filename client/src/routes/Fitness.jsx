@@ -6,7 +6,6 @@ import {
   StackDivider,
   VStack,
   Text,
-  Checkbox,
   Progress,
   Table,
   Tbody,
@@ -14,6 +13,7 @@ import {
   Thead,
   Th,
   Td,
+  Checkbox,
   TableContainer,
   useColorModeValue,
   Button,
@@ -24,13 +24,15 @@ import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import strength from "../data/strength.json";
 import flexibility from "../data/flexibility.json";
-import { increaseFitnessScore } from "../dbFunctions";
+import { increaseFitnessScore, getTopTenFitnessScores } from "../dbFunctions";
 
 const Fitness = () => {
-  const { userData } = useContext(AppContext);
+  const { userData, loggedIn } = useContext(AppContext);
   const [exercisesDone, setExercisesDone] = useState(0);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
+
+  const [showFollowing, setShowFollowing] = useState(false);
 
   const bgColor = useColorModeValue("green.200", "green.800");
 
@@ -41,20 +43,31 @@ const Fitness = () => {
 
   const fRoutine = flexibility[dayAsNumber];
   const fExercises = fRoutine.exercises;
+  const [scores, setScores] = useState({});
 
   const numExercises =
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
   const handleLogWorkout = () => {
-    increaseFitnessScore(userData.username).catch((err) => {
-      if (err.data.message == "User already worked out today") {
-        setErrorMessage("You've already logged your workout for today.");
-      }
-    });
+    increaseFitnessScore(userData.username)
+      .then(() => {
+        // Get the updated fitness score
+        getTopTenFitnessScores().then((data) => {
+          setScores(data.data);
+        });
+      })
+      .catch((err) => {
+        if (err.data.message == "User already worked out today") {
+          setErrorMessage("You've already logged your workout for today.");
+        }
+      });
   };
 
   useEffect(() => {
     setExercisesDone(0); // Reset exercisesDone to 0 when the page is loaded
+    getTopTenFitnessScores().then((data) => {
+      setScores(data.data);
+    });
   }, []);
 
   return (
@@ -164,6 +177,15 @@ const Fitness = () => {
 
       <VStack mt={5}>
         <Heading>Leaderboard</Heading>
+        {loggedIn && (
+          <Checkbox
+            onChange={(event) => {
+              setShowFollowing(event.target.checked);
+            }}
+          >
+            Only show following
+          </Checkbox>
+        )}
         <TableContainer w={"35%"}>
           <Table variant="simple">
             <Thead>
@@ -173,26 +195,23 @@ const Fitness = () => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>John Doe</Td>
-                <Td isNumeric>5</Td>
-              </Tr>
-              <Tr>
-                <Td>Jane Doe</Td>
-                <Td isNumeric>4</Td>
-              </Tr>
-              <Tr>
-                <Td>Joe Schmoe</Td>
-                <Td isNumeric>2</Td>
-              </Tr>
-              <Tr>
-                <Td>Jill Schmill</Td>
-                <Td isNumeric>1</Td>
-              </Tr>
-              <Tr>
-                <Td>Jack Black</Td>
-                <Td isNumeric>0</Td>
-              </Tr>
+              {Object.keys(scores).map((key, index) => {
+                const username = scores[key].username;
+                const isSubscribed =
+                  showFollowing && userData.subscribingTo.includes(username);
+                const isCurrentUser = username === userData.username;
+
+                if (!showFollowing || isSubscribed || isCurrentUser) {
+                  return (
+                    <Tr key={index}>
+                      <Td>{username}</Td>
+                      <Td isNumeric>{scores[key].fitnessScore}</Td>
+                    </Tr>
+                  );
+                }
+
+                return null;
+              })}
             </Tbody>
           </Table>
         </TableContainer>
