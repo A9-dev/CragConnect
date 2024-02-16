@@ -6,7 +6,6 @@ import {
   StackDivider,
   VStack,
   Text,
-  Checkbox,
   Progress,
   Table,
   Tbody,
@@ -14,6 +13,7 @@ import {
   Thead,
   Th,
   Td,
+  Checkbox,
   TableContainer,
   useColorModeValue,
   Button,
@@ -27,10 +27,12 @@ import flexibility from "../data/flexibility.json";
 import { increaseFitnessScore, getTopTenFitnessScores } from "../dbFunctions";
 
 const Fitness = () => {
-  const { userData } = useContext(AppContext);
+  const { userData, loggedIn } = useContext(AppContext);
   const [exercisesDone, setExercisesDone] = useState(0);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
+
+  const [showFollowing, setShowFollowing] = useState(false);
 
   const bgColor = useColorModeValue("green.200", "green.800");
 
@@ -168,6 +170,15 @@ const Fitness = () => {
 
       <VStack mt={5}>
         <Heading>Leaderboard</Heading>
+        {loggedIn && (
+          <Checkbox
+            onChange={(event) => {
+              setShowFollowing(event.target.checked);
+            }}
+          >
+            Only show following
+          </Checkbox>
+        )}
         <TableContainer w={"35%"}>
           <Table variant="simple">
             <Thead>
@@ -177,12 +188,23 @@ const Fitness = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {Object.keys(scores).map((key, index) => (
-                <Tr key={index}>
-                  <Td>{scores[key].username}</Td>
-                  <Td isNumeric>{scores[key].fitnessScore}</Td>
-                </Tr>
-              ))}
+              {Object.keys(scores).map((key, index) => {
+                const username = scores[key].username;
+                const isSubscribed =
+                  showFollowing && userData.subscribingTo.includes(username);
+                const isCurrentUser = username === userData.username;
+
+                if (!showFollowing || isSubscribed || isCurrentUser) {
+                  return (
+                    <Tr key={index}>
+                      <Td>{username}</Td>
+                      <Td isNumeric>{scores[key].fitnessScore}</Td>
+                    </Tr>
+                  );
+                }
+
+                return null;
+              })}
             </Tbody>
           </Table>
         </TableContainer>
