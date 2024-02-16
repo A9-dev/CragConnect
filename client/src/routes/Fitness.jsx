@@ -49,11 +49,17 @@ const Fitness = () => {
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
   const handleLogWorkout = () => {
-    increaseFitnessScore(userData.username).catch((err) => {
-      if (err.data.message == "User already worked out today") {
-        setErrorMessage("You've already logged your workout for today.");
-      }
-    });
+    increaseFitnessScore(userData.username)
+      .catch((err) => {
+        if (err.data.message == "User already worked out today") {
+          setErrorMessage("You've already logged your workout for today.");
+        }
+      })
+      .then(
+        getTopTenFitnessScores().then((data) => {
+          setScores(data.data);
+        })
+      );
   };
 
   useEffect(() => {

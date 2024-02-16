@@ -526,7 +526,9 @@ app.get("/fitnessScores/:number", async (req, res) => {
   try {
     const number = parseInt(req.params.number);
     logger.info("GET /fitnessScores");
-    const users = await User.find({}).sort({ fitnessScore: -1 }).limit(number);
+    const users = await User.find({ organisation: false })
+      .sort({ fitnessScore: -1 })
+      .limit(number);
     const filteredUsers = users.map((user) => {
       return { username: user.username, fitnessScore: user.fitnessScore };
     });
