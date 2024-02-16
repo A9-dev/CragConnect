@@ -522,6 +522,22 @@ app.put("/user/fitnessScore/:username", async (req, res) => {
   }
 });
 
+app.get("/fitnessScores/:number", async (req, res) => {
+  try {
+    const number = parseInt(req.params.number);
+    logger.info("GET /fitnessScores");
+    const users = await User.find({}).sort({ fitnessScore: -1 }).limit(number);
+    const filteredUsers = users.map((user) => {
+      return { username: user.username, fitnessScore: user.fitnessScore };
+    });
+    res.status(200).json(filteredUsers);
+    logger.info("GET /fitnessScores 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /fitnessScores 400: " + error.message);
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);

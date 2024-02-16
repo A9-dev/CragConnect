@@ -252,6 +252,17 @@ const increaseFitnessScore = async (username) => {
   }
 };
 
+const getTopTenFitnessScores = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/fitnessScores/10");
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -269,4 +280,5 @@ export {
   getUserData,
   updateUserData,
   increaseFitnessScore,
+  getTopTenFitnessScores,
 };

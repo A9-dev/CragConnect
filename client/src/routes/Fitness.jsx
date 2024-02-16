@@ -24,7 +24,7 @@ import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import strength from "../data/strength.json";
 import flexibility from "../data/flexibility.json";
-import { increaseFitnessScore } from "../dbFunctions";
+import { increaseFitnessScore, getTopTenFitnessScores } from "../dbFunctions";
 
 const Fitness = () => {
   const { userData } = useContext(AppContext);
@@ -41,6 +41,7 @@ const Fitness = () => {
 
   const fRoutine = flexibility[dayAsNumber];
   const fExercises = fRoutine.exercises;
+  const [scores, setScores] = useState({});
 
   const numExercises =
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
@@ -55,6 +56,9 @@ const Fitness = () => {
 
   useEffect(() => {
     setExercisesDone(0); // Reset exercisesDone to 0 when the page is loaded
+    getTopTenFitnessScores().then((data) => {
+      setScores(data.data);
+    });
   }, []);
 
   return (
@@ -173,26 +177,12 @@ const Fitness = () => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>John Doe</Td>
-                <Td isNumeric>5</Td>
-              </Tr>
-              <Tr>
-                <Td>Jane Doe</Td>
-                <Td isNumeric>4</Td>
-              </Tr>
-              <Tr>
-                <Td>Joe Schmoe</Td>
-                <Td isNumeric>2</Td>
-              </Tr>
-              <Tr>
-                <Td>Jill Schmill</Td>
-                <Td isNumeric>1</Td>
-              </Tr>
-              <Tr>
-                <Td>Jack Black</Td>
-                <Td isNumeric>0</Td>
-              </Tr>
+              {Object.keys(scores).map((key, index) => (
+                <Tr key={index}>
+                  <Td>{scores[key].username}</Td>
+                  <Td isNumeric>{scores[key].fitnessScore}</Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
