@@ -1,9 +1,4 @@
-import {
-  loginUser,
-  uploadUser,
-  getSubscriptions,
-  getUserData,
-} from "../dbFunctions";
+import { loginUser, uploadUser, getUserData } from "../dbFunctions";
 import { useState } from "react";
 import {
   Modal,
@@ -55,13 +50,6 @@ const Login = () => {
         setLoggedIn(true);
         setError("");
         onClose();
-        getSubscriptions(usernameInput)
-          .then((result) => {
-            setUserData({ ...userData, subscribingTo: result.data });
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
 
         getUserData(usernameInput).then((result) => {
           setUserData(result.data);

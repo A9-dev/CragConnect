@@ -7,9 +7,10 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import CreateEventButton from "./CreateEventButton";
+import { getEvents } from "../dbFunctions";
 
 const iso8601ToHumanReadable = (iso8601) => {
   const date = new Date(iso8601);
@@ -17,10 +18,27 @@ const iso8601ToHumanReadable = (iso8601) => {
 };
 
 const EventList = () => {
-  const { events, userData } = useContext(AppContext);
+  const [events, setEvents] = useState([]);
+  const refreshEventList = () => {
+    getEvents()
+      .then((events) => {
+        setEvents(events.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  useEffect(() => {
+    refreshEventList();
+  }, []);
+
+  const { userData } = useContext(AppContext);
   return (
     <Box margin="auto" py={5}>
-      {userData.organisation && <CreateEventButton />}
+      {userData.organisation && (
+        <CreateEventButton refreshEventList={refreshEventList} />
+      )}
       <VStack spacing={5}>
         {events.map((event) => (
           <Card key={event._id} width={"100%"}>
@@ -50,6 +68,12 @@ const EventList = () => {
                   <Text>
                     <b>Postcode: </b>
                     {event.postcode}
+                  </Text>
+                )}
+                {event.phoneNumber && (
+                  <Text>
+                    <b>Phone number: </b>
+                    {event.phoneNumber}
                   </Text>
                 )}
               </VStack>
