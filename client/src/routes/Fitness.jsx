@@ -50,16 +50,17 @@ const Fitness = () => {
 
   const handleLogWorkout = () => {
     increaseFitnessScore(userData.username)
+      .then(() => {
+        // Get the updated fitness score
+        getTopTenFitnessScores().then((data) => {
+          setScores(data.data);
+        });
+      })
       .catch((err) => {
         if (err.data.message == "User already worked out today") {
           setErrorMessage("You've already logged your workout for today.");
         }
-      })
-      .then(
-        getTopTenFitnessScores().then((data) => {
-          setScores(data.data);
-        })
-      );
+      });
   };
 
   useEffect(() => {
