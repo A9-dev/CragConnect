@@ -19,7 +19,7 @@ import {
 import { postEvent } from "../dbFunctions";
 import { AppContext } from "../App";
 
-const CreateEventButton = () => {
+const CreateEventButton = ({ refreshEventList }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [eventTitle, setEventTitle] = useState("");
   const [eventDescription, setEventDescription] = useState("");
@@ -29,7 +29,7 @@ const CreateEventButton = () => {
   const [dateAndTime, setDateAndTime] = useState("");
   const [error, setError] = useState("");
 
-  const { username, refreshEventList } = useContext(AppContext);
+  const { userData } = useContext(AppContext);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -45,6 +45,15 @@ const CreateEventButton = () => {
     setIsOpen(false);
   };
 
+  const checkPostCode = (postcode) => {
+    const postcodeRegex = /([a-zA-Z]{2}[0-9]{1,2}\s{0,1}[0-9]{1,2}[a-zA-Z]{2})/;
+    return postcodeRegex.test(postcode);
+  };
+
+  const checkPhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
+    return phoneRegex.test(phoneNumber);
+  };
   const handleCreateEvent = () => {
     // Send the event details to Express
     if (
@@ -58,10 +67,19 @@ const CreateEventButton = () => {
       return;
     }
 
+    if (phoneNumber && !checkPhoneNumber(phoneNumber)) {
+      setError("Please enter a valid phone number. Example: +1234567890");
+      return;
+    }
+
+    if (!checkPostCode(postcode)) {
+      setError("Please enter a valid postcode. Example: AB12 3CD");
+      return;
+    }
     // Send the event details to Express
 
     postEvent(
-      username,
+      userData.username,
       eventTitle,
       eventDescription,
       address,
@@ -130,7 +148,7 @@ const CreateEventButton = () => {
                 <FormLabel>Postcode</FormLabel>
                 <Input
                   value={postcode}
-                  onChange={(e) => setPostcode(e.target.value)}
+                  onChange={(e) => setPostcode(e.target.value.toUpperCase())}
                   placeholder="Enter postcode"
                   onKeyDown={handleKeyDown}
                 />

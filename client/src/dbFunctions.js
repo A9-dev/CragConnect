@@ -88,20 +88,6 @@ const uploadNewsPost = async (username, title, content) => {
   }
 };
 
-const getSubscriptions = async (username) => {
-  try {
-    const response = await axios.get(
-      "http://localhost:5000/subscriptions/" + username
-    );
-    console.log(response.data);
-    console.log(response.status);
-    return { data: response.data, status: response.status };
-  } catch (error) {
-    console.error("Error:", error);
-    throw error.response.data.message;
-  }
-};
-
 const subscribe = async (subscriberUsername, subscribeeUsername) => {
   try {
     const response = await axios.post("http://localhost:5000/subscriptions", {
@@ -272,7 +258,6 @@ export {
   uploadNewsPost,
   subscribe,
   unsubscribe,
-  getSubscriptions,
   searchUser,
   postEvent,
   getEvents,

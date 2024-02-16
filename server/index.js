@@ -430,10 +430,15 @@ app.post("/events", async (req, res) => {
 app.get("/events", async (req, res) => {
   try {
     logger.info("GET /events");
-    const events = await Event.find({}).populate(
-      "creator",
-      "username fullName"
-    );
+    let events = await Event.find({}).populate("creator", "username fullName");
+    // Only show events that are in the future
+    events = events.filter((event) => {
+      return new Date(event.dateAndTime) > new Date();
+    });
+
+    // sort by date, with the earliest date first
+    events.sort((a, b) => new Date(a.dateAndTime) - new Date(b.dateAndTime));
+
     res.status(200).json(events);
     logger.info("GET /events 200");
   } catch (error) {

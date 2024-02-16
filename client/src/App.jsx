@@ -1,7 +1,7 @@
 import { useState, createContext, useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { RouterProvider } from "react-router-dom";
-import { getPosts, getEvents } from "./dbFunctions";
+import { getPosts } from "./dbFunctions";
 import router from "./router";
 
 // Create a context for the states
@@ -21,23 +21,6 @@ const App = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
-    getEvents()
-      .then((events) => {
-        setEvents(events.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
-  const refreshEventList = () => {
-    getEvents()
-      .then((events) => {
-        setEvents(events.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   };
 
   useEffect(() => {
@@ -52,7 +35,6 @@ const App = () => {
     refreshFeed,
     events,
     setEvents,
-    refreshEventList,
     userData,
     setUserData,
   };
