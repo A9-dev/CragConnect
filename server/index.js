@@ -568,6 +568,25 @@ app.put("/user/resetExercisesDone/:username", async (req, res) => {
   }
 });
 
+app.put("/user/setExercisesDone/:username", async (req, res) => {
+  try {
+    logger.info("PUT /user/setExercisesDone");
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    user.exercisesDone = req.body.exercisesDone;
+    const savedUser = await user.save();
+    res.status(200).json(savedUser);
+    logger.info("PUT /user/setExercisesDone 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /user/setExercisesDone 400: " + error.message);
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);

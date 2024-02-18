@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
+import { resetExercisesDone } from "../dbFunctions";
 
 const Login = () => {
   const { setLoggedIn, userData, setUserData } = useContext(AppContext);

@@ -24,11 +24,15 @@ import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import strength from "../data/strength.json";
 import flexibility from "../data/flexibility.json";
-import { increaseFitnessScore, getTopTenFitnessScores } from "../dbFunctions";
+import {
+  increaseFitnessScore,
+  getTopTenFitnessScores,
+  setExercisesDoneDB,
+  resetExercisesDone,
+} from "../dbFunctions";
 
 const Fitness = () => {
-  const { userData, loggedIn } = useContext(AppContext);
-  const [exercisesDone, setExercisesDone] = useState(0);
+  const { userData, loggedIn, setUserData } = useContext(AppContext);
   const fitnessPlan = userData.fitnessPlan;
   const dayAsNumber = new Date().getDay().toString();
 
@@ -45,10 +49,27 @@ const Fitness = () => {
   const fExercises = fRoutine.exercises;
   const [scores, setScores] = useState({});
 
+  const doneForToday = userData.lastWorkedOutDate === new Date();
+  console.log("HERE");
+  console.log(doneForToday);
+  console.log(userData.lastWorkedOutDate);
+  console.log(new Date().toDateString());
+
   const numExercises =
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
+  const handleIncreaseExercisesDone = () => {
+    setExercisesDoneDB(userData.username, userData.exercisesDone + 1);
+    setUserData({ ...userData, exercisesDone: userData.exercisesDone + 1 });
+  };
+
+  const handleDecreaseExercisesDone = () => {
+    setExercisesDoneDB(userData.username, userData.exercisesDone - 1);
+    setUserData({ ...userData, exercisesDone: userData.exercisesDone - 1 });
+  };
+
   const handleLogWorkout = () => {
+    resetExercisesDone(userData.username);
     increaseFitnessScore(userData.username)
       .then(() => {
         // Get the updated fitness score
@@ -64,7 +85,6 @@ const Fitness = () => {
   };
 
   useEffect(() => {
-    setExercisesDone(0); // Reset exercisesDone to 0 when the page is loaded
     getTopTenFitnessScores().then((data) => {
       setScores(data.data);
     });
@@ -88,14 +108,14 @@ const Fitness = () => {
 
           <Progress
             mt={30}
-            value={(exercisesDone * 100) / numExercises}
+            value={(userData.exercisesDone * 100) / numExercises}
             hasStripe
             size="lg"
           />
           {/* If fitnessPlan is strength then show button when exercisesDone is sExercises.length */}
           {/* If fitnessPlan is flexibility then show button when exercisesDone is fExercises.length */}
 
-          {exercisesDone == numExercises && (
+          {userData.exercisesDone == numExercises && (
             <Card bg={bgColor} p={15} m={5}>
               <VStack mt={5}>
                 <Heading size="lg">
@@ -108,70 +128,75 @@ const Fitness = () => {
               </VStack>
             </Card>
           )}
+          {doneForToday
+            ? "You've already logged your workout for today."
+            : "NOT DONE"}
 
-          <Card mt={5}>
-            <Box p={5}>
-              <HStack divider={<StackDivider />} justify={"space-evenly"}>
-                {fitnessPlan == "Strength" &&
-                  sExercises.map((exercise, index) => (
-                    <VStack key={index}>
-                      <Text fontSize={"xl"}>{exercise.name}</Text>
-                      {exercise.sets && (
-                        <Text fontSize={"sm"}>Sets: {exercise.sets}</Text>
-                      )}
-                      {exercise.reps && (
-                        <Text fontSize={"sm"}>Reps: {exercise.reps}</Text>
-                      )}
-                      {exercise.rest && (
-                        <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
-                      )}
-                      {exercise.description && (
-                        <Text fontSize={"sm"}>{exercise.description}</Text>
-                      )}
-                      {/* <Image src={exercise.image} alt={exercise.name} /> */}
-                      {index <= exercisesDone && (
-                        <Checkbox
-                          size="lg"
-                          onChange={(event) => {
-                            setExercisesDone(
-                              exercisesDone + (event.target.checked ? 1 : -1)
-                            );
-                          }}
-                        />
-                      )}
-                    </VStack>
-                  ))}
-                {fitnessPlan == "Flexibility" &&
-                  fExercises.map((exercise, index) => (
-                    <VStack key={index}>
-                      <Text fontSize={"xl"}>{exercise.name}</Text>
-                      {exercise.description && (
-                        <Text fontSize={"sm"}>{exercise.description}</Text>
-                      )}
-                      {exercise.duration && (
-                        <Text fontSize={"sm"}>
-                          Duration: {exercise.duration}
-                        </Text>
-                      )}
-                      {exercise.rest && (
-                        <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
-                      )}
-                      {/* <Image src={exercise.image} alt={exercise.name} /> */}
-                      {index <= exercisesDone && (
-                        <Checkbox
-                          size="lg"
-                          onChange={(event) => {
-                            setExercisesDone(
-                              exercisesDone + (event.target.checked ? 1 : -1)
-                            );
-                          }}
-                        />
-                      )}
-                    </VStack>
-                  ))}
-              </HStack>
-            </Box>
-          </Card>
+          {!doneForToday && (
+            <Card mt={5}>
+              <Box p={5}>
+                <HStack divider={<StackDivider />} justify={"space-evenly"}>
+                  {fitnessPlan == "Strength" &&
+                    sExercises.map((exercise, index) => (
+                      <VStack key={index}>
+                        <Text fontSize={"xl"}>{exercise.name}</Text>
+                        {exercise.sets && (
+                          <Text fontSize={"sm"}>Sets: {exercise.sets}</Text>
+                        )}
+                        {exercise.reps && (
+                          <Text fontSize={"sm"}>Reps: {exercise.reps}</Text>
+                        )}
+                        {exercise.rest && (
+                          <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                        )}
+                        {exercise.description && (
+                          <Text fontSize={"sm"}>{exercise.description}</Text>
+                        )}
+                        {/* <Image src={exercise.image} alt={exercise.name} /> */}
+                        {index <= userData.exercisesDone && (
+                          <Checkbox
+                            size="lg"
+                            onChange={(event) => {
+                              event.target.checked
+                                ? handleIncreaseExercisesDone()
+                                : handleDecreaseExercisesDone();
+                            }}
+                          />
+                        )}
+                      </VStack>
+                    ))}
+                  {fitnessPlan == "Flexibility" &&
+                    fExercises.map((exercise, index) => (
+                      <VStack key={index}>
+                        <Text fontSize={"xl"}>{exercise.name}</Text>
+                        {exercise.description && (
+                          <Text fontSize={"sm"}>{exercise.description}</Text>
+                        )}
+                        {exercise.duration && (
+                          <Text fontSize={"sm"}>
+                            Duration: {exercise.duration}
+                          </Text>
+                        )}
+                        {exercise.rest && (
+                          <Text fontSize={"sm"}>Rest: {exercise.rest}</Text>
+                        )}
+                        {/* <Image src={exercise.image} alt={exercise.name} /> */}
+                        {index <= userData.exercisesDone && (
+                          <Checkbox
+                            size="lg"
+                            onChange={(event) => {
+                              event.target.checked
+                                ? handleIncreaseExercisesDone()
+                                : handleDecreaseExercisesDone();
+                            }}
+                          />
+                        )}
+                      </VStack>
+                    ))}
+                </HStack>
+              </Box>
+            </Card>
+          )}
         </>
       )}
 
