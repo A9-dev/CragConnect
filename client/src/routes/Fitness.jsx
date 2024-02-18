@@ -56,20 +56,24 @@ const Fitness = () => {
   const numExercises =
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
-  const handleIncreaseExercisesDone = () => {
-    setExercisesDoneDB(userData.username, userData.exercisesDone + 1);
-    setUserData({ ...userData, exercisesDone: userData.exercisesDone + 1 });
-  };
-
-  const handleDecreaseExercisesDone = () => {
-    setExercisesDoneDB(userData.username, userData.exercisesDone - 1);
-    setUserData({ ...userData, exercisesDone: userData.exercisesDone - 1 });
+  const handleSetExercisesDone = (exercisesDone) => {
+    setExercisesDoneDB(userData.username, exercisesDone)
+      .then(() => {
+        setUserData({ ...userData, exercisesDone });
+      })
+      .catch((err) => {
+        console.error("Error setting exercises done:", err);
+      });
   };
 
   const handleLogWorkout = () => {
     resetExercisesDone(userData.username);
     increaseFitnessScore(userData.username)
       .then(() => {
+        setUserData({
+          ...userData,
+          lastWorkedOutDate: new Date().toISOString().split("T")[0],
+        });
         // Get the updated fitness score
         getTopTenFitnessScores().then((data) => {
           setScores(data.data);
@@ -107,7 +111,7 @@ const Fitness = () => {
           {/* If fitnessPlan is strength then show button when exercisesDone is sExercises.length */}
           {/* If fitnessPlan is flexibility then show button when exercisesDone is fExercises.length */}
 
-          {userData.exercisesDone == numExercises && (
+          {userData.exercisesDone == numExercises && !doneForToday && (
             <Card bg={bgColor} p={15} m={5}>
               <VStack mt={5}>
                 <Heading size="lg">
@@ -162,10 +166,11 @@ const Fitness = () => {
                           {index <= userData.exercisesDone && (
                             <Checkbox
                               size="lg"
-                              onChange={(event) => {
-                                event.target.checked
-                                  ? handleIncreaseExercisesDone()
-                                  : handleDecreaseExercisesDone();
+                              isChecked={index < userData.exercisesDone}
+                              onChange={(e) => {
+                                e.target.checked
+                                  ? handleSetExercisesDone(index + 1)
+                                  : handleSetExercisesDone(index);
                               }}
                             />
                           )}
@@ -190,10 +195,11 @@ const Fitness = () => {
                           {index <= userData.exercisesDone && (
                             <Checkbox
                               size="lg"
-                              onChange={(event) => {
-                                event.target.checked
-                                  ? handleIncreaseExercisesDone()
-                                  : handleDecreaseExercisesDone();
+                              isChecked={index < userData.exercisesDone}
+                              onChange={(e) => {
+                                e.target.checked
+                                  ? handleSetExercisesDone(index + 1)
+                                  : handleSetExercisesDone(index);
                               }}
                             />
                           )}
