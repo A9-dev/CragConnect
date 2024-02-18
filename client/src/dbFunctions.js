@@ -249,6 +249,37 @@ const getTopTenFitnessScores = async () => {
   }
 };
 
+const resetExercisesDone = async (username) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:5000/user/resetExercisesDone/" + username
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+    throw { data: error.response.data, status: error.response.status };
+  }
+};
+
+const setExercisesDoneDB = async (username, exercisesDone) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:5000/user/setExercisesDone/" + username,
+      {
+        exercisesDone,
+      }
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+    throw { data: error.response.data, status: error.response.status };
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -266,4 +297,6 @@ export {
   updateUserData,
   increaseFitnessScore,
   getTopTenFitnessScores,
+  resetExercisesDone,
+  setExercisesDoneDB,
 };

@@ -74,6 +74,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  exercisesDone: {
+    type: Number,
+    required: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
@@ -196,6 +200,7 @@ app.post("/register", async (req, res) => {
       fitnessPlan: "Strength",
       fitnessScore: 0,
       lastWorkedOutDate: "2000-01-01",
+      exercisesDone: 0,
     });
 
     // Save the user to the database
@@ -542,6 +547,43 @@ app.get("/fitnessScores/:number", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("GET /fitnessScores 400: " + error.message);
+  }
+});
+
+app.put("/user/resetExercisesDone/:username", async (req, res) => {
+  try {
+    logger.info("PUT /user/resetExercisesDone");
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    user.exercisesDone = 0;
+    const savedUser = await user.save();
+    res.status(200).json(savedUser);
+    logger.info("PUT /user/resetExercisesDone 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /user/resetExercisesDone 400: " + error.message);
+  }
+});
+
+app.put("/user/setExercisesDone/:username", async (req, res) => {
+  try {
+    logger.info("PUT /user/setExercisesDone");
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    user.exercisesDone = req.body.exercisesDone;
+    const savedUser = await user.save();
+    res.status(200).json(savedUser);
+    logger.info("PUT /user/setExercisesDone 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /user/setExercisesDone 400: " + error.message);
   }
 });
 
