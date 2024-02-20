@@ -33,14 +33,6 @@ const News = () => {
     refreshNewsPosts();
   }, []);
   return (
-    // <Box p={5} width={"50%"} m={"auto"}>
-    //   <VStack spacing={35}>
-    // {userData.organisation && (
-    //   <NewsPost refreshNewsPosts={refreshNewsPosts} />
-    // )}
-    //     <Feed posts={newsPosts} />
-    //   </VStack>
-    // </Box>
     <Box p={30} width={"65%"} margin="auto" py={5}>
       <Tabs align="center" variant="enclosed">
         <TabList>
