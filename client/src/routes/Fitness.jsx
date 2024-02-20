@@ -94,6 +94,19 @@ const Fitness = () => {
 
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
+      {!fitnessPlan && (
+        <Card bg={bgColor} p={15} m={5}>
+          <VStack>
+            <Heading size="lg" textAlign={"center"}>
+              You haven't got a fitness plan yet.
+            </Heading>
+            <Text>
+              Please sign in and select a fitness plan in the settings.
+            </Text>
+          </VStack>
+        </Card>
+      )}
+
       {fitnessPlan && (
         <>
           <Heading textAlign={"center"}>
@@ -129,7 +142,7 @@ const Fitness = () => {
             <Card bg={bgColor} p={15} m={5}>
               <Center>
                 <Heading size="lg">
-                  You've already logged your workout for today!
+                  You've logged your workout for today!
                 </Heading>
               </Center>
             </Card>
