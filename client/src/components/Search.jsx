@@ -13,7 +13,7 @@ import { useState } from "react";
 import { searchUser, subscribe, unsubscribe } from "../dbFunctions";
 import { useContext } from "react";
 import { AppContext } from "../App";
-function Search() {
+function Search({ organisationSearch }) {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);
   const { loggedIn, setUserData, userData } = useContext(AppContext);
@@ -31,7 +31,9 @@ function Search() {
   const handleClick = () => {
     searchUser(search)
       .then((result) => {
-        setUserList(result.data);
+        setUserList(
+          result.data.filter((user) => user.organisation === organisationSearch)
+        );
       })
       .catch((error) => {
         console.error("Error:", error);

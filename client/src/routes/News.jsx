@@ -69,7 +69,7 @@ const News = () => {
             )}
           </TabPanel>
           <TabPanel>
-            <Search />
+            <Search organisationSearch={true} />
           </TabPanel>
         </TabPanels>
       </Tabs>

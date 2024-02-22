@@ -31,7 +31,7 @@ const MainPage = () => {
             <FollowingFeed />
           </TabPanel>
           <TabPanel>
-            <Search />
+            <Search organisationSearch={false} />
           </TabPanel>
         </TabPanels>
       </Tabs>
