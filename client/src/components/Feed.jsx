@@ -28,6 +28,7 @@ import {
   addCommentToPost,
   deleteCommentFromPost,
 } from "../dbFunctions";
+import FeedPost from "./FeedPost";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -113,6 +114,7 @@ const Feed = ({ posts }) => {
 
   return (
     <VStack spacing="35px" divider={<StackDivider />}>
+      {loggedIn && <FeedPost />}
       {posts &&
         posts.map((post) => (
           <Card key={post._id} variant="filled" width="850px" p={5}>

@@ -5,8 +5,8 @@ import {
   VStack,
   Card,
   CardBody,
-  CardHeader,
   Heading,
+  useColorModeValue,
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -17,6 +17,7 @@ function Search({ organisationSearch }) {
   const [search, setSearch] = useState("");
   const [userList, setUserList] = useState([]);
   const { loggedIn, setUserData, userData } = useContext(AppContext);
+  const buttonColorScheme = useColorModeValue("blue", "purple");
 
   const handleChange = (event) => {
     setSearch(event.target.value);
@@ -82,39 +83,38 @@ function Search({ organisationSearch }) {
           .filter((user) => user.username !== userData.username)
           .map((user) => (
             <Card variant={"outline"} key={user._id} width="100%">
-              <CardHeader>
-                <Heading as="h3" size="md">
-                  {user.username}
-                </Heading>
-                <Heading as="h4" size="sm">
-                  {user.subscribers.length}{" "}
-                  {user.subscribers.length == 1 ? "follower" : "followers"}
-                </Heading>
-              </CardHeader>
-
               <CardBody>
-                <Text fontSize="sm" textAlign="center" mb="5px">
-                  {user.organisation ? "Organisation" : "Individual"}
-                </Text>
-                {loggedIn &&
-                  (userData.subscribingTo &&
-                  userData.subscribingTo.includes(user.username) ? (
-                    <Button
-                      ml={2}
-                      width="100%"
-                      onClick={() => handleUnsubscribe(user.username)}
-                    >
-                      Unfollow
-                    </Button>
-                  ) : (
-                    <Button
-                      ml={2}
-                      width="100%"
-                      onClick={() => handleSubscribe(user.username)}
-                    >
-                      Follow
-                    </Button>
-                  ))}
+                <VStack spacing={2}>
+                  <Heading as="h3" size="md">
+                    {user.username}
+                  </Heading>
+                  <Heading as="h4" size="sm">
+                    {user.subscribers.length}{" "}
+                    {user.subscribers.length == 1 ? "follower" : "followers"}
+                  </Heading>
+
+                  <Text fontSize="sm" textAlign="center" mb="5px">
+                    {user.organisation ? "Organisation" : "Individual"}
+                  </Text>
+                  {loggedIn &&
+                    (userData.subscribingTo &&
+                    userData.subscribingTo.includes(user.username) ? (
+                      <Button
+                        colorScheme={buttonColorScheme}
+                        variant={"outline"}
+                        onClick={() => handleUnsubscribe(user.username)}
+                      >
+                        Unfollow
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => handleSubscribe(user.username)}
+                        colorScheme={buttonColorScheme}
+                      >
+                        Follow
+                      </Button>
+                    ))}
+                </VStack>
               </CardBody>
             </Card>
           ))}

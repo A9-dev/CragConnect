@@ -9,6 +9,7 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  useColorModeValue,
   Box,
   Text,
 } from "@chakra-ui/react";
@@ -19,6 +20,8 @@ import { HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
 const News = () => {
   const { userData } = useContext(AppContext);
   var [newsPosts, setNewsPosts] = useState([]);
+  const tabsColourScheme = useColorModeValue("blue", "purple");
+
   const refreshNewsPosts = () => {
     getNewsPosts()
       .then((posts) => {
@@ -33,8 +36,17 @@ const News = () => {
     refreshNewsPosts();
   }, []);
   return (
-    <Box p={30} width={"65%"} margin="auto" py={5}>
-      <Tabs align="center" variant="enclosed">
+    <Box
+      p={10}
+      width={"65%"}
+      margin="auto"
+      py={5}
+      borderRadius={15}
+      borderWidth={1}
+      m={5}
+      mx={"auto"}
+    >
+      <Tabs align="center" variant="enclosed" colorScheme={tabsColourScheme}>
         <TabList>
           <Tab>
             <HamburgerIcon mr={2} />
