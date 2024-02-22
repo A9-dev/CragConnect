@@ -204,33 +204,33 @@ const Feed = ({ posts }) => {
             </CardBody>
             <CardFooter>
               {/* Comment section */}
-              {loggedIn && (
-                <Input
-                  type="text"
-                  placeholder="Add a comment"
-                  value={commentToPost[post._id] || ""}
-                  onChange={(e) =>
-                    // setCommentToPost({ [post._id]: e.target.value })
-                    setCommentToPost((prev) => ({
-                      ...prev,
-                      [post._id]: e.target.value,
-                    }))
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setCommentToPost({ [post._id]: "" });
-                      addCommentToPost(post._id, userData._id, e.target.value)
-                        .then(() => {
-                          refreshFeed();
-                        })
-                        .catch((error) => {
-                          console.error("Error:", error);
-                        });
-                    }
-                  }}
-                />
-              )}
               <VStack>
+                {loggedIn && (
+                  <Input
+                    type="text"
+                    placeholder="Add a comment"
+                    value={commentToPost[post._id] || ""}
+                    onChange={(e) =>
+                      // setCommentToPost({ [post._id]: e.target.value })
+                      setCommentToPost((prev) => ({
+                        ...prev,
+                        [post._id]: e.target.value,
+                      }))
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        setCommentToPost({ [post._id]: "" });
+                        addCommentToPost(post._id, userData._id, e.target.value)
+                          .then(() => {
+                            refreshFeed();
+                          })
+                          .catch((error) => {
+                            console.error("Error:", error);
+                          });
+                      }
+                    }}
+                  />
+                )}
                 {
                   post.comments.map((comment) => (
                     <HStack key={comment._id}>

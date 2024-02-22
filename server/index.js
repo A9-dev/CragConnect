@@ -292,7 +292,7 @@ app.get("/posts", async (req, res) => {
         .populate("user", "username fullName")
         .populate({
           path: "comments",
-          populate: { path: "user", select: "username" },
+          populate: { path: "user", select: "username fullName" },
         })
     ).reverse();
 
