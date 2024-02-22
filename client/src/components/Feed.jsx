@@ -119,7 +119,6 @@ const Feed = ({ posts }) => {
             <CardHeader>
               <Heading as="h3" mb={3} size="lg" textAlign={"center"}>
                 {post.title}
-                https://www.wolframalpha.com/input?i=%2865.6*0.35%29%2B%280.65*%28%28x%2B71.6%29%2F2%29%29%3E70
               </Heading>
               <Flex>
                 <HStack>
