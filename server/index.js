@@ -271,6 +271,7 @@ app.post("/posts", async (req, res) => {
       user: userThatPosted._id,
       dateAndTime: timestamp,
       likes: [],
+      comments: [],
     });
 
     const savedPost = await newPost.save();
@@ -287,7 +288,12 @@ app.get("/posts", async (req, res) => {
     logger.info("GET /posts");
 
     const posts = (
-      await Post.find({}).populate("user", "username fullName")
+      await Post.find({})
+        .populate("user", "username fullName")
+        .populate({
+          path: "comments",
+          populate: { path: "user", select: "username" },
+        })
     ).reverse();
 
     res.status(200).json(posts);
@@ -329,6 +335,7 @@ app.post("/newsPosts", async (req, res) => {
       user: userThatPosted._id,
       dateAndTime: timestamp,
       likes: [],
+      comments: [],
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
@@ -695,7 +702,7 @@ app.post("/posts/comment/:postId", async (req, res) => {
       throw new Error("User does not exist");
     }
     const newComment = new Comment({
-      content: req.body.content,
+      content: req.body.comment,
       user: user._id,
       dateAndTime: new Date().toISOString(),
     });
