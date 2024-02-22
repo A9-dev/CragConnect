@@ -46,8 +46,6 @@ ATLAS_URI=your_mongodb_uri
 
 To run the program please run the following command (from the root directory):
 
-<!-- Bash command to run in separate processes cd client and npm run dev, and cd server and npm start -->
-
 ```bash
 cd client && npm run dev & cd ../server && npm start
 ```
