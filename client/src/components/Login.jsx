@@ -23,7 +23,6 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
-import { resetExercisesDone } from "../dbFunctions";
 
 const Login = () => {
   const { setLoggedIn, userData, setUserData } = useContext(AppContext);
@@ -63,12 +62,19 @@ const Login = () => {
   };
 
   const handleRegister = () => {
-    if (!userData.username || !password) {
+    if (!usernameInput || !password) {
+      console.log("Please fill in all fields");
+      console.log("Username:", userData.username);
+      console.log("Password:", password);
+
       return;
     } else {
-      uploadUser(userData.username, password, isChecked, fullNameInput)
+      uploadUser(usernameInput, password, isChecked, fullNameInput)
         .then(() => {
           setLoggedIn(true);
+          getUserData(usernameInput).then((result) => {
+            setUserData(result.data);
+          });
           setError("");
           onClose();
         })

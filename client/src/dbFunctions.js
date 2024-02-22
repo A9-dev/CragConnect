@@ -280,6 +280,42 @@ const setExercisesDoneDB = async (username, exercisesDone) => {
   }
 };
 
+const addLikeToPost = async (postId, userId) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/posts/like/" + postId,
+      {
+        userId,
+      }
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+    throw { data: error.response.data, status: error.response.status };
+  }
+};
+
+const deleteLikeFromPost = async (postId, userId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/posts/like/" + postId,
+      {
+        data: {
+          userId,
+        },
+      }
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+    throw { data: error.response.data, status: error.response.status };
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -299,4 +335,6 @@ export {
   getTopTenFitnessScores,
   resetExercisesDone,
   setExercisesDoneDB,
+  addLikeToPost,
+  deleteLikeFromPost,
 };
