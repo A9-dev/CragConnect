@@ -718,7 +718,7 @@ app.post("/posts/comment/:postId", async (req, res) => {
   }
 });
 
-app.delete("/posts/comment/:postId/:commentId", async (req, res) => {
+app.delete("/posts/:postId/comment/:commentId", async (req, res) => {
   try {
     logger.info("DELETE /deleteComment");
     const post = await Post.findById(req.params.postId);

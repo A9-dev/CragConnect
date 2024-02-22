@@ -12,10 +12,11 @@ import {
   HStack,
   Avatar,
   Flex,
+  Center,
   Spacer,
   IconButton,
+  Box,
   Input,
-  CardFooter,
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
@@ -202,16 +203,15 @@ const Feed = ({ posts }) => {
             <CardBody>
               <Text textAlign="justify">{post.content}</Text>
             </CardBody>
-            <CardFooter>
-              {/* Comment section */}
-              <VStack>
-                {loggedIn && (
+            <Box textAlign={"left"}>
+              {loggedIn && (
+                <Center>
                   <Input
+                    width={"95%"}
                     type="text"
                     placeholder="Add a comment"
                     value={commentToPost[post._id] || ""}
                     onChange={(e) =>
-                      // setCommentToPost({ [post._id]: e.target.value })
                       setCommentToPost((prev) => ({
                         ...prev,
                         [post._id]: e.target.value,
@@ -230,10 +230,12 @@ const Feed = ({ posts }) => {
                       }
                     }}
                   />
-                )}
-                {
-                  post.comments.map((comment) => (
-                    <HStack key={comment._id}>
+                </Center>
+              )}
+              {post.comments
+                .map((comment) => (
+                  <Box m={5} ml={10} key={comment._id}>
+                    <HStack>
                       <Avatar size="sm" name={comment.user.fullName} />
                       <Text>
                         <b>{comment.user.username}</b>: {comment.content}
@@ -255,11 +257,10 @@ const Feed = ({ posts }) => {
                           />
                         )}
                     </HStack>
-                  ))
-                  // .reverse()
-                }
-              </VStack>
-            </CardFooter>
+                  </Box>
+                ))
+                .reverse()}
+            </Box>
           </Card>
         ))}
     </VStack>
