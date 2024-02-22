@@ -109,6 +109,8 @@ const postSchema = new Schema({
   },
 });
 
+const Post = mongoose.model("Post", postSchema);
+
 const commentSchema = new Schema({
   content: {
     type: String,
@@ -124,7 +126,7 @@ const commentSchema = new Schema({
   },
 });
 
-const Post = mongoose.model("Post", postSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 const newsPostSchema = new Schema({
   title: {
@@ -678,6 +680,54 @@ app.delete("/posts/like/:postId", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("DELETE /deleteLike 400: " + error.message);
+  }
+});
+
+app.post("/posts/comment/:postId", async (req, res) => {
+  try {
+    logger.info("POST /addComment");
+    const post = await Post.findById(req.params.postId);
+    const user = await User.findById(req.body.userId);
+    if (!post) {
+      throw new Error("Post does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    const newComment = new Comment({
+      content: req.body.content,
+      user: user._id,
+      dateAndTime: new Date().toISOString(),
+    });
+
+    const savedComment = await newComment.save();
+    post.comments.push(savedComment._id);
+    const savedPost = await post.save();
+    res.status(201).json(savedComment);
+    logger.info("POST /addComment 201");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("POST /addComment 400: " + error.message);
+  }
+});
+
+app.delete("/posts/comment/:postId/:commentId", async (req, res) => {
+  try {
+    logger.info("DELETE /deleteComment");
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      throw new Error("Post does not exist");
+    }
+    post.comments = post.comments.filter(
+      (id) => id.toString() !== req.params.commentId
+    );
+    const savedPost = await post.save();
+    const comment = await Comment.findByIdAndDelete(req.params.commentId);
+    res.status(200).json({ savedPost, comment });
+    logger.info("DELETE /deleteComment 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /deleteComment 400: " + error.message);
   }
 });
 
