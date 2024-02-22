@@ -103,6 +103,25 @@ const postSchema = new Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     required: true,
   },
+  comments: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+    required: true,
+  },
+});
+
+const commentSchema = new Schema({
+  content: {
+    type: String,
+    required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  dateAndTime: {
+    type: String,
+    required: true,
+  },
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -125,6 +144,10 @@ const newsPostSchema = new Schema({
   },
   likes: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
+  comments: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     required: true,
   },
 });
