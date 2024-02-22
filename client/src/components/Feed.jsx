@@ -14,17 +14,45 @@ import {
   Flex,
   Spacer,
   IconButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { subscribe, unsubscribe, deletePost } from "../dbFunctions";
+import {
+  subscribe,
+  unsubscribe,
+  deletePost,
+  addLikeToPost,
+  deleteLikeFromPost,
+} from "../dbFunctions";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import { DeleteIcon } from "@chakra-ui/icons";
-
+import { FaHeart, FaHeartBroken } from "react-icons/fa";
 const Feed = ({ posts }) => {
   const { loggedIn, refreshFeed, userData, setUserData } =
     useContext(AppContext);
 
-  // ... existing code ...
+  const buttonColorScheme = useColorModeValue("blue", "purple");
+
+  const handleLike = (post) => {
+    addLikeToPost(post._id, userData._id)
+      .then(() => {
+        refreshFeed();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handleUnlike = (post) => {
+    deleteLikeFromPost(post._id, userData._id)
+      .then(() => {
+        refreshFeed();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   const handleSubscribe = (username, author) => {
     subscribe(username, author);
 
@@ -90,38 +118,73 @@ const Feed = ({ posts }) => {
                 <HStack>
                   <Avatar size="sm" name={post.user.fullName} mr={2} />
                   <Text fontSize="2xl">{post.user.username}</Text>
-
+                  <Spacer />
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
-                  {loggedIn &&
-                    userData.username !== post.user.username && // Check if logged in before rendering buttons
-                    (!userData.subscribingTo ||
-                    !userData.subscribingTo.includes(post.user.username) ? (
-                      <Button
-                        m={5}
-                        onClick={() =>
-                          handleSubscribe(userData.username, post.user.username)
-                        }
-                      >
-                        Follow
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() =>
-                          handleUnsubscribe(
-                            userData.username,
-                            post.user.username
-                          )
-                        }
-                      >
-                        Unfollow
-                      </Button>
-                    ))}
+                  <Spacer />
+                  <Text>
+                    {post.likes.length}{" "}
+                    {post.likes.length === 1 ? "like" : "likes"}
+                  </Text>
                 </HStack>
                 <Spacer />
+                {/* Like button */}
+                {loggedIn && !post.likes.includes(userData._id) && (
+                  <Button
+                    onClick={() => handleLike(post)}
+                    colorScheme={buttonColorScheme}
+                    leftIcon={<FaHeart />}
+                    mt={5}
+                  >
+                    Like
+                  </Button>
+                )}
+                {loggedIn && post.likes.includes(userData._id) && (
+                  <Button
+                    colorScheme={buttonColorScheme}
+                    mt={5}
+                    onClick={() => handleUnlike(post)}
+                    leftIcon={<FaHeartBroken />}
+                    variant="outline"
+                  >
+                    Unlike
+                  </Button>
+                )}
+
+                {/* Follow/Unfollow button */}
+
+                {loggedIn &&
+                  userData.username !== post.user.username && // Check if logged in before rendering buttons
+                  (!userData.subscribingTo ||
+                  !userData.subscribingTo.includes(post.user.username) ? (
+                    <Button
+                      colorScheme={buttonColorScheme}
+                      ml={3}
+                      mt={5}
+                      onClick={() =>
+                        handleSubscribe(userData.username, post.user.username)
+                      }
+                    >
+                      Follow
+                    </Button>
+                  ) : (
+                    <Button
+                      ml={3}
+                      mt={5}
+                      colorScheme={buttonColorScheme}
+                      variant="outline"
+                      onClick={() =>
+                        handleUnsubscribe(userData.username, post.user.username)
+                      }
+                    >
+                      Unfollow
+                    </Button>
+                  ))}
                 {
                   // only show delete button if the post belongs to the logged in user
                   loggedIn && userData.username === post.user.username && (
                     <IconButton
+                      ml={3}
+                      mt={5}
                       onClick={() => {
                         handleDeletePost(post._id);
                       }}

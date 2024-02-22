@@ -99,6 +99,10 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
+  likes: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -117,6 +121,10 @@ const newsPostSchema = new Schema({
   },
   dateAndTime: {
     type: String,
+    required: true,
+  },
+  likes: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     required: true,
   },
 });
@@ -150,6 +158,14 @@ const eventSchema = new Schema({
   },
   dateAndTime: {
     type: String,
+    required: true,
+  },
+  usersGoing: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
+  usersInterested: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     required: true,
   },
 });
@@ -229,6 +245,7 @@ app.post("/posts", async (req, res) => {
       content: req.body.content,
       user: userThatPosted._id,
       dateAndTime: timestamp,
+      likes: [],
     });
 
     const savedPost = await newPost.save();
@@ -286,6 +303,7 @@ app.post("/newsPosts", async (req, res) => {
       content: req.body.content,
       user: userThatPosted._id,
       dateAndTime: timestamp,
+      likes: [],
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
@@ -417,6 +435,8 @@ app.post("/events", async (req, res) => {
       postcode: req.body.postcode,
       phoneNumber: req.body.phoneNumber,
       dateAndTime: req.body.dateAndTime,
+      usersGoing: [],
+      usersInterested: [],
     });
 
     if (!newEvent) {
@@ -584,6 +604,57 @@ app.put("/user/setExercisesDone/:username", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("PUT /user/setExercisesDone 400: " + error.message);
+  }
+});
+
+// Add like to post by id, user id is in the request body
+app.post("/posts/like/:postId", async (req, res) => {
+  try {
+    logger.info("POST /addLike");
+    const post = await Post.findById(req.params.postId);
+    const user = await User.findById(req.body.userId);
+    if (!post) {
+      throw new Error("Post does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (post.likes.includes(user._id)) {
+      throw new Error("User already liked this post");
+    }
+    post.likes.push(user._id);
+    const savedPost = await post.save();
+    res.status(200).json(savedPost);
+    logger.info("POST /addLike 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("POST /addLike 400: " + error.message);
+  }
+});
+
+app.delete("/posts/like/:postId", async (req, res) => {
+  try {
+    logger.info("DELETE /deleteLike");
+    const post = await Post.findById(req.params.postId);
+    const user = await User.findById(req.body.userId);
+    if (!post) {
+      throw new Error("Post does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (!post.likes.includes(user._id)) {
+      throw new Error("User has not liked this post");
+    }
+    post.likes = post.likes.filter(
+      (id) => id.toString() !== user._id.toString()
+    );
+    const savedPost = await post.save();
+    res.status(200).json(savedPost);
+    logger.info("DELETE /deleteLike 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /deleteLike 400: " + error.message);
   }
 });
 
