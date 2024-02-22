@@ -316,6 +316,38 @@ const deleteLikeFromPost = async (postId, userId) => {
   }
 };
 
+const addCommentToPost = async (postId, userId, comment) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/posts/comment/" + postId,
+      {
+        userId,
+        comment,
+      }
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+    throw { data: error.response.data, status: error.response.status };
+  }
+};
+
+const deleteCommentFromPost = async (postId, commentId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/posts/" + postId + "/comment/" + commentId
+    );
+    console.log(response.data);
+    console.log(response.status);
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    console.log(error);
+    throw { data: error.response.data, status: error.response.status };
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -337,4 +369,6 @@ export {
   setExercisesDoneDB,
   addLikeToPost,
   deleteLikeFromPost,
+  addCommentToPost,
+  deleteCommentFromPost,
 };

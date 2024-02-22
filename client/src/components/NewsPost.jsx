@@ -55,7 +55,9 @@ const FeedPost = ({ refreshNewsPosts }) => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Create a Post</Button>
+      <Button onClick={() => setIsOpen(true)} mb={5}>
+        Create a Post
+      </Button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
         <ModalContent>

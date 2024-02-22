@@ -12,8 +12,11 @@ import {
   HStack,
   Avatar,
   Flex,
+  Center,
   Spacer,
   IconButton,
+  Box,
+  Input,
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
@@ -22,16 +25,19 @@ import {
   deletePost,
   addLikeToPost,
   deleteLikeFromPost,
+  addCommentToPost,
+  deleteCommentFromPost,
 } from "../dbFunctions";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
+
 const Feed = ({ posts }) => {
   const { loggedIn, refreshFeed, userData, setUserData } =
     useContext(AppContext);
-
   const buttonColorScheme = useColorModeValue("blue", "purple");
+  const [commentToPost, setCommentToPost] = useState({});
 
   const handleLike = (post) => {
     addLikeToPost(post._id, userData._id)
@@ -119,7 +125,11 @@ const Feed = ({ posts }) => {
                   <Avatar size="sm" name={post.user.fullName} mr={2} />
                   <Text fontSize="2xl">{post.user.username}</Text>
                   <Spacer />
+                  <Text>|</Text>
+                  <Spacer />
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
+                  <Spacer />
+                  <Text>|</Text>
                   <Spacer />
                   <Text>
                     {post.likes.length}{" "}
@@ -133,7 +143,6 @@ const Feed = ({ posts }) => {
                     onClick={() => handleLike(post)}
                     colorScheme={buttonColorScheme}
                     leftIcon={<FaHeart />}
-                    mt={5}
                   >
                     Like
                   </Button>
@@ -141,7 +150,6 @@ const Feed = ({ posts }) => {
                 {loggedIn && post.likes.includes(userData._id) && (
                   <Button
                     colorScheme={buttonColorScheme}
-                    mt={5}
                     onClick={() => handleUnlike(post)}
                     leftIcon={<FaHeartBroken />}
                     variant="outline"
@@ -159,7 +167,6 @@ const Feed = ({ posts }) => {
                     <Button
                       colorScheme={buttonColorScheme}
                       ml={3}
-                      mt={5}
                       onClick={() =>
                         handleSubscribe(userData.username, post.user.username)
                       }
@@ -169,7 +176,6 @@ const Feed = ({ posts }) => {
                   ) : (
                     <Button
                       ml={3}
-                      mt={5}
                       colorScheme={buttonColorScheme}
                       variant="outline"
                       onClick={() =>
@@ -184,7 +190,6 @@ const Feed = ({ posts }) => {
                   loggedIn && userData.username === post.user.username && (
                     <IconButton
                       ml={3}
-                      mt={5}
                       onClick={() => {
                         handleDeletePost(post._id);
                       }}
@@ -198,6 +203,64 @@ const Feed = ({ posts }) => {
             <CardBody>
               <Text textAlign="justify">{post.content}</Text>
             </CardBody>
+            <Box textAlign={"left"}>
+              {loggedIn && (
+                <Center>
+                  <Input
+                    width={"95%"}
+                    type="text"
+                    placeholder="Add a comment"
+                    value={commentToPost[post._id] || ""}
+                    onChange={(e) =>
+                      setCommentToPost((prev) => ({
+                        ...prev,
+                        [post._id]: e.target.value,
+                      }))
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        setCommentToPost({ [post._id]: "" });
+                        addCommentToPost(post._id, userData._id, e.target.value)
+                          .then(() => {
+                            refreshFeed();
+                          })
+                          .catch((error) => {
+                            console.error("Error:", error);
+                          });
+                      }
+                    }}
+                  />
+                </Center>
+              )}
+              {post.comments
+                .map((comment) => (
+                  <Box m={5} ml={10} key={comment._id}>
+                    <HStack>
+                      <Avatar size="sm" name={comment.user.fullName} />
+                      <Text>
+                        <b>{comment.user.username}</b>: {comment.content}
+                      </Text>
+                      {loggedIn &&
+                        userData.username === comment.user.username && (
+                          <IconButton
+                            onClick={() => {
+                              deleteCommentFromPost(post._id, comment._id)
+                                .then(() => {
+                                  refreshFeed();
+                                })
+                                .catch((error) => {
+                                  console.error("Error:", error);
+                                });
+                            }}
+                            aria-label="Delete"
+                            icon={<DeleteIcon />}
+                          />
+                        )}
+                    </HStack>
+                  </Box>
+                ))
+                .reverse()}
+            </Box>
           </Card>
         ))}
     </VStack>
