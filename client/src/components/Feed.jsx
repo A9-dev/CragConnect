@@ -119,7 +119,11 @@ const Feed = ({ posts }) => {
                   <Avatar size="sm" name={post.user.fullName} mr={2} />
                   <Text fontSize="2xl">{post.user.username}</Text>
                   <Spacer />
+                  <Text>|</Text>
+                  <Spacer />
                   <Text>Posted: {isoStringToHowLongAgo(post.dateAndTime)}</Text>
+                  <Spacer />
+                  <Text>|</Text>
                   <Spacer />
                   <Text>
                     {post.likes.length}{" "}
@@ -133,7 +137,6 @@ const Feed = ({ posts }) => {
                     onClick={() => handleLike(post)}
                     colorScheme={buttonColorScheme}
                     leftIcon={<FaHeart />}
-                    mt={5}
                   >
                     Like
                   </Button>
@@ -141,7 +144,6 @@ const Feed = ({ posts }) => {
                 {loggedIn && post.likes.includes(userData._id) && (
                   <Button
                     colorScheme={buttonColorScheme}
-                    mt={5}
                     onClick={() => handleUnlike(post)}
                     leftIcon={<FaHeartBroken />}
                     variant="outline"
@@ -159,7 +161,6 @@ const Feed = ({ posts }) => {
                     <Button
                       colorScheme={buttonColorScheme}
                       ml={3}
-                      mt={5}
                       onClick={() =>
                         handleSubscribe(userData.username, post.user.username)
                       }
@@ -169,7 +170,6 @@ const Feed = ({ posts }) => {
                   ) : (
                     <Button
                       ml={3}
-                      mt={5}
                       colorScheme={buttonColorScheme}
                       variant="outline"
                       onClick={() =>
@@ -184,7 +184,6 @@ const Feed = ({ posts }) => {
                   loggedIn && userData.username === post.user.username && (
                     <IconButton
                       ml={3}
-                      mt={5}
                       onClick={() => {
                         handleDeletePost(post._id);
                       }}
