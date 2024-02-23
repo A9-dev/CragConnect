@@ -17,7 +17,6 @@ This is a social media app built for rock climbers to organise and talk about ro
 
 - User authentication
 - Gear sharing
-- Likes and comments for posts
 
 ## Features that _might_ be added
 
