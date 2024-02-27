@@ -106,6 +106,7 @@ const Login = () => {
           handleOpen();
           onOpen();
         }}
+        data-testid="login-button"
       >
         Log in
       </Button>
@@ -120,6 +121,7 @@ const Login = () => {
                 <InputGroup>
                   <InputLeftAddon children="Username" width="105px" />
                   <Input
+                    aria-label="Username"
                     value={usernameInput}
                     onChange={(event) => setUsernameInput(event.target.value)}
                   />
@@ -127,6 +129,7 @@ const Login = () => {
                 <InputGroup>
                   <InputLeftAddon children="Password" width="105px" />
                   <Input
+                    aria-label="Password"
                     type={show ? "text" : "password"}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
@@ -144,7 +147,12 @@ const Login = () => {
                 </InputGroup>
                 <Divider />
                 <Stack direction="row" spacing={2}>
-                  <Button onClick={handleLogin}>Login</Button>
+                  <Button
+                    onClick={handleLogin}
+                    data-testid="login-button-submit"
+                  >
+                    Login
+                  </Button>
                   <Button variant="outline" onClick={handleSwap}>
                     No account? Register
                   </Button>
