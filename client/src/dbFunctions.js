@@ -348,6 +348,16 @@ const deleteCommentFromPost = async (postId, commentId) => {
   }
 };
 
+const deleteTestPosts = async () => {
+  try {
+    const response = await axios.delete("http://localhost:5000/testPosts");
+    console.log(response.data);
+    console.log(response.status);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -371,4 +381,5 @@ export {
   deleteLikeFromPost,
   addCommentToPost,
   deleteCommentFromPost,
+  deleteTestPosts,
 };

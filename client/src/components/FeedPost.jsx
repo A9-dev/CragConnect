@@ -61,9 +61,9 @@ const FeedPost = () => {
           <ModalHeader>Create a Post</ModalHeader>
           <ModalCloseButton />
 
-          <ModalBody>
+          <ModalBody data-testid="create-post-modal">
             {error && (
-              <Alert status="error">
+              <Alert status="error" data-testid="create-post-error">
                 <AlertIcon />
                 {error}
               </Alert>
@@ -83,7 +83,12 @@ const FeedPost = () => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handlePostData}>Post</Button>
+            <Button
+              data-testid="create-post-button-submit"
+              onClick={handlePostData}
+            >
+              Post
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

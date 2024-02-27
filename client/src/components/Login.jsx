@@ -158,7 +158,7 @@ const Login = () => {
                   </Button>
                 </Stack>
                 {error && (
-                  <Alert status="error">
+                  <Alert status="error" data-testid="error-message">
                     <AlertIcon />
                     {error}
                   </Alert>

@@ -142,6 +142,7 @@ const Feed = ({ posts }) => {
                 {/* Like button */}
                 {loggedIn && !post.likes.includes(userData._id) && (
                   <Button
+                    data-testid="like-button"
                     onClick={() => handleLike(post)}
                     colorScheme={buttonColorScheme}
                     leftIcon={<FaHeart />}
@@ -192,6 +193,7 @@ const Feed = ({ posts }) => {
                   loggedIn && userData.username === post.user.username && (
                     <IconButton
                       ml={3}
+                      data-testid="delete-feed-post-button"
                       onClick={() => {
                         handleDeletePost(post._id);
                       }}
