@@ -76,8 +76,6 @@ describe("Posting", () => {
     const posts = screen.queryAllByText("Test Title");
     const initialPostCount = posts.length;
 
-    console.log("Initial Post Count: ", initialPostCount);
-
     const postForm = await screen.findByTestId("create-post-button");
     fireEvent.click(postForm);
     const modal = await screen.findByTestId("create-post-modal");

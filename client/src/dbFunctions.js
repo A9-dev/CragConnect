@@ -6,11 +6,11 @@ const loginUser = async (username, password) => {
       username,
       password,
     });
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    //     console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -23,11 +23,11 @@ const uploadUser = async (username, password, orgBool, fullName) => {
       organisation: orgBool,
       fullName,
     });
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -35,11 +35,11 @@ const uploadUser = async (username, password, orgBool, fullName) => {
 const getPosts = async () => {
   try {
     const response = await axios.get("http://localhost:5000/posts");
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -51,11 +51,11 @@ const uploadPost = async (username, title, content) => {
       content,
       username,
     });
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -63,11 +63,11 @@ const uploadPost = async (username, title, content) => {
 const getNewsPosts = async () => {
   try {
     const response = await axios.get("http://localhost:5000/newsPosts");
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -79,11 +79,11 @@ const uploadNewsPost = async (username, title, content) => {
       content,
       username,
     });
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -94,11 +94,11 @@ const subscribe = async (subscriberUsername, subscribeeUsername) => {
       username: subscriberUsername,
       subscription: subscribeeUsername,
     });
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -111,11 +111,11 @@ const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
         subscription: subscribeeUsername,
       },
     });
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error.response.data.message;
   }
 };
@@ -125,11 +125,11 @@ const searchUser = async (searchTerm) => {
     const response = await axios.get(
       "http://localhost:5000/search/" + searchTerm
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
   }
 };
 
@@ -164,22 +164,22 @@ const postEvent = async (
       "http://localhost:5000/events",
       eventData
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
 const getEvents = async () => {
   try {
     const response = await axios.get("http://localhost:5000/events");
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 const deletePost = async (postId) => {
@@ -187,27 +187,27 @@ const deletePost = async (postId) => {
     const response = await axios.delete(
       "http://localhost:5000/posts/" + postId
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
 const getUserData = async (username) => {
   try {
     const response = await axios.get("http://localhost:5000/user/" + username);
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
 const updateUserData = async (userData) => {
-  console.log("From update user data:", userData);
+  // console.log("From update user data:", userData);
   try {
     const response = await axios.put(
       "http://localhost:5000/user/" + userData.username,
@@ -216,11 +216,11 @@ const updateUserData = async (userData) => {
         data: userData,
       }
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -229,11 +229,11 @@ const increaseFitnessScore = async (username) => {
     const response = await axios.put(
       "http://localhost:5000/user/fitnessScore/" + username
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -241,11 +241,11 @@ const increaseFitnessScore = async (username) => {
 const getTopTenFitnessScores = async () => {
   try {
     const response = await axios.get("http://localhost:5000/fitnessScores/10");
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -254,11 +254,11 @@ const resetExercisesDone = async (username) => {
     const response = await axios.put(
       "http://localhost:5000/user/resetExercisesDone/" + username
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -271,11 +271,11 @@ const setExercisesDoneDB = async (username, exercisesDone) => {
         exercisesDone,
       }
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -288,11 +288,11 @@ const addLikeToPost = async (postId, userId) => {
         userId,
       }
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -307,11 +307,11 @@ const deleteLikeFromPost = async (postId, userId) => {
         },
       }
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -325,11 +325,11 @@ const addCommentToPost = async (postId, userId, comment) => {
         comment,
       }
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -339,11 +339,11 @@ const deleteCommentFromPost = async (postId, commentId) => {
     const response = await axios.delete(
       "http://localhost:5000/posts/" + postId + "/comment/" + commentId
     );
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw { data: error.response.data, status: error.response.status };
   }
 };
@@ -351,10 +351,10 @@ const deleteCommentFromPost = async (postId, commentId) => {
 const deleteTestPosts = async () => {
   try {
     const response = await axios.delete("http://localhost:5000/testPosts");
-    console.log(response.data);
-    console.log(response.status);
+    // console.log(response.data);
+    // console.log(response.status);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

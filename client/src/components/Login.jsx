@@ -62,11 +62,8 @@ const Login = () => {
   };
 
   const handleRegister = () => {
-    if (!usernameInput || !password) {
-      console.log("Please fill in all fields");
-      console.log("Username:", userData.username);
-      console.log("Password:", password);
-
+    if (!usernameInput || !password || !fullNameInput) {
+      setError("Please fill in all of the fields");
       return;
     } else {
       uploadUser(usernameInput, password, isChecked, fullNameInput)
