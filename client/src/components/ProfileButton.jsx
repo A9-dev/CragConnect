@@ -58,6 +58,7 @@ const ProfileButton = () => {
     <Box>
       <Menu>
         <MenuButton
+          data-testid="profile-button"
           as={Button}
           leftIcon={<AtSignIcon />}
           bg={bgColor}

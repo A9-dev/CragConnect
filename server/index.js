@@ -212,6 +212,7 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid username or password");
     }
 
+    logger.info(user.username + " logged in");
     res.status(200).json(user);
     logger.info("POST /login 200");
   } catch (error) {
@@ -262,6 +263,7 @@ app.post("/posts", async (req, res) => {
     const userThatPosted = await User.findOne({
       username: req.body.username,
     });
+    logger.info(req.body.username + " posted a new post");
 
     const timestamp = new Date().toISOString();
 
@@ -735,6 +737,18 @@ app.delete("/posts/:postId/comment/:commentId", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("DELETE /deleteComment 400: " + error.message);
+  }
+});
+
+app.delete("/testPosts", async (req, res) => {
+  try {
+    logger.info("DELETE /testPosts");
+    await Post.deleteMany({ title: "Test Title" });
+    res.status(200).json({ message: "Test posts deleted" });
+    logger.info("DELETE /testPosts 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /testPosts 400: " + error.message);
   }
 });
 

@@ -70,7 +70,11 @@ function Search({ organisationSearch }) {
     <VStack>
       <Flex align="center" width="50%" margin="auto">
         <Input
-          placeholder="Search for users"
+          placeholder={
+            organisationSearch
+              ? "Search for organisations"
+              : "Search for individuals"
+          }
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
