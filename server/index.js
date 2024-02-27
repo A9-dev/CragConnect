@@ -5,7 +5,6 @@ const cors = require("cors"); // Import the cors module
 require("dotenv").config();
 
 const { createLogger, format, transports } = require("winston");
-const { AutoEncryptionLoggerLevel } = require("mongodb");
 const { combine, timestamp, label, printf, colorize } = format;
 
 const myFormat = printf(({ level, message, label, timestamp }) => {
@@ -311,7 +310,12 @@ app.get("/newsPosts", async (req, res) => {
     logger.info("GET /newsPosts");
 
     const newsPosts = (
-      await NewsPost.find({}).populate("user", "username fullName")
+      await NewsPost.find({})
+        .populate("user", "username fullName")
+        .populate({
+          path: "comments",
+          populate: { path: "user", select: "username fullName" },
+        })
     ).reverse();
 
     res.status(200).json(newsPosts);
@@ -509,7 +513,9 @@ app.get("/events", async (req, res) => {
 app.delete("/posts/:id", async (req, res) => {
   try {
     logger.info("DELETE /posts");
-    const post = await Post.findByIdAndDelete(req.params.id);
+    const post =
+      (await Post.findByIdAndDelete(req.params.id)) ||
+      (await NewsPost.findByIdAndDelete(req.params.id));
     res.status(200).json(post);
     logger.info("DELETE /posts 200");
   } catch (error) {
@@ -645,7 +651,9 @@ app.put("/user/setExercisesDone/:username", async (req, res) => {
 app.post("/posts/like/:postId", async (req, res) => {
   try {
     logger.info("POST /addLike");
-    const post = await Post.findById(req.params.postId);
+    const post =
+      (await Post.findById(req.params.postId)) ||
+      (await NewsPost.findById(req.params.postId));
     const user = await User.findById(req.body.userId);
     if (!post) {
       throw new Error("Post does not exist");
@@ -669,7 +677,9 @@ app.post("/posts/like/:postId", async (req, res) => {
 app.delete("/posts/like/:postId", async (req, res) => {
   try {
     logger.info("DELETE /deleteLike");
-    const post = await Post.findById(req.params.postId);
+    const post =
+      (await Post.findById(req.params.postId)) ||
+      (await NewsPost.findById(req.params.postId));
     const user = await User.findById(req.body.userId);
     if (!post) {
       throw new Error("Post does not exist");
@@ -695,7 +705,9 @@ app.delete("/posts/like/:postId", async (req, res) => {
 app.post("/posts/comment/:postId", async (req, res) => {
   try {
     logger.info("POST /addComment");
-    const post = await Post.findById(req.params.postId);
+    const post =
+      (await Post.findById(req.params.postId)) ||
+      (await NewsPost.findById(req.params.postId));
     const user = await User.findById(req.body.userId);
     if (!post) {
       throw new Error("Post does not exist");

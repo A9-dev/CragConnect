@@ -13,9 +13,10 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { AppContext } from "../App";
+import FeedPost from "../components/FeedPost";
 
 const MainPage = () => {
-  const { posts } = useContext(AppContext);
+  const { posts, loggedIn } = useContext(AppContext);
   const tabsColourScheme = useColorModeValue("blue", "purple");
   return (
     <Box
@@ -46,6 +47,8 @@ const MainPage = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
+            {loggedIn && <FeedPost />}
+
             <Feed posts={posts} />
           </TabPanel>
           <TabPanel>

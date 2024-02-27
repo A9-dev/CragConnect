@@ -18,23 +18,9 @@ import Search from "../components/Search";
 import { HamburgerIcon, BellIcon, SearchIcon } from "@chakra-ui/icons";
 
 const News = () => {
-  const { userData } = useContext(AppContext);
-  var [newsPosts, setNewsPosts] = useState([]);
+  const { userData, newsPosts } = useContext(AppContext);
   const tabsColourScheme = useColorModeValue("blue", "purple");
 
-  const refreshNewsPosts = () => {
-    getNewsPosts()
-      .then((posts) => {
-        setNewsPosts(posts.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
-  useEffect(() => {
-    refreshNewsPosts();
-  }, []);
   return (
     <Box
       p={10}
@@ -64,9 +50,7 @@ const News = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {userData.organisation && (
-              <NewsPost refreshNewsPosts={refreshNewsPosts} />
-            )}
+            {userData.organisation && <NewsPost />}
             <Feed posts={newsPosts} />
           </TabPanel>
           <TabPanel>
