@@ -735,7 +735,9 @@ app.post("/posts/comment/:postId", async (req, res) => {
 app.delete("/posts/:postId/comment/:commentId", async (req, res) => {
   try {
     logger.info("DELETE /deleteComment");
-    const post = await Post.findById(req.params.postId);
+    const post =
+      (await Post.findById(req.params.postId)) ||
+      (await NewsPost.findById(req.params.postId));
     if (!post) {
       throw new Error("Post does not exist");
     }
