@@ -90,16 +90,12 @@ function Search({ organisationSearch }) {
               <CardBody>
                 <VStack spacing={2}>
                   <Heading as="h3" size="md">
-                    {user.username}
+                    @{user.username} - {user.fullName}
                   </Heading>
                   <Heading as="h4" size="sm">
                     {user.subscribers.length}{" "}
                     {user.subscribers.length == 1 ? "follower" : "followers"}
                   </Heading>
-
-                  <Text fontSize="sm" textAlign="center" mb="5px">
-                    {user.organisation ? "Organisation" : "Individual"}
-                  </Text>
                   {loggedIn &&
                     (userData.subscribingTo &&
                     userData.subscribingTo.includes(user.username) ? (
