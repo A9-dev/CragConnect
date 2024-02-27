@@ -52,7 +52,11 @@ const FeedPost = () => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} data-testid="create-post-button">
+      <Button
+        onClick={() => setIsOpen(true)}
+        data-testid="create-post-button"
+        m={5}
+      >
         Create a Post
       </Button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>

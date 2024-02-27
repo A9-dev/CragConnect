@@ -16,8 +16,8 @@ import {
 import { uploadNewsPost } from "../dbFunctions";
 import { AppContext } from "../App";
 
-const FeedPost = ({ refreshNewsPosts }) => {
-  const { userData } = useContext(AppContext);
+const FeedPost = () => {
+  const { userData, refreshFeed } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -39,7 +39,7 @@ const FeedPost = ({ refreshNewsPosts }) => {
 
     uploadNewsPost(userData.username, title, content)
       .then(() => {
-        refreshNewsPosts();
+        refreshFeed();
         setError("");
         setIsOpen(false);
       })

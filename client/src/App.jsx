@@ -1,7 +1,7 @@
 import { useState, createContext, useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { RouterProvider } from "react-router-dom";
-import { getPosts } from "./dbFunctions";
+import { getNewsPosts, getPosts } from "./dbFunctions";
 import router from "./router";
 
 // Create a context for the states
@@ -10,6 +10,7 @@ export const AppContext = createContext();
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [newsPosts, setNewsPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [userData, setUserData] = useState({});
 
@@ -17,6 +18,14 @@ const App = () => {
     getPosts()
       .then((posts) => {
         setPosts(posts.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    getNewsPosts()
+      .then((newsPosts) => {
+        setNewsPosts(newsPosts.data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -37,6 +46,8 @@ const App = () => {
     setEvents,
     userData,
     setUserData,
+    newsPosts,
+    setNewsPosts,
   };
 
   return (

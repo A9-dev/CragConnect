@@ -28,14 +28,13 @@ import {
   addCommentToPost,
   deleteCommentFromPost,
 } from "../dbFunctions";
-import FeedPost from "./FeedPost";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
 
 const Feed = ({ posts }) => {
-  const { loggedIn, refreshFeed, userData, setUserData } =
+  const { loggedIn, refreshFeed, userData, setUserData, setPosts } =
     useContext(AppContext);
   const buttonColorScheme = useColorModeValue("blue", "purple");
   const [commentToPost, setCommentToPost] = useState({});
@@ -43,6 +42,16 @@ const Feed = ({ posts }) => {
   const handleLike = (post) => {
     addLikeToPost(post._id, userData._id)
       .then(() => {
+        setPosts((prev) => {
+          const newPosts = prev.map((p) => {
+            if (p._id === post._id) {
+              p.likes.push(userData._id);
+            }
+            return p;
+          });
+          return newPosts;
+        });
+
         refreshFeed();
       })
       .catch((error) => {
@@ -53,6 +62,15 @@ const Feed = ({ posts }) => {
   const handleUnlike = (post) => {
     deleteLikeFromPost(post._id, userData._id)
       .then(() => {
+        setPosts((prev) => {
+          const newPosts = prev.map((p) => {
+            if (p._id === post._id) {
+              p.likes = p.likes.filter((like) => like !== userData._id);
+            }
+            return p;
+          });
+          return newPosts;
+        });
         refreshFeed();
       })
       .catch((error) => {
@@ -61,23 +79,32 @@ const Feed = ({ posts }) => {
   };
 
   const handleSubscribe = (username, author) => {
-    subscribe(username, author);
-
-    if (!userData.subscribingTo)
-      setUserData({ ...userData, subscribingTo: [author] });
-    else
-      setUserData({
-        ...userData,
-        subscribingTo: [...userData.subscribingTo, author],
+    subscribe(username, author)
+      .then(() => {
+        if (!userData.subscribingTo)
+          setUserData({ ...userData, subscribingTo: [author] });
+        else
+          setUserData({
+            ...userData,
+            subscribingTo: [...userData.subscribingTo, author],
+          });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
 
   const handleUnsubscribe = (username, author) => {
-    unsubscribe(username, author);
-    setUserData({
-      ...userData,
-      subscribingTo: userData.subscribingTo.filter((sub) => sub !== author),
-    });
+    unsubscribe(username, author)
+      .then(() => {
+        setUserData({
+          ...userData,
+          subscribingTo: userData.subscribingTo.filter((sub) => sub !== author),
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const handleDeletePost = (postId) => {
@@ -90,7 +117,6 @@ const Feed = ({ posts }) => {
       });
   };
 
-  // TODO: Make sure this works
   const isoStringToHowLongAgo = (isoString) => {
     const date = new Date(isoString);
     const now = new Date();
@@ -114,7 +140,6 @@ const Feed = ({ posts }) => {
 
   return (
     <VStack spacing="35px" divider={<StackDivider />}>
-      {loggedIn && <FeedPost />}
       {posts &&
         posts.map((post) => (
           <Card key={post._id} variant="filled" width="850px" p={5}>
@@ -193,7 +218,7 @@ const Feed = ({ posts }) => {
                   loggedIn && userData.username === post.user.username && (
                     <IconButton
                       ml={3}
-                      data-testid="delete-feed-post-button"
+                      data-testid="delete-post-button"
                       onClick={() => {
                         handleDeletePost(post._id);
                       }}
