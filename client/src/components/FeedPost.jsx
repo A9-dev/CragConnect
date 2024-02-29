@@ -65,7 +65,7 @@ const FeedPost = () => {
           <ModalHeader>Create a Post</ModalHeader>
           <ModalCloseButton />
 
-          <ModalBody data-testid="create-post-modal">
+          <ModalBody>
             {error && (
               <Alert status="error" data-testid="create-post-error">
                 <AlertIcon />
@@ -80,6 +80,7 @@ const FeedPost = () => {
               onKeyDown={handleKeyDown}
             />
             <Textarea
+              data-testid="create-post-modal"
               placeholder="Enter content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
