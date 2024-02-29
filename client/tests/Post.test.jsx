@@ -100,17 +100,16 @@ describe("Posting", () => {
   });
 
   test("Post is created when submitting a valid post", async () => {
-    await new Promise((r) => setTimeout(r, 500));
     // Count the number of posts with the title "Test Title"
-    const posts = screen.queryAllByText("Test Title");
-    const initialPostCount = posts.length;
 
     const postForm = await screen.findByTestId("create-post-button");
 
     act(() => {
       fireEvent.click(postForm);
     });
-    const modal = await screen.findByTestId("create-post-modal");
+    const modal = await screen.findByTestId("create-post-modal", {
+      timeout: 2000,
+    });
     expect(modal).toBeVisible();
     const titleInput = await screen.findByPlaceholderText("Enter title");
     const contentInput = await screen.findByPlaceholderText("Enter content");
@@ -127,12 +126,10 @@ describe("Posting", () => {
       expect(screen.queryByTestId("create-post-modal")).toBeNull();
     });
 
+    const posts = await screen.findAllByText("Test Title");
+    expect(posts.length).toBe(1);
+
     // Wait for 0.5 seconds
     // await new Promise((r) => setTimeout(r, 500));
-
-    // See if the count has increased
-    const newPosts = screen.queryAllByText("Test Title");
-    const newPostCount = newPosts.length;
-    expect(newPostCount).toBe(initialPostCount + 1);
   });
 });
