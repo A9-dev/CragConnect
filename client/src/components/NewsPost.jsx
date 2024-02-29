@@ -55,7 +55,11 @@ const FeedPost = () => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} mb={5}>
+      <Button
+        onClick={() => setIsOpen(true)}
+        mb={5}
+        data-testid="create-news-post-button"
+      >
         Create a Post
       </Button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
@@ -64,7 +68,7 @@ const FeedPost = () => {
           <ModalHeader>Create a Post</ModalHeader>
           <ModalCloseButton />
 
-          <ModalBody>
+          <ModalBody data-testid="create-news-post-modal">
             {error && (
               <Alert status="error">
                 <AlertIcon />

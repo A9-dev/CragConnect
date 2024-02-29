@@ -74,7 +74,9 @@ describe("Posting", () => {
       fireEvent.click(postForm);
     });
     const modal = await screen.findByTestId("create-post-modal");
-    expect(modal).toBeVisible();
+    await waitFor(() => {
+      expect(modal).toBeVisible();
+    });
   });
 
   test("Error message appears when submitting an empty post", async () => {
@@ -88,7 +90,9 @@ describe("Posting", () => {
     const modal = await screen.findByTestId("create-post-modal", {
       timeout: 3000,
     });
-    expect(modal).toBeVisible();
+    await waitFor(() => {
+      expect(modal).toBeVisible();
+    });
     const submitButton = await screen.findByTestId("create-post-button-submit");
 
     act(() => {
@@ -107,10 +111,10 @@ describe("Posting", () => {
     act(() => {
       fireEvent.click(postForm);
     });
-    const modal = await screen.findByTestId("create-post-modal", {
-      timeout: 2000,
+    const modal = await screen.findByTestId("create-post-modal");
+    await waitFor(() => {
+      expect(modal).toBeVisible();
     });
-    expect(modal).toBeVisible();
     const titleInput = await screen.findByPlaceholderText("Enter title");
     const contentInput = await screen.findByPlaceholderText("Enter content");
     act(() => {

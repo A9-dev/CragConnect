@@ -758,6 +758,7 @@ app.delete("/testPosts", async (req, res) => {
   try {
     logger.info("DELETE /testPosts");
     await Post.deleteMany({ title: "Test Title" });
+    await NewsPost.deleteMany({ title: "Test Title" });
     res.status(200).json({ message: "Test posts deleted" });
     logger.info("DELETE /testPosts 200");
   } catch (error) {
