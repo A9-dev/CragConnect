@@ -30,8 +30,6 @@ const FeedPost = () => {
   };
 
   const handlePostData = () => {
-    console.time("uploadPost");
-
     if (title === "" || content === "") {
       setError("Please enter a title and content");
       return;
@@ -50,7 +48,6 @@ const FeedPost = () => {
 
     setTitle("");
     setContent("");
-    console.timeEnd("uploadPost");
   };
 
   return (

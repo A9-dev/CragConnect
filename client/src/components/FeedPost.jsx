@@ -47,7 +47,6 @@ const FeedPost = () => {
 
     setTitle("");
     setContent("");
-    console.timeEnd("uploadPost");
   };
 
   return (
