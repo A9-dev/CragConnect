@@ -7,7 +7,6 @@ import {
   CardBody,
   Heading,
   useColorModeValue,
-  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { searchUser, subscribe, unsubscribe } from "../dbFunctions";
@@ -70,6 +69,7 @@ function Search({ organisationSearch }) {
     <VStack>
       <Flex align="center" width="50%" margin="auto">
         <Input
+          data-testid="search-bar"
           placeholder={
             organisationSearch
               ? "Search for organisations"
@@ -78,7 +78,7 @@ function Search({ organisationSearch }) {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
-        <Button ml={2} onClick={handleClick}>
+        <Button ml={2} onClick={handleClick} data-testid="submit-search-button">
           Search
         </Button>
       </Flex>

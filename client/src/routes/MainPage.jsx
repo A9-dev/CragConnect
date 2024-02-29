@@ -40,7 +40,7 @@ const MainPage = () => {
             Following
           </Tab>
 
-          <Tab>
+          <Tab data-testid="search-button">
             <SearchIcon mr={2} />
             Search
           </Tab>

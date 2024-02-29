@@ -211,7 +211,6 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid username or password");
     }
 
-    logger.info(user.username + " logged in");
     res.status(200).json(user);
     logger.info("POST /login 200");
   } catch (error) {
