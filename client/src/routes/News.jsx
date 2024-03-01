@@ -1,6 +1,5 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
-import { getNewsPosts } from "../dbFunctions";
+import { useContext } from "react";
 import Feed from "../components/Feed";
 import NewsPost from "../components/NewsPost";
 import {
@@ -31,6 +30,7 @@ const News = () => {
       borderWidth={1}
       m={5}
       mx={"auto"}
+      data-testid="news-page"
     >
       <Tabs align="center" variant="enclosed" colorScheme={tabsColourScheme}>
         <TabList>

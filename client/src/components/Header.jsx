@@ -50,6 +50,7 @@ const Header = () => {
             aria-label="News"
             color={"white"}
             bg={buttonColor} // Add color prop
+            data-testid="news-button"
           >
             News
           </Button>

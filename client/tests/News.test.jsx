@@ -1,5 +1,4 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-
 import App from "../src/App";
 import { fireEvent } from "@testing-library/dom";
 import { deleteTestPosts } from "../src/dbFunctions";
@@ -12,7 +11,7 @@ import {
   test,
 } from "vitest";
 import { act } from "react-dom/test-utils";
-describe("Posting", () => {
+describe("News tests", () => {
   beforeEach(async () => {
     // Render the App component
     act(() => {
@@ -34,7 +33,7 @@ describe("Posting", () => {
     // Input testAccount for the username and password
 
     act(() => {
-      fireEvent.change(usernameInput, { target: { value: "testAccount" } });
+      fireEvent.change(usernameInput, { target: { value: "testAccountO" } });
       fireEvent.change(passwordInput, { target: { value: "password" } });
     });
     // Click the submit button
@@ -46,9 +45,20 @@ describe("Posting", () => {
 
     // Wait for the profile button to appear
     const profileButton = await screen.findByTestId("profile-button");
-    expect(profileButton).toBeVisible();
-    const createPostButton = await screen.findByTestId("create-post-button");
-    expect(createPostButton).toBeVisible();
+    await waitFor(() => {
+      expect(profileButton).toBeVisible();
+    });
+
+    const newsButton = screen.getByTestId("news-button");
+    act(() => {
+      fireEvent.click(newsButton);
+    });
+    const newsPage = await screen.findByTestId("news-page");
+    expect(newsPage).toBeVisible();
+    const postForm = await screen.findByTestId("create-news-post-button");
+    await waitFor(() => {
+      expect(postForm).toBeVisible();
+    });
   });
 
   afterEach(() => {
@@ -61,57 +71,42 @@ describe("Posting", () => {
     });
   });
 
-  test("Renders the post form", async () => {
-    // await new Promise((r) => setTimeout(r, 500));
-    const postForm = await screen.findByTestId("create-post-button");
-    expect(postForm).toBeVisible();
-  });
-
   test("Modal appears when clicking the post form", async () => {
-    // await new Promise((r) => setTimeout(r, 500));
-    const postForm = await screen.findByTestId("create-post-button");
+    const postForm = await screen.findByTestId("create-news-post-button");
     act(() => {
       fireEvent.click(postForm);
     });
-    const modal = await screen.findByTestId("create-post-modal");
+    const modal = await screen.findByTestId("create-news-post-modal");
     await waitFor(() => {
       expect(modal).toBeVisible();
     });
   });
 
-  test("Error message appears when submitting an empty post", async () => {
-    const postForm = await screen.findByTestId("create-post-button", {
-      timeout: 2000,
-    });
+  test("Error message appears when posting without a title", async () => {
+    const postForm = await screen.findByTestId("create-news-post-button");
     act(() => {
       fireEvent.click(postForm);
     });
-
-    const modal = await screen.findByTestId("create-post-modal", {
-      timeout: 3000,
-    });
+    const modal = await screen.findByTestId("create-news-post-modal");
     await waitFor(() => {
       expect(modal).toBeVisible();
     });
-    const submitButton = await screen.findByTestId("create-post-button-submit");
-
+    const postButton = await screen.findByText("Post");
     act(() => {
-      fireEvent.click(submitButton);
+      fireEvent.click(postButton);
     });
-
-    const error = await screen.findByTestId("create-post-error");
-    expect(error).toBeVisible();
+    const error = await screen.findByText("Please enter a title and content");
+    await waitFor(() => {
+      expect(error).toBeVisible();
+    });
   });
 
-  test("Post is created when submitting a valid post", async () => {
-    // Count the number of posts with the title "Test Title"
-
-    const postForm = await screen.findByTestId("create-post-button");
-
+  test("News post can be created", async () => {
+    const postForm = await screen.findByTestId("create-news-post-button");
     act(() => {
       fireEvent.click(postForm);
     });
-    const modal = await screen.findByTestId("create-post-modal");
+    const modal = await screen.findByTestId("create-news-post-modal");
     await waitFor(() => {
       expect(modal).toBeVisible();
     });
@@ -119,21 +114,15 @@ describe("Posting", () => {
     const contentInput = await screen.findByPlaceholderText("Enter content");
     act(() => {
       fireEvent.change(titleInput, { target: { value: "Test Title" } });
-      fireEvent.change(contentInput, { target: { value: "Test Content" } });
+      fireEvent.change(contentInput, { target: { value: "Test content" } });
     });
-    const submitButton = await screen.findByTestId("create-post-button-submit");
-
+    const postButton = await screen.findByText("Post");
     act(() => {
-      fireEvent.click(submitButton);
+      fireEvent.click(postButton);
     });
+    const post = await screen.findByText("Test Title");
     await waitFor(() => {
-      expect(screen.queryByTestId("create-post-modal")).toBeNull();
+      expect(post).toBeVisible();
     });
-
-    const posts = await screen.findAllByText("Test Title");
-    expect(posts.length).toBe(1);
-
-    // Wait for 0.5 seconds
-    // await new Promise((r) => setTimeout(r, 500));
   });
 });
