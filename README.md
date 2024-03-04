@@ -1,4 +1,4 @@
-# Rock Climbing Social Media
+# CragConnect - Rock Climbing Social Media
 
 ## Description
 
