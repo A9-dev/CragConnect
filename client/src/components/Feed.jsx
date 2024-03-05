@@ -42,16 +42,6 @@ const Feed = ({ posts }) => {
   const handleLike = (post) => {
     addLikeToPost(post._id, userData._id)
       .then(() => {
-        setPosts((prev) => {
-          const newPosts = prev.map((p) => {
-            if (p._id === post._id) {
-              p.likes.push(userData._id);
-            }
-            return p;
-          });
-          return newPosts;
-        });
-
         refreshFeed();
       })
       .catch((error) => {
@@ -62,15 +52,6 @@ const Feed = ({ posts }) => {
   const handleUnlike = (post) => {
     deleteLikeFromPost(post._id, userData._id)
       .then(() => {
-        setPosts((prev) => {
-          const newPosts = prev.map((p) => {
-            if (p._id === post._id) {
-              p.likes = p.likes.filter((like) => like !== userData._id);
-            }
-            return p;
-          });
-          return newPosts;
-        });
         refreshFeed();
       })
       .catch((error) => {
@@ -81,13 +62,12 @@ const Feed = ({ posts }) => {
   const handleSubscribe = (username, author) => {
     subscribe(username, author)
       .then(() => {
-        if (!userData.subscribingTo)
-          setUserData({ ...userData, subscribingTo: [author] });
-        else
-          setUserData({
-            ...userData,
-            subscribingTo: [...userData.subscribingTo, author],
-          });
+        setUserData({
+          ...userData,
+          subscribingTo: userData.subscribingTo
+            ? [...userData.subscribingTo, author]
+            : [author],
+        });
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -97,10 +77,12 @@ const Feed = ({ posts }) => {
   const handleUnsubscribe = (username, author) => {
     unsubscribe(username, author)
       .then(() => {
-        setUserData({
-          ...userData,
-          subscribingTo: userData.subscribingTo.filter((sub) => sub !== author),
-        });
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          subscribingTo: prevUserData.subscribingTo.filter(
+            (sub) => sub !== author
+          ),
+        }));
       })
       .catch((error) => {
         console.error("Error:", error);
