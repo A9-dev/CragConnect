@@ -23,7 +23,7 @@ const Footer = () => {
         </Link>{" "}
         /{" "}
         <Link
-          href="https://github.com/A9-dev/partIII"
+          href="https://github.com/A9-dev/CragConnect"
           color="blue.500"
           fontSize="sm"
           mt={2}
