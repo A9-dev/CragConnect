@@ -38,6 +38,7 @@ const logger = winston.createLogger({
 // Create an Express application
 const app = express();
 const port = process.env.PORT || 5000;
+const myIP = process.env.IP_ADDR;
 
 // Enable CORS
 app.use(cors());
@@ -809,6 +810,6 @@ app.delete("/testPosts", async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, myIP, () => {
   normalLogger.info(`Server is running on port ${port}`);
 });
