@@ -39,6 +39,7 @@ To configure the environment variables, please create a `.env` file in the `serv
 ```env
 PORT=your_port
 ATLAS_URI=your_mongodb_uri
+IP_ADDR=your_ip_address (for the server)
 ```
 
 ## Run
