@@ -34,7 +34,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
 
 const Feed = ({ posts }) => {
-  const { loggedIn, refreshFeed, userData, setUserData, setPosts } =
+  const { loggedIn, refreshFeed, userData, setUserData } =
     useContext(AppContext);
   const buttonColorScheme = useColorModeValue("blue", "purple");
   const [commentToPost, setCommentToPost] = useState({});
@@ -99,6 +99,7 @@ const Feed = ({ posts }) => {
       });
   };
 
+  // Converts an ISO 8601 date string to a human-readable string, such as "3 days ago"
   const isoStringToHowLongAgo = (isoString) => {
     const date = new Date(isoString);
     const now = new Date();

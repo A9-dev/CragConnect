@@ -56,6 +56,7 @@ const Fitness = () => {
   const numExercises =
     fitnessPlan == "Strength" ? sExercises.length : fExercises.length;
 
+  // Set the exercises done in the database
   const handleSetExercisesDone = (exercisesDone) => {
     setExercisesDoneDB(userData.username, exercisesDone)
       .then(() => {
@@ -87,6 +88,7 @@ const Fitness = () => {
   };
 
   useEffect(() => {
+    // Get the top ten fitness scores, populating the leaderboard
     getTopTenFitnessScores().then((data) => {
       setScores(data.data);
     });

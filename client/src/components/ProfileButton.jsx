@@ -34,9 +34,9 @@ const ProfileButton = () => {
     setUserData({});
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const handleProfile = () => {
     onOpen();
-    // TODO: Add functionality to profile button
   };
 
   const handleUnfollowButton = (userToUnfollow) => {

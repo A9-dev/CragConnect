@@ -31,6 +31,7 @@ const CreateEventButton = ({ refreshEventList }) => {
 
   const { userData } = useContext(AppContext);
 
+  // Handle the Enter key being pressed, creates a new event
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleCreateEvent();
@@ -54,6 +55,7 @@ const CreateEventButton = ({ refreshEventList }) => {
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
     return phoneRegex.test(phoneNumber);
   };
+
   const handleCreateEvent = () => {
     // Send the event details to Express
     if (

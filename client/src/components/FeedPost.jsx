@@ -23,6 +23,7 @@ const FeedPost = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
+  // Handle the Enter key being pressed, creates a new post
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handlePostData();
@@ -83,7 +84,6 @@ const FeedPost = () => {
               placeholder="Enter content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              onKeyDown={handleKeyDown}
             />
           </ModalBody>
           <ModalFooter>

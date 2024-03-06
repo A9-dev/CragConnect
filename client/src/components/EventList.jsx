@@ -19,6 +19,8 @@ const iso8601ToHumanReadable = (iso8601) => {
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
+
+  // Fetch the events from the server
   const refreshEventList = () => {
     getEvents()
       .then((events) => {

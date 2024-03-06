@@ -39,7 +39,6 @@ const MainPage = () => {
             <BellIcon mr={2} />
             Following
           </Tab>
-
           <Tab data-testid="search-button">
             <SearchIcon mr={2} />
             Search
@@ -48,7 +47,6 @@ const MainPage = () => {
         <TabPanels>
           <TabPanel>
             {loggedIn && <FeedPost />}
-
             <Feed posts={posts} />
           </TabPanel>
           <TabPanel>
