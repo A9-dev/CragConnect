@@ -18,16 +18,19 @@ function Search({ organisationSearch }) {
   const { loggedIn, setUserData, userData } = useContext(AppContext);
   const buttonColorScheme = useColorModeValue("blue", "purple");
 
+  // Handle the search input
   const handleChange = (event) => {
     setSearch(event.target.value);
   };
 
+  // Handle the enter key, triggers the search
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleClick();
     }
   };
 
+  // Handle the search button being clicked
   const handleClick = () => {
     searchUser(search)
       .then((result) => {

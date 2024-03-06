@@ -8,10 +8,12 @@ const winston = require("winston");
 const { createLogger, format, transports } = require("winston");
 const { combine, timestamp, label, printf, colorize } = format;
 
+// Format for non REST API logs
 const myFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
+// Format for REST API logs
 const alignedFormat = printf(({ level, message, timestamp }) => {
   var [method, endpoint, status] = message.split(" ");
   // if status is undefined then make it an empty string
@@ -21,11 +23,13 @@ const alignedFormat = printf(({ level, message, timestamp }) => {
   )} ${status}`;
 });
 
+// Create logger for non REST API logs
 const normalLogger = createLogger({
   format: combine(colorize(), timestamp(), myFormat),
   transports: [new transports.Console()],
 });
-// Create logger
+
+// Create logger for REST API logs
 const logger = winston.createLogger({
   format: winston.format.combine(colorize(), timestamp(), alignedFormat),
   transports: [new winston.transports.Console()],
@@ -48,13 +52,13 @@ mongoose
     normalLogger.error("Error connecting to MongoDB:", err.message);
   });
 
-// Define a MongoDB schema and model using Mongoose
+// Define the schema for the User model, includes a username, password, if the user is an organisation, who subscribes to this user, who this user subscribes to, full name, what fitness plan they use, fitnessScore (how many workouts they've done), last date they worked out, total exercises done (for the day)
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true, // Make sure the username is unique
+    unique: true,
   },
   password: {
     type: String,
@@ -96,6 +100,7 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
+// Define the schema for the Post model, includes a title, content, user who posted it, date and time, likes, and comments
 const postSchema = new Schema({
   title: {
     type: String,
@@ -125,6 +130,7 @@ const postSchema = new Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
+// Define the schema for the Comment model, includes content, user who posted it, and date and time
 const commentSchema = new Schema({
   content: {
     type: String,
@@ -142,6 +148,7 @@ const commentSchema = new Schema({
 
 const Comment = mongoose.model("Comment", commentSchema);
 
+// Define the schema for the NewsPost model, includes a title, content, user who posted it, date and time, likes, and comments
 const newsPostSchema = new Schema({
   title: {
     type: String,
@@ -170,6 +177,7 @@ const newsPostSchema = new Schema({
 
 const NewsPost = mongoose.model("NewsPost", newsPostSchema);
 
+// Define the schema for the Event model, includes a creator, event title, event description, address, postcode, phone number, date and time, users going, and users interested
 const eventSchema = new Schema({
   creator: {
     type: mongoose.Schema.Types.ObjectId,
@@ -211,8 +219,10 @@ const eventSchema = new Schema({
 
 const Event = mongoose.model("Event", eventSchema);
 
-app.use(express.json()); // <==== parse request body as JSON
+// Use the Express application to handle data in JSON format
+app.use(express.json());
 
+// Route to handle user login
 app.post("/login", async (req, res) => {
   try {
     logger.info("POST /login");
@@ -233,7 +243,7 @@ app.post("/login", async (req, res) => {
     logger.error("POST /login 400 " + error.message);
   }
 });
-// Define a route to handle user creation
+// Route to handle user creation
 app.post("/register", async (req, res) => {
   try {
     logger.info("POST /register");
@@ -269,6 +279,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
+// Route to handle user deletion
 app.post("/posts", async (req, res) => {
   try {
     logger.info("POST /posts");
@@ -297,6 +308,7 @@ app.post("/posts", async (req, res) => {
   }
 });
 
+// Route to handle getting all posts
 app.get("/posts", async (req, res) => {
   try {
     logger.info("GET /posts");
@@ -318,6 +330,7 @@ app.get("/posts", async (req, res) => {
   }
 });
 
+// Route to handle getting all news posts
 app.get("/newsPosts", async (req, res) => {
   try {
     logger.info("GET /newsPosts");
@@ -339,6 +352,7 @@ app.get("/newsPosts", async (req, res) => {
   }
 });
 
+// Route to handle creating a news post
 app.post("/newsPosts", async (req, res) => {
   try {
     logger.info("POST /newsPosts");
@@ -446,6 +460,7 @@ app.delete("/subscriptions", async (req, res) => {
   }
 });
 
+// Route to handle searching for a user
 app.get("/search/:searchTerm", async (req, res) => {
   try {
     logger.info("GET /search");
@@ -464,6 +479,7 @@ app.get("/search/:searchTerm", async (req, res) => {
   }
 });
 
+// Route to handle creating an event
 app.post("/events", async (req, res) => {
   try {
     logger.info("POST /events");
@@ -503,6 +519,7 @@ app.post("/events", async (req, res) => {
   }
 });
 
+// Route to handle getting all events
 app.get("/events", async (req, res) => {
   try {
     logger.info("GET /events");
@@ -523,6 +540,7 @@ app.get("/events", async (req, res) => {
   }
 });
 
+// Route to handle deleting a post by id
 app.delete("/posts/:id", async (req, res) => {
   try {
     logger.info("DELETE /posts");
@@ -537,6 +555,7 @@ app.delete("/posts/:id", async (req, res) => {
   }
 });
 
+// Route to handle getting a user by username
 app.get("/user/:username", async (req, res) => {
   try {
     logger.info("GET /user");
@@ -553,6 +572,7 @@ app.get("/user/:username", async (req, res) => {
   }
 });
 
+// Route to handle updating a user by username, used for settings
 app.put("/user/:username", async (req, res) => {
   try {
     logger.info("PUT /user");
@@ -580,6 +600,7 @@ app.put("/user/:username", async (req, res) => {
   }
 });
 
+// Route to handle updating a user's fitness score
 app.put("/user/fitnessScore/:username", async (req, res) => {
   try {
     logger.info("PUT /user/fitnessScore");
@@ -605,6 +626,7 @@ app.put("/user/fitnessScore/:username", async (req, res) => {
   }
 });
 
+// Route to handle getting the top n fitness scores
 app.get("/fitnessScores/:number", async (req, res) => {
   try {
     const number = parseInt(req.params.number);
@@ -623,6 +645,7 @@ app.get("/fitnessScores/:number", async (req, res) => {
   }
 });
 
+// Route to handle resetting a user's exercises done, used after they complete a workout
 app.put("/user/resetExercisesDone/:username", async (req, res) => {
   try {
     logger.info("PUT /user/resetExercisesDone");
@@ -641,6 +664,7 @@ app.put("/user/resetExercisesDone/:username", async (req, res) => {
   }
 });
 
+// Route to handle setting a user's exercises done, used after they complete an exercise
 app.put("/user/setExercisesDone/:username", async (req, res) => {
   try {
     logger.info("PUT /user/setExercisesDone");
@@ -660,7 +684,7 @@ app.put("/user/setExercisesDone/:username", async (req, res) => {
   }
 });
 
-// Add like to post by id, user id is in the request body
+// Route to add like to post by id
 app.post("/posts/like/:postId", async (req, res) => {
   try {
     logger.info("POST /addLike");
@@ -687,6 +711,7 @@ app.post("/posts/like/:postId", async (req, res) => {
   }
 });
 
+// Route to delete like from post by id
 app.delete("/posts/like/:postId", async (req, res) => {
   try {
     logger.info("DELETE /deleteLike");
@@ -715,6 +740,7 @@ app.delete("/posts/like/:postId", async (req, res) => {
   }
 });
 
+// Route to add comment to post by id
 app.post("/posts/comment/:postId", async (req, res) => {
   try {
     logger.info("POST /addComment");
@@ -745,6 +771,7 @@ app.post("/posts/comment/:postId", async (req, res) => {
   }
 });
 
+// Route to delete comment from post by id
 app.delete("/posts/:postId/comment/:commentId", async (req, res) => {
   try {
     logger.info("DELETE /deleteComment");
@@ -767,6 +794,7 @@ app.delete("/posts/:postId/comment/:commentId", async (req, res) => {
   }
 });
 
+// Route to handle deleting all posts made by automated tests
 app.delete("/testPosts", async (req, res) => {
   try {
     logger.info("DELETE /testPosts");

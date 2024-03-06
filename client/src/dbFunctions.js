@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Sends login request to server
 const loginUser = async (username, password) => {
   try {
     const response = await axios.post("http://localhost:5000/login", {
@@ -15,6 +16,7 @@ const loginUser = async (username, password) => {
   }
 };
 
+// Sends registration request to server
 const uploadUser = async (username, password, orgBool, fullName) => {
   try {
     const response = await axios.post("http://localhost:5000/register", {
@@ -32,6 +34,7 @@ const uploadUser = async (username, password, orgBool, fullName) => {
   }
 };
 
+// Fetches posts from server
 const getPosts = async () => {
   try {
     const response = await axios.get("http://localhost:5000/posts");
@@ -44,6 +47,7 @@ const getPosts = async () => {
   }
 };
 
+// Sends post to server
 const uploadPost = async (username, title, content) => {
   try {
     const response = await axios.post("http://localhost:5000/posts", {
@@ -60,6 +64,7 @@ const uploadPost = async (username, title, content) => {
   }
 };
 
+// Fetches news posts from server
 const getNewsPosts = async () => {
   try {
     const response = await axios.get("http://localhost:5000/newsPosts");
@@ -72,6 +77,7 @@ const getNewsPosts = async () => {
   }
 };
 
+// Sends news post to server
 const uploadNewsPost = async (username, title, content) => {
   try {
     const response = await axios.post("http://localhost:5000/newsPosts", {
@@ -88,6 +94,7 @@ const uploadNewsPost = async (username, title, content) => {
   }
 };
 
+// Sends subscription request to server
 const subscribe = async (subscriberUsername, subscribeeUsername) => {
   try {
     const response = await axios.post("http://localhost:5000/subscriptions", {
@@ -103,6 +110,7 @@ const subscribe = async (subscriberUsername, subscribeeUsername) => {
   }
 };
 
+// Sends unsubscription request to server
 const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
   try {
     const response = await axios.delete("http://localhost:5000/subscriptions", {
@@ -120,6 +128,7 @@ const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
   }
 };
 
+// Sends search request to server
 const searchUser = async (searchTerm) => {
   try {
     const response = await axios.get(
@@ -133,6 +142,7 @@ const searchUser = async (searchTerm) => {
   }
 };
 
+// Sends event post request to server
 const postEvent = async (
   username,
   eventTitle,
@@ -172,6 +182,7 @@ const postEvent = async (
   }
 };
 
+// Fetches events from server
 const getEvents = async () => {
   try {
     const response = await axios.get("http://localhost:5000/events");
@@ -182,6 +193,8 @@ const getEvents = async () => {
     // console.log(error);
   }
 };
+
+// Deletes post from server
 const deletePost = async (postId) => {
   try {
     const response = await axios.delete(
@@ -195,6 +208,7 @@ const deletePost = async (postId) => {
   }
 };
 
+// Fetches user data from server
 const getUserData = async (username) => {
   try {
     const response = await axios.get("http://localhost:5000/user/" + username);
@@ -206,6 +220,7 @@ const getUserData = async (username) => {
   }
 };
 
+// Updates user data on server
 const updateUserData = async (userData) => {
   // console.log("From update user data:", userData);
   try {
@@ -224,6 +239,7 @@ const updateUserData = async (userData) => {
   }
 };
 
+// Increases user's fitness score on server
 const increaseFitnessScore = async (username) => {
   try {
     const response = await axios.put(
@@ -238,6 +254,7 @@ const increaseFitnessScore = async (username) => {
   }
 };
 
+// Fetches top ten fitness scores from server
 const getTopTenFitnessScores = async () => {
   try {
     const response = await axios.get("http://localhost:5000/fitnessScores/10");
@@ -249,6 +266,7 @@ const getTopTenFitnessScores = async () => {
   }
 };
 
+// Resets user's exercises done on server
 const resetExercisesDone = async (username) => {
   try {
     const response = await axios.put(
@@ -263,6 +281,7 @@ const resetExercisesDone = async (username) => {
   }
 };
 
+// Sets user's exercises done on server
 const setExercisesDoneDB = async (username, exercisesDone) => {
   try {
     const response = await axios.put(
@@ -280,6 +299,7 @@ const setExercisesDoneDB = async (username, exercisesDone) => {
   }
 };
 
+// Adds like to post on server
 const addLikeToPost = async (postId, userId) => {
   try {
     const response = await axios.post(
@@ -297,6 +317,7 @@ const addLikeToPost = async (postId, userId) => {
   }
 };
 
+// Deletes like from post on server
 const deleteLikeFromPost = async (postId, userId) => {
   try {
     const response = await axios.delete(
@@ -316,6 +337,7 @@ const deleteLikeFromPost = async (postId, userId) => {
   }
 };
 
+// Adds comment to post on server
 const addCommentToPost = async (postId, userId, comment) => {
   try {
     const response = await axios.post(
@@ -334,6 +356,7 @@ const addCommentToPost = async (postId, userId, comment) => {
   }
 };
 
+// Deletes comment from post on server
 const deleteCommentFromPost = async (postId, commentId) => {
   try {
     const response = await axios.delete(
@@ -348,11 +371,13 @@ const deleteCommentFromPost = async (postId, commentId) => {
   }
 };
 
+// Deletes test posts from server
 const deleteTestPosts = async () => {
   try {
     const response = await axios.delete("http://localhost:5000/testPosts");
     // console.log(response.data);
     // console.log(response.status);
+    return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
   }

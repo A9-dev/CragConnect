@@ -18,6 +18,7 @@ const Settings = () => {
   const { userData, setUserData } = useContext(AppContext);
   const fitnessPlan = userData.fitnessPlan;
 
+  // Set the fitnessplan in the database
   const setFitnessPlan = (plan) => {
     setUserData({ ...userData, fitnessPlan: plan });
     updateUserData({ ...userData, fitnessPlan: plan });

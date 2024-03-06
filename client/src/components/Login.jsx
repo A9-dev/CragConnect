@@ -25,7 +25,7 @@ import { useContext } from "react";
 import { AppContext } from "../App";
 
 const Login = () => {
-  const { setLoggedIn, userData, setUserData } = useContext(AppContext);
+  const { setLoggedIn, setUserData } = useContext(AppContext);
 
   const [usernameInput, setUsernameInput] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -90,6 +90,7 @@ const Login = () => {
     setIsChecked(event.target.checked);
   };
 
+  // Handles opening the login modal
   const handleOpen = () => {
     setIsRegister(false);
   };
