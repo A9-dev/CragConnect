@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors"); // Import the cors module
 require("dotenv").config();
+const winston = require("winston");
 
 const { createLogger, format, transports } = require("winston");
 const { combine, timestamp, label, printf, colorize } = format;
@@ -11,9 +12,23 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-const logger = createLogger({
+const alignedFormat = printf(({ level, message, timestamp }) => {
+  var [method, endpoint, status] = message.split(" ");
+  // if status is undefined then make it an empty string
+  status = status || "Received";
+  return `${timestamp} ${level}: ${method.padEnd(7)} ${endpoint.padEnd(
+    13
+  )} ${status}`;
+});
+
+const normalLogger = createLogger({
   format: combine(colorize(), timestamp(), myFormat),
   transports: [new transports.Console()],
+});
+// Create logger
+const logger = winston.createLogger({
+  format: winston.format.combine(colorize(), timestamp(), alignedFormat),
+  transports: [new winston.transports.Console()],
 });
 
 // Create an Express application
@@ -27,10 +42,10 @@ app.use(cors());
 mongoose
   .connect(process.env.ATLAS_URI, {})
   .then(() => {
-    logger.info("Connected to MongoDB");
+    normalLogger.info("Connected to MongoDB");
   })
   .catch((err) => {
-    logger.error("Error connecting to MongoDB:", err.message);
+    normalLogger.error("Error connecting to MongoDB:", err.message);
   });
 
 // Define a MongoDB schema and model using Mongoose
@@ -261,7 +276,6 @@ app.post("/posts", async (req, res) => {
     const userThatPosted = await User.findOne({
       username: req.body.username,
     });
-    logger.info(req.body.username + " posted a new post");
 
     const timestamp = new Date().toISOString();
 
@@ -768,5 +782,5 @@ app.delete("/testPosts", async (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  logger.info(`Server is running on port ${port}`);
+  normalLogger.info(`Server is running on port ${port}`);
 });
