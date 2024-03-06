@@ -61,6 +61,7 @@ const Header = () => {
             aria-label="Events"
             bg={buttonColor} // Add color prop
             color={"white"}
+            data-testid="events-button"
           >
             Events
           </Button>

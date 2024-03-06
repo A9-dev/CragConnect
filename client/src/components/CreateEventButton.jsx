@@ -100,7 +100,7 @@ const CreateEventButton = ({ refreshEventList }) => {
 
   return (
     <>
-      <Button onClick={handleOpenModal} m={3}>
+      <Button onClick={handleOpenModal} m={3} data-testid="create-event-button">
         Create an event
       </Button>
 
@@ -109,7 +109,7 @@ const CreateEventButton = ({ refreshEventList }) => {
         <ModalContent>
           <ModalCloseButton />
           <ModalHeader>Create Event</ModalHeader>
-          <ModalBody>
+          <ModalBody data-testid="create-event-modal">
             {error && (
               <Alert status="error">
                 <AlertIcon />
