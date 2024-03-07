@@ -220,6 +220,43 @@ const eventSchema = new Schema({
 
 const Event = mongoose.model("Event", eventSchema);
 
+// Define the schema for the PartnerFindEntry model, includes a creator, title, description, date and time, location, users interested, and if it is following only
+const partnerFindEntrySchema = new Schema({
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  dateAndTime: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  usersInterested: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
+  followingOnly: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const PartnerFindEntry = mongoose.model(
+  "PartnerFindEntry",
+  partnerFindEntrySchema
+);
+
 // Use the Express application to handle data in JSON format
 app.use(express.json());
 
@@ -809,6 +846,7 @@ app.delete("/testPosts", async (req, res) => {
   }
 });
 
+// Route to handle deleting event by id
 app.delete("/events/:eventId", async (req, res) => {
   try {
     logger.info("DELETE /events");
