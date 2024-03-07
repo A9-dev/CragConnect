@@ -18,16 +18,16 @@ describe("Correct rendering", () => {
   });
 
   test("Renders navigation buttons", () => {
-    // Check for the presence of the navigation buttons, Home, News, Events, GearShare, Fitness
+    // Check for the presence of the navigation buttons, Home, News, Events, PartnerFind, Fitness
     const homeButton = screen.getByText(/Home/i);
     const newsButton = screen.getByText(/News/i);
     const eventsButton = screen.getByText(/Events/i);
-    const gearShareButton = screen.getByText(/GearShare/i);
+    const partnerFindButton = screen.getByText(/PartnerFind/i);
     const fitnessButton = screen.getByText(/Fitness/i);
     expect(homeButton).toBeInTheDocument();
     expect(newsButton).toBeInTheDocument();
     expect(eventsButton).toBeInTheDocument();
-    expect(gearShareButton).toBeInTheDocument();
+    expect(partnerFindButton).toBeInTheDocument();
     expect(fitnessButton).toBeInTheDocument();
   });
 

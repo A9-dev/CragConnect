@@ -67,13 +67,13 @@ const Header = () => {
           </Button>
           <Button
             as={ReactRouterLink}
-            to={`/gearShare`}
+            to={`/partnerFind`}
             leftIcon={<AiOutlineShareAlt />}
-            aria-label="GearShare"
+            aria-label="PartnerFind"
             bg={buttonColor} // Add color prop
             color={"white"}
           >
-            GearShare
+            PartnerFind
           </Button>
           <Button
             as={ReactRouterLink}

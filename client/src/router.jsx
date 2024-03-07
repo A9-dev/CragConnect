@@ -4,7 +4,7 @@ import Root from "./routes/Root";
 import Events from "./routes/Events";
 import News from "./routes/News";
 import Settings from "./routes/Settings";
-import GearShare from "./routes/GearShare";
+import ParnterFind from "./routes/PartnerFind";
 import ErrorPage from "./routes/ErrorPage";
 import Fitness from "./routes/Fitness";
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
       { path: "/", element: <MainPage /> },
       { path: "/events", element: <Events /> },
       { path: "/news", element: <News /> },
-      { path: "/gearShare", element: <GearShare /> },
+      { path: "/partnerFind", element: <ParnterFind /> },
       { path: "/settings", element: <Settings /> },
       { path: "/fitness", element: <Fitness /> },
     ],
