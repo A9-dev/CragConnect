@@ -394,6 +394,27 @@ const deleteEvent = async (eventId) => {
   }
 };
 
+const getPartnerFindEntries = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/partnerEntry");
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const createPartnerFindEntry = async (entry) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/partnerEntry",
+      entry
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -414,8 +435,10 @@ export {
   resetExercisesDone,
   setExercisesDoneDB,
   addLikeToPost,
+  getPartnerFindEntries,
   deleteLikeFromPost,
   addCommentToPost,
+  createPartnerFindEntry,
   deleteCommentFromPost,
   deleteTestPosts,
   deleteEvent,

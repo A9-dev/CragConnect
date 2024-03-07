@@ -226,10 +226,6 @@ const partnerFindEntrySchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  title: {
-    type: String,
-    required: true,
-  },
   description: {
     type: String,
     required: true,
@@ -856,6 +852,44 @@ app.delete("/events/:eventId", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("DELETE /events 400: " + error.message);
+  }
+});
+
+app.post("/partnerEntry", async (req, res) => {
+  try {
+    logger.info("POST /partnerEntry");
+
+    // Get user from id
+    const newEntry = new PartnerFindEntry({
+      creator: req.body.creator,
+      description: req.body.description,
+      dateAndTime: req.body.dateAndTime,
+      location: req.body.location,
+      usersInterested: [],
+      followingOnly: req.body.followingOnly,
+    });
+
+    const savedEntry = await newEntry.save();
+    res.status(201).json(savedEntry);
+    logger.info("POST /partnerEntry 201");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("POST /partnerEntry 400: " + error.message);
+  }
+});
+
+app.get("/partnerEntry", async (req, res) => {
+  try {
+    logger.info("GET /partnerEntry");
+    const entries = await PartnerFindEntry.find({}).populate(
+      "creator",
+      "username fullName"
+    );
+    res.status(200).json(entries);
+    logger.info("GET /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /partnerEntry 400: " + error.message);
   }
 });
 

@@ -1,8 +1,24 @@
+import { Box, Heading, Button, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { getPartnerFindEntries } from "../dbFunctions";
+import { AppContext } from "../App";
+import { useContext } from "react";
+import CreatePartnerFind from "../components/CreatePartnerFind";
+
 const PartnerFind = () => {
+  const [entries, setEntries] = useState([]);
+  const { loggedIn } = useContext(AppContext);
+
+  useEffect(() => {
+    getPartnerFindEntries().then((data) => {
+      setEntries(data);
+    });
+  }, []);
+
   return (
-    <div>
-      <h1>PartnerFind</h1>
-    </div>
+    <Box width={"75%"} m={"auto"} mt={"15"}>
+      {loggedIn && <CreatePartnerFind />}
+    </Box>
   );
 };
 
