@@ -809,6 +809,18 @@ app.delete("/testPosts", async (req, res) => {
   }
 });
 
+app.delete("/events/:eventId", async (req, res) => {
+  try {
+    logger.info("DELETE /events");
+    const event = await Event.findByIdAndDelete(req.params.eventId);
+    res.status(200).json(event);
+    logger.info("DELETE /events 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /events 400: " + error.message);
+  }
+});
+
 // Start the server
 app.listen(port, myIP, () => {
   normalLogger.info(`Server is running on port ${port}`);

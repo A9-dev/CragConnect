@@ -6,11 +6,13 @@ import {
   Heading,
   Text,
   VStack,
+  IconButton,
 } from "@chakra-ui/react";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../App";
 import CreateEventButton from "./CreateEventButton";
-import { getEvents } from "../dbFunctions";
+import { getEvents, deleteEvent } from "../dbFunctions";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const iso8601ToHumanReadable = (iso8601) => {
   const date = new Date(iso8601);
@@ -48,6 +50,22 @@ const EventList = () => {
               <Heading size="lg" textAlign={"center"}>
                 {event.eventTitle}
               </Heading>
+              {userData._id && userData._id === event.creator._id && (
+                <IconButton
+                  onClick={() => {
+                    console.log("Delete event");
+                    deleteEvent(event._id)
+                      .then(() => {
+                        refreshEventList();
+                      })
+                      .catch((error) => {
+                        console.error("Error:", error);
+                      });
+                  }}
+                  aria-label="Delete"
+                  icon={<DeleteIcon />}
+                />
+              )}
             </CardHeader>
             <CardBody>
               <VStack>

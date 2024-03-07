@@ -84,7 +84,6 @@ const FeedPost = () => {
               placeholder="Enter content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              onKeyDown={handleKeyDown}
             />
           </ModalBody>
           <ModalFooter>
