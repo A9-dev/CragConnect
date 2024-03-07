@@ -383,6 +383,17 @@ const deleteTestPosts = async () => {
   }
 };
 
+const deleteEvent = async (eventId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/events/" + eventId
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -407,4 +418,5 @@ export {
   addCommentToPost,
   deleteCommentFromPost,
   deleteTestPosts,
+  deleteEvent,
 };
