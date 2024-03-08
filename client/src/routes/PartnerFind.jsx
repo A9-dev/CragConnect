@@ -1,4 +1,4 @@
-import { Box, VStack, Heading, Text } from "@chakra-ui/react";
+import { Box, VStack, Text } from "@chakra-ui/react";
 import { Avatar, Flex, HStack, Spacer, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getPartnerFindEntries } from "../dbFunctions";
