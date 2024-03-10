@@ -15,14 +15,13 @@ This is a social media app built for rock climbers to organise and talk about ro
 
 ## Features that _will_ be added
 
-- User authentication
-- Climbing Parnter Matching
+- Climbing Partner Matching
 
 ## Features that _might_ be added
 
-- Messaging
-- Notifications
+- Messaging/Links to a way to contact other users
 - Tailorable fitness plans
+- User authentication
 
 ## Installation
 
