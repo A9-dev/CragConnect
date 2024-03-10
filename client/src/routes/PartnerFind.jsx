@@ -1,5 +1,5 @@
-import { Box, VStack, Text, CardFooter } from "@chakra-ui/react";
-import { Avatar, Flex, HStack, Spacer, Button } from "@chakra-ui/react";
+import { Box, VStack, Text, CardFooter, StackDivider } from "@chakra-ui/react";
+import { Avatar, Flex, HStack, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
   getPartnerFindEntries,
@@ -9,16 +9,20 @@ import {
 import { AppContext } from "../App";
 import { useContext } from "react";
 import CreatePartnerFind from "../components/CreatePartnerFind";
-import { Card, CardHeader, CardBody } from "@chakra-ui/react";
+import { Card, CardHeader, CardBody, Select } from "@chakra-ui/react";
 const PartnerFind = () => {
   const [entries, setEntries] = useState([]);
   const { loggedIn, userData } = useContext(AppContext);
 
   useEffect(() => {
+    refreshEntries();
+  }, []);
+
+  const refreshEntries = () => {
     getPartnerFindEntries().then((data) => {
       setEntries(data.data);
     });
-  }, []);
+  };
 
   const dateAndTimeToString = (dateAndTime) => {
     const date = new Date(dateAndTime);
@@ -55,30 +59,24 @@ const PartnerFind = () => {
 
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
-      {loggedIn && <CreatePartnerFind />}
-      <VStack>
+      {loggedIn && <CreatePartnerFind refreshEntries={refreshEntries} />}
+      <VStack spacing={5}>
         {entries &&
           entries.map((entry) => (
             // Info I have: Creator, Description, Date and time (ISO), location, interested people, and bool for if it's restricted to following only
             <Card key={entry._id} width="850px">
               <CardHeader>
                 <Flex>
-                  <HStack>
-                    <Avatar size="sm" name={entry.creator.fullName} mr={2} />
-                    <Text fontSize="2xl">{entry.creator.username}</Text>
-                    <Spacer />
-                    <Text>|</Text>
-                    <Spacer />
-                    <Text>
+                  <HStack divider={<StackDivider orientation="horizontal" />}>
+                    <Flex>
+                      <Avatar size="sm" name={entry.creator.fullName} mr={2} />
+                      <Text fontSize="2xl">{entry.creator.username}</Text>
+                    </Flex>
+                    <Text textAlign={"center"}>
                       Date and time: {dateAndTimeToString(entry.dateAndTime)}
                     </Text>
-                    <Spacer />
-                    <Text>|</Text>
-                    <Spacer />
-                    <Text>Location: {entry.location}</Text>
-                    <Text>|</Text>
-                    <Spacer />
-                    <Text>
+                    <Text textAlign={"center"}>Location: {entry.location}</Text>
+                    <Text textAlign={"center"}>
                       {entry.usersInterested.length}{" "}
                       {entry.usersInterested.length === 1
                         ? "person is"
@@ -120,6 +118,19 @@ const PartnerFind = () => {
                         Undo register interest
                       </Button>
                     )}
+                  {loggedIn && userData.username === entry.creator.username && (
+                    <Select
+                      placeholder="Select from interested users"
+                      width={"50%"}
+                      margin={"auto"}
+                    >
+                      {entry.usersInterested.map((user) => (
+                        <option key={user._id} value={user}>
+                          {user.fullName}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
 
                   <CardFooter>
                     <Text as="em">

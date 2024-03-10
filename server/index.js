@@ -246,6 +246,14 @@ const partnerFindEntrySchema = new Schema({
     type: Boolean,
     required: true,
   },
+  selectedUsers: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
+  availableSpaces: {
+    type: Number,
+    required: true,
+  },
 });
 
 const PartnerFindEntry = mongoose.model(
@@ -867,6 +875,8 @@ app.post("/partnerEntry", async (req, res) => {
       location: req.body.location,
       usersInterested: [],
       followingOnly: req.body.followingOnly,
+      selectedUsers: [],
+      availableSpaces: req.body.availableSpaces,
     });
 
     const savedEntry = await newEntry.save();
@@ -874,17 +884,16 @@ app.post("/partnerEntry", async (req, res) => {
     logger.info("POST /partnerEntry 201");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("POST /partnerEntry 400: " + error.message);
+    normalLogger.error("POST /partnerEntry 400: " + error.message);
   }
 });
 
 app.get("/partnerEntry", async (req, res) => {
   try {
     logger.info("GET /partnerEntry");
-    const entries = await PartnerFindEntry.find({}).populate(
-      "creator",
-      "username fullName"
-    );
+    const entries = await PartnerFindEntry.find({})
+      .populate("creator", "username fullName")
+      .populate("usersInterested", "username fullName");
     res.status(200).json(entries);
     logger.info("GET /partnerEntry 200");
   } catch (error) {
