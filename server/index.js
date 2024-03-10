@@ -19,7 +19,7 @@ const alignedFormat = printf(({ level, message, timestamp }) => {
   // if status is undefined then make it an empty string
   status = status || "Received";
   return `${timestamp} ${level}: ${method.padEnd(7)} ${endpoint.padEnd(
-    13
+    14
   )} ${status}`;
 });
 
@@ -890,6 +890,56 @@ app.get("/partnerEntry", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("GET /partnerEntry 400: " + error.message);
+  }
+});
+
+app.post("/partnerEntry/interest/:entryId", async (req, res) => {
+  try {
+    logger.info("POST /partnerEntry/interest");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    const user = await User.findById(req.body.userId);
+    if (!entry) {
+      throw new Error("Entry does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (entry.usersInterested.includes(user._id)) {
+      throw new Error("User already interested in this entry");
+    }
+    entry.usersInterested.push(user._id);
+    const savedEntry = await entry.save();
+    res.status(200).json(savedEntry);
+    logger.info("POST /partnerEntxry/interest 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("POST /partnerEntry/interest 400: " + error.message);
+  }
+});
+
+app.delete("/partnerEntry/interest/:entryId", async (req, res) => {
+  try {
+    logger.info("DELETE /partnerEntry/interest");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    const user = await User.findById(req.body.userId);
+    if (!entry) {
+      throw new Error("Entry does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (!entry.usersInterested.includes(user._id)) {
+      throw new Error("User is not interested in this entry");
+    }
+    entry.usersInterested = entry.usersInterested.filter(
+      (id) => id.toString() !== user._id.toString()
+    );
+    const savedEntry = await entry.save();
+    res.status(200).json(savedEntry);
+    logger.info("DELETE /partnerEntry/interest 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /partnerEntry/interest 400: " + error.message);
   }
 });
 

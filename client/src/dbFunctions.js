@@ -415,6 +415,36 @@ const createPartnerFindEntry = async (entry) => {
   }
 };
 
+const addInterestToPartnerFindEntry = async (entryId, userId) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/partnerEntry/interest/" + entryId,
+      {
+        userId,
+      }
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const deleteInterestFromPartnerFindEntry = async (entryId, userId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/partnerEntry/interest/" + entryId,
+      {
+        data: {
+          userId,
+        },
+      }
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -436,10 +466,12 @@ export {
   setExercisesDoneDB,
   addLikeToPost,
   getPartnerFindEntries,
+  deleteInterestFromPartnerFindEntry,
   deleteLikeFromPost,
   addCommentToPost,
   createPartnerFindEntry,
   deleteCommentFromPost,
+  addInterestToPartnerFindEntry,
   deleteTestPosts,
   deleteEvent,
 };

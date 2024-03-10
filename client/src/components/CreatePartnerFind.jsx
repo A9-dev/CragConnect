@@ -61,7 +61,7 @@ function CreatePartnerFind() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Create PartnerFindEntry</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
