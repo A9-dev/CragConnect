@@ -46,7 +46,7 @@ function CreatePartnerFind({ refreshEntries }) {
       setError("Please enter a location");
       return;
     }
-    if (availableSpaces < 0) {
+    if (availableSpaces <= 0) {
       setError("Please enter a valid number of available spaces");
       return;
     }

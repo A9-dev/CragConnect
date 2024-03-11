@@ -136,7 +136,9 @@ const PartnerFind = () => {
 
                   {loggedIn &&
                     userData.username !== entry.creator.username &&
-                    !entry.usersInterested.includes(userData._id) && (
+                    !entry.usersInterested.some(
+                      (user) => user._id === userData._id
+                    ) && (
                       <Button
                         width={"80%"}
                         margin={"auto"}
@@ -148,8 +150,10 @@ const PartnerFind = () => {
                       </Button>
                     )}
                   {loggedIn &&
-                    userData.username !== entry.creator.username &&
-                    entry.usersInterested.includes(userData._id) && (
+                    userData._id !== entry.creator._id &&
+                    entry.usersInterested.some(
+                      (user) => user._id === userData._id
+                    ) && (
                       <Button
                         width={"80%"}
                         margin={"auto"}

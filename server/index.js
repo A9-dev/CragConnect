@@ -19,7 +19,7 @@ const alignedFormat = printf(({ level, message, timestamp }) => {
   // if status is undefined then make it an empty string
   status = status || "Received";
   return `${timestamp} ${level}: ${method.padEnd(7)} ${endpoint.padEnd(
-    14
+    24
   )} ${status}`;
 });
 
