@@ -394,11 +394,97 @@ const deleteEvent = async (eventId) => {
   }
 };
 
+const getPartnerFindEntries = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/partnerEntry");
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const createPartnerFindEntry = async (entry) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/partnerEntry",
+      entry
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const addInterestToPartnerFindEntry = async (entryId, userId) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/partnerEntry/interest/" + entryId,
+      {
+        userId,
+      }
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const deleteInterestFromPartnerFindEntry = async (entryId, userId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/partnerEntry/interest/" + entryId,
+      {
+        data: {
+          userId,
+        },
+      }
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const deletePartnerFindEntry = async (entryId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/partnerEntry/" + entryId
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const getSingleEntry = async (entryId) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/partnerEntry/" + entryId
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const updateEntry = async (entry) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:5000/partnerEntry/" + entry._id,
+      entry
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
   getPosts,
   uploadPost,
+  updateEntry,
   getNewsPosts,
   uploadNewsPost,
   subscribe,
@@ -407,6 +493,7 @@ export {
   postEvent,
   getEvents,
   deletePost,
+  getSingleEntry,
   getUserData,
   updateUserData,
   increaseFitnessScore,
@@ -414,9 +501,14 @@ export {
   resetExercisesDone,
   setExercisesDoneDB,
   addLikeToPost,
+  getPartnerFindEntries,
+  deleteInterestFromPartnerFindEntry,
   deleteLikeFromPost,
   addCommentToPost,
+  deletePartnerFindEntry,
+  createPartnerFindEntry,
   deleteCommentFromPost,
+  addInterestToPartnerFindEntry,
   deleteTestPosts,
   deleteEvent,
 };

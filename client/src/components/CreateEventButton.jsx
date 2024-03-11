@@ -112,13 +112,13 @@ const CreateEventButton = ({ refreshEventList }) => {
           <ModalCloseButton />
           <ModalHeader>Create Event</ModalHeader>
           <ModalBody data-testid="create-event-modal">
-            {error && (
-              <Alert status="error">
-                <AlertIcon />
-                {error}
-              </Alert>
-            )}
             <VStack spacing={4}>
+              {error && (
+                <Alert status="error">
+                  <AlertIcon />
+                  {error}
+                </Alert>
+              )}
               <FormControl isRequired>
                 <FormLabel>Event Title</FormLabel>
                 <Input

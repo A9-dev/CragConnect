@@ -19,7 +19,7 @@ const alignedFormat = printf(({ level, message, timestamp }) => {
   // if status is undefined then make it an empty string
   status = status || "Received";
   return `${timestamp} ${level}: ${method.padEnd(7)} ${endpoint.padEnd(
-    13
+    24
   )} ${status}`;
 });
 
@@ -219,6 +219,47 @@ const eventSchema = new Schema({
 });
 
 const Event = mongoose.model("Event", eventSchema);
+
+// Define the schema for the PartnerFindEntry model, includes a creator, title, description, date and time, location, users interested, and if it is following only
+const partnerFindEntrySchema = new Schema({
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  dateAndTime: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  usersInterested: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
+  followingOnly: {
+    type: Boolean,
+    required: true,
+  },
+  selectedUsers: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    required: true,
+  },
+  availableSpaces: {
+    type: Number,
+    required: true,
+  },
+});
+
+const PartnerFindEntry = mongoose.model(
+  "PartnerFindEntry",
+  partnerFindEntrySchema
+);
 
 // Use the Express application to handle data in JSON format
 app.use(express.json());
@@ -809,6 +850,7 @@ app.delete("/testPosts", async (req, res) => {
   }
 });
 
+// Route to handle deleting event by id
 app.delete("/events/:eventId", async (req, res) => {
   try {
     logger.info("DELETE /events");
@@ -818,6 +860,145 @@ app.delete("/events/:eventId", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("DELETE /events 400: " + error.message);
+  }
+});
+
+app.post("/partnerEntry", async (req, res) => {
+  try {
+    logger.info("POST /partnerEntry");
+
+    // Get user from id
+    const newEntry = new PartnerFindEntry({
+      creator: req.body.creator,
+      description: req.body.description,
+      dateAndTime: req.body.dateAndTime,
+      location: req.body.location,
+      usersInterested: [],
+      followingOnly: req.body.followingOnly,
+      selectedUsers: [],
+      availableSpaces: req.body.availableSpaces,
+    });
+
+    const savedEntry = await newEntry.save();
+    res.status(201).json(savedEntry);
+    logger.info("POST /partnerEntry 201");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    normalLogger.error("POST /partnerEntry 400: " + error.message);
+  }
+});
+
+app.get("/partnerEntry", async (req, res) => {
+  try {
+    logger.info("GET /partnerEntry");
+    const entries = await PartnerFindEntry.find({})
+      .populate("creator", "username fullName subscribingTo")
+      .populate("usersInterested", "username fullName")
+      .populate("selectedUsers", "username fullName");
+    res.status(200).json(entries);
+    logger.info("GET /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /partnerEntry 400: " + error.message);
+  }
+});
+
+app.post("/partnerEntry/interest/:entryId", async (req, res) => {
+  try {
+    logger.info("POST /partnerEntry/interest");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    const user = await User.findById(req.body.userId);
+    if (!entry) {
+      throw new Error("Entry does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (entry.usersInterested.includes(user._id)) {
+      throw new Error("User already interested in this entry");
+    }
+    entry.usersInterested.push(user._id);
+    const savedEntry = await entry.save();
+    res.status(200).json(savedEntry);
+    logger.info("POST /partnerEntxry/interest 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("POST /partnerEntry/interest 400: " + error.message);
+  }
+});
+
+app.delete("/partnerEntry/interest/:entryId", async (req, res) => {
+  try {
+    logger.info("DELETE /partnerEntry/interest");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    const user = await User.findById(req.body.userId);
+    if (!entry) {
+      throw new Error("Entry does not exist");
+    }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (!entry.usersInterested.includes(user._id)) {
+      throw new Error("User is not interested in this entry");
+    }
+    entry.usersInterested = entry.usersInterested.filter(
+      (id) => id.toString() !== user._id.toString()
+    );
+    const savedEntry = await entry.save();
+    res.status(200).json(savedEntry);
+    logger.info("DELETE /partnerEntry/interest 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /partnerEntry/interest 400: " + error.message);
+  }
+});
+
+app.get("/partnerEntry/:entryId", async (req, res) => {
+  try {
+    logger.info("GET /partnerEntry");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    res.status(200).json(entry);
+    logger.info("GET /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /partnerEntry 400: " + error.message);
+  }
+});
+
+app.delete("/partnerEntry/:entryId", async (req, res) => {
+  try {
+    logger.info("DELETE /partnerEntry");
+    const entry = await PartnerFindEntry.findByIdAndDelete(req.params.entryId);
+    res.status(200).json(entry);
+    logger.info("DELETE /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /partnerEntry 400: " + error.message);
+  }
+});
+
+app.put("/partnerEntry/:entryId", async (req, res) => {
+  try {
+    logger.info("PUT /partnerEntry");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    if (!entry) {
+      throw new Error("Entry does not exist");
+    }
+    // The entry is in the request body
+    const newEntry = req.body;
+    const savedEntry = await PartnerFindEntry.findByIdAndUpdate(
+      req.params.entryId,
+      newEntry,
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json(savedEntry);
+    logger.info("PUT /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /partnerEntry 400: " + error.message);
   }
 });
 
