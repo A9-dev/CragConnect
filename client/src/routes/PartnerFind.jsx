@@ -12,6 +12,9 @@ import {
   CardHeader,
   CardBody,
   IconButton,
+  UnorderedList,
+  ListItem,
+  Divider,
 } from "@chakra-ui/react";
 import {
   getPartnerFindEntries,
@@ -23,7 +26,7 @@ import { useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { useContext } from "react";
 import CreatePartnerFind from "../components/CreatePartnerFind";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { AtSignIcon, DeleteIcon } from "@chakra-ui/icons";
 import SelectFromInterestedUsers from "../components/SelectFromInterestedUsers";
 
 const PartnerFind = () => {
@@ -37,6 +40,9 @@ const PartnerFind = () => {
   const refreshEntries = () => {
     getPartnerFindEntries().then((data) => {
       setEntries(data.data);
+      data.data.forEach((element) => {
+        console.log(element);
+      });
     });
   };
 
@@ -104,7 +110,7 @@ const PartnerFind = () => {
                       <Text fontSize="2xl">{entry.creator.username}</Text>
                     </Flex>
                     <Text textAlign={"center"}>
-                      Date and time: {dateAndTimeToString(entry.dateAndTime)}
+                      Date and Time: {dateAndTimeToString(entry.dateAndTime)}
                     </Text>
                     <Text textAlign={"center"}>Location: {entry.location}</Text>
                     <Text textAlign={"center"}>
@@ -136,6 +142,8 @@ const PartnerFind = () => {
 
                   {loggedIn &&
                     userData.username !== entry.creator.username &&
+                    entry.creator.subscribingTo &&
+                    entry.creator.subscribingTo.includes(userData.username) &&
                     !entry.usersInterested.some(
                       (user) => user._id === userData._id
                     ) && (
@@ -165,7 +173,52 @@ const PartnerFind = () => {
                       </Button>
                     )}
                   {loggedIn && userData.username === entry.creator.username && (
-                    <SelectFromInterestedUsers entryID={entry._id} />
+                    <SelectFromInterestedUsers entry={entry} />
+                  )}
+                  {entry.selectedUsers && entry.selectedUsers.length > 0 && (
+                    <>
+                      <Card>
+                        <CardBody>
+                          <HStack divider={<StackDivider />} align={"top"}>
+                            <VStack width={"50%"}>
+                              <Text as="b">Selected Users</Text>
+                              <Divider />
+
+                              {entry.selectedUsers &&
+                                entry.selectedUsers.map((user) => (
+                                  <Box key={user._id.concat("wow")}>
+                                    <Text>{user.fullName}</Text>
+                                  </Box>
+                                ))}
+                            </VStack>
+                            <VStack width={"50%"}>
+                              <Text as="b">Non Selected Users</Text>
+                              <Divider />
+
+                              {entry.usersInterested.filter(
+                                (user) =>
+                                  !entry.selectedUsers.some(
+                                    (user2) => user2._id === user._id
+                                  )
+                              ) &&
+                                entry.usersInterested
+                                  .filter(
+                                    (user) =>
+                                      !entry.selectedUsers.some(
+                                        (user2) => user2._id === user._id
+                                      )
+                                  )
+                                  .map((user) => (
+                                    <Box key={user.username}>
+                                      <Text>{user.fullName}</Text>
+                                      <Divider />
+                                    </Box>
+                                  ))}
+                            </VStack>
+                          </HStack>
+                        </CardBody>
+                      </Card>
+                    </>
                   )}
 
                   <CardFooter>

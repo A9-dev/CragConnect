@@ -17,45 +17,39 @@ import {
 import { getSingleEntry, updateEntry } from "../dbFunctions";
 import { useState } from "react";
 import { useEffect } from "react";
-const SelectFromInterestedUsers = ({ entryID }) => {
+const SelectFromInterestedUsers = ({ entry }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [selected, setSelected] = useState([]);
+  const [notSelected, setNotSelected] = useState([]);
 
-  const [entry, setEntry] = useState({
-    selectedUsers: [],
-    usersInterested: [],
-  });
-
-  const selected = entry.selectedUsers;
-  const notSelected =
-    entry.usersInterested.filter(
-      (user) =>
-        !entry.selectedUsers.some(
-          (selectedUser) => selectedUser._id === user._id
-        )
-    ) || [];
   useEffect(() => {
-    getSingleEntry(entryID).then((data) => {
-      setEntry(data.data);
-    });
-  }, [entryID]);
+    if (entry && entry.selectedUsers && entry.usersInterested) {
+      setSelected(entry.selectedUsers);
+      setNotSelected(
+        entry.usersInterested.filter(
+          (user) => !entry.selectedUsers.some((user2) => user2._id === user._id)
+        )
+      );
+    }
+  }, []);
 
   const handleSelect = (user) => {
-    const newEntry = {
-      ...entry,
-      selectedUsers: [...entry.selectedUsers, user._id],
-    };
-    updateEntry(newEntry).then((data) => {
-      setEntry(data.data);
-    });
+    setSelected([...selected, user]);
+    setNotSelected(notSelected.filter((user2) => user2._id !== user._id));
   };
 
   const handleDeselect = (user) => {
-    const newEntry = {
-      ...entry,
-      selectedUsers: entry.selectedUsers.filter((id) => id !== user._id),
-    };
-    updateEntry(newEntry).then((data) => {
-      setEntry(data.data);
+    setNotSelected([...notSelected, user]);
+    setSelected(selected.filter((user2) => user2._id !== user._id));
+  };
+
+  const handleSave = () => {
+    const selectedIds = selected.map((user) => user._id);
+    const updatedEntry = { ...entry, selectedUsers: selectedIds };
+    updateEntry(updatedEntry).then((data) => {
+      if (data.status === 200) {
+        onClose();
+      }
     });
   };
 
@@ -64,37 +58,35 @@ const SelectFromInterestedUsers = ({ entryID }) => {
       <Button onClick={onOpen} width={"80%"} margin={"auto"}>
         Select from interested users
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"2xl"}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Interested Users</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <HStack divider={<StackDivider />}>
-              <Box>
-                <VStack>
-                  <Text>Selected Users</Text>
-                  {selected.map((user) => (
+            <HStack divider={<StackDivider />} align={"top"}>
+              <VStack width={"50%"}>
+                <Text>Selected Users</Text>
+                {selected &&
+                  selected.map((user) => (
                     <Button key={user._id} onClick={() => handleDeselect(user)}>
-                      {user.username}
+                      {user.fullName}
                     </Button>
                   ))}
-                </VStack>
-              </Box>
-              <Box>
-                <VStack>
-                  <Text>Not Selected Users</Text>
-                  {notSelected.map((user) => (
+              </VStack>
+              <VStack width={"50%"}>
+                <Text>Not Selected Users</Text>
+                {notSelected &&
+                  notSelected.map((user) => (
                     <Button key={user._id} onClick={() => handleSelect(user)}>
-                      {user.username}
+                      {user.fullName}
                     </Button>
                   ))}
-                </VStack>
-              </Box>
+              </VStack>
             </HStack>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={handleSave}>Save</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

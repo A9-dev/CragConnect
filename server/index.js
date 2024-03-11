@@ -892,8 +892,9 @@ app.get("/partnerEntry", async (req, res) => {
   try {
     logger.info("GET /partnerEntry");
     const entries = await PartnerFindEntry.find({})
-      .populate("creator", "username fullName")
-      .populate("usersInterested", "username fullName");
+      .populate("creator", "username fullName subscribingTo")
+      .populate("usersInterested", "username fullName")
+      .populate("selectedUsers", "username fullName");
     res.status(200).json(entries);
     logger.info("GET /partnerEntry 200");
   } catch (error) {
