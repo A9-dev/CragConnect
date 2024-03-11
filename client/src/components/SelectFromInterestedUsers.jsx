@@ -9,15 +9,15 @@ import {
   useDisclosure,
   Button,
   HStack,
-  Box,
   VStack,
   Text,
   StackDivider,
 } from "@chakra-ui/react";
-import { getSingleEntry, updateEntry } from "../dbFunctions";
+import { updateEntry } from "../dbFunctions";
 import { useState } from "react";
 import { useEffect } from "react";
-const SelectFromInterestedUsers = ({ entry }) => {
+
+const SelectFromInterestedUsers = ({ entry, setEntries }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState([]);
   const [notSelected, setNotSelected] = useState([]);
@@ -44,10 +44,15 @@ const SelectFromInterestedUsers = ({ entry }) => {
   };
 
   const handleSave = () => {
-    const selectedIds = selected.map((user) => user._id);
+    const selectedIds = selected.map((user) => user._id) || [];
     const updatedEntry = { ...entry, selectedUsers: selectedIds };
     updateEntry(updatedEntry).then((data) => {
       if (data.status === 200) {
+        setEntries((prev) =>
+          prev.map((entry) =>
+            entry._id === updatedEntry._id ? updatedEntry : entry
+          )
+        );
         onClose();
       }
     });

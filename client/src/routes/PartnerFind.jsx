@@ -12,8 +12,6 @@ import {
   CardHeader,
   CardBody,
   IconButton,
-  UnorderedList,
-  ListItem,
   Divider,
 } from "@chakra-ui/react";
 import {
@@ -26,7 +24,7 @@ import { useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { useContext } from "react";
 import CreatePartnerFind from "../components/CreatePartnerFind";
-import { AtSignIcon, DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import SelectFromInterestedUsers from "../components/SelectFromInterestedUsers";
 
 const PartnerFind = () => {
@@ -173,49 +171,25 @@ const PartnerFind = () => {
                       </Button>
                     )}
                   {loggedIn && userData.username === entry.creator.username && (
-                    <SelectFromInterestedUsers entry={entry} />
+                    <SelectFromInterestedUsers
+                      entry={entry}
+                      setEntries={setEntries}
+                    />
                   )}
-                  {entry.selectedUsers && entry.selectedUsers.length > 0 && (
+                  {entry.selectedUsers.length > 0 && (
                     <>
                       <Card>
-                        <CardBody>
-                          <HStack divider={<StackDivider />} align={"top"}>
-                            <VStack width={"50%"}>
-                              <Text as="b">Selected Users</Text>
-                              <Divider />
-
-                              {entry.selectedUsers &&
-                                entry.selectedUsers.map((user) => (
-                                  <Box key={user._id.concat("wow")}>
-                                    <Text>{user.fullName}</Text>
-                                  </Box>
-                                ))}
-                            </VStack>
-                            <VStack width={"50%"}>
-                              <Text as="b">Non Selected Users</Text>
-                              <Divider />
-
-                              {entry.usersInterested.filter(
-                                (user) =>
-                                  !entry.selectedUsers.some(
-                                    (user2) => user2._id === user._id
-                                  )
-                              ) &&
-                                entry.usersInterested
-                                  .filter(
-                                    (user) =>
-                                      !entry.selectedUsers.some(
-                                        (user2) => user2._id === user._id
-                                      )
-                                  )
-                                  .map((user) => (
-                                    <Box key={user.username}>
-                                      <Text>{user.fullName}</Text>
-                                      <Divider />
-                                    </Box>
-                                  ))}
-                            </VStack>
-                          </HStack>
+                        <CardBody alignContent={"center"}>
+                          <VStack width={"50%"} margin={"auto"}>
+                            <Text as="b">Selected Users</Text>
+                            <Divider />
+                            {entry.selectedUsers &&
+                              entry.selectedUsers.map((user) => (
+                                <Box key={user._id}>
+                                  <Text>{user.fullName}</Text>
+                                </Box>
+                              ))}
+                          </VStack>
                         </CardBody>
                       </Card>
                     </>
