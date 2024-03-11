@@ -13,7 +13,7 @@ This is a social media app built for rock climbers to organise and talk about ro
 
 ## Features that _will_ be added
 
-- Climbing Partner Matching
+- More tests
 
 ## Features that _might_ be added
 
