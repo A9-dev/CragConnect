@@ -445,6 +445,17 @@ const deleteInterestFromPartnerFindEntry = async (entryId, userId) => {
   }
 };
 
+const deletePartnerFindEntry = async (entryId) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/partnerEntry/" + entryId
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
@@ -469,6 +480,7 @@ export {
   deleteInterestFromPartnerFindEntry,
   deleteLikeFromPost,
   addCommentToPost,
+  deletePartnerFindEntry,
   createPartnerFindEntry,
   deleteCommentFromPost,
   addInterestToPartnerFindEntry,

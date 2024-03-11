@@ -1,15 +1,31 @@
-import { Box, VStack, Text, CardFooter, StackDivider } from "@chakra-ui/react";
-import { Avatar, Flex, HStack, Button } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {
+  Card,
+  Avatar,
+  Box,
+  VStack,
+  Text,
+  CardFooter,
+  StackDivider,
+  Flex,
+  HStack,
+  Button,
+  CardHeader,
+  CardBody,
+  Select,
+  IconButton,
+} from "@chakra-ui/react";
 import {
   getPartnerFindEntries,
   addInterestToPartnerFindEntry,
   deleteInterestFromPartnerFindEntry,
+  deletePartnerFindEntry,
 } from "../dbFunctions";
+import { useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { useContext } from "react";
 import CreatePartnerFind from "../components/CreatePartnerFind";
-import { Card, CardHeader, CardBody, Select } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+
 const PartnerFind = () => {
   const [entries, setEntries] = useState([]);
   const { loggedIn, userData } = useContext(AppContext);
@@ -57,6 +73,21 @@ const PartnerFind = () => {
       });
   };
 
+  const handleDeleteEntry = (entryId) => {
+    // Delete the entry
+    deletePartnerFindEntry(entryId)
+      .then((data) => {
+        if (data.status === 200) {
+          getPartnerFindEntries().then((data) => {
+            setEntries(data.data);
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Error deleting partner find entry:", err);
+      });
+  };
+
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
       {loggedIn && <CreatePartnerFind refreshEntries={refreshEntries} />}
@@ -83,6 +114,17 @@ const PartnerFind = () => {
                         : "people are"}{" "}
                       interested
                     </Text>
+                    {loggedIn &&
+                      userData.username === entry.creator.username && (
+                        <IconButton
+                          ml={3}
+                          onClick={() => {
+                            handleDeleteEntry(entry._id);
+                          }}
+                          aria-label="Delete"
+                          icon={<DeleteIcon />}
+                        />
+                      )}
                   </HStack>
                 </Flex>
               </CardHeader>

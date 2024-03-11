@@ -952,6 +952,18 @@ app.delete("/partnerEntry/interest/:entryId", async (req, res) => {
   }
 });
 
+app.delete("/partnerEntry/:entryId", async (req, res) => {
+  try {
+    logger.info("DELETE /partnerEntry");
+    const entry = await PartnerFindEntry.findByIdAndDelete(req.params.entryId);
+    res.status(200).json(entry);
+    logger.info("DELETE /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("DELETE /partnerEntry 400: " + error.message);
+  }
+});
+
 // Start the server
 app.listen(port, myIP, () => {
   normalLogger.info(`Server is running on port ${port}`);
