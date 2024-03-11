@@ -1,7 +1,5 @@
 # CragConnect - Rock Climbing Social Media
 
-## Description
-
 This is a social media app built for rock climbers to organise and talk about rock climbing.
 
 ## Features
