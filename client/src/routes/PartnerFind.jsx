@@ -38,9 +38,6 @@ const PartnerFind = () => {
   const refreshEntries = () => {
     getPartnerFindEntries().then((data) => {
       setEntries(data.data);
-      data.data.forEach((element) => {
-        console.log(element);
-      });
     });
   };
 
