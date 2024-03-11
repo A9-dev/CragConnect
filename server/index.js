@@ -952,6 +952,18 @@ app.delete("/partnerEntry/interest/:entryId", async (req, res) => {
   }
 });
 
+app.get("/partnerEntry/:entryId", async (req, res) => {
+  try {
+    logger.info("GET /partnerEntry");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    res.status(200).json(entry);
+    logger.info("GET /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("GET /partnerEntry 400: " + error.message);
+  }
+});
+
 app.delete("/partnerEntry/:entryId", async (req, res) => {
   try {
     logger.info("DELETE /partnerEntry");
@@ -961,6 +973,31 @@ app.delete("/partnerEntry/:entryId", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("DELETE /partnerEntry 400: " + error.message);
+  }
+});
+
+app.put("/partnerEntry/:entryId", async (req, res) => {
+  try {
+    logger.info("PUT /partnerEntry");
+    const entry = await PartnerFindEntry.findById(req.params.entryId);
+    if (!entry) {
+      throw new Error("Entry does not exist");
+    }
+    // The entry is in the request body
+    const newEntry = req.body;
+    const savedEntry = await PartnerFindEntry.findByIdAndUpdate(
+      req.params.entryId,
+      newEntry,
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json(savedEntry);
+    logger.info("PUT /partnerEntry 200");
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+    logger.error("PUT /partnerEntry 400: " + error.message);
   }
 });
 

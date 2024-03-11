@@ -456,11 +456,35 @@ const deletePartnerFindEntry = async (entryId) => {
   }
 };
 
+const getSingleEntry = async (entryId) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/partnerEntry/" + entryId
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
+const updateEntry = async (entry) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:5000/partnerEntry/" + entry._id,
+      entry
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export {
   loginUser,
   uploadUser,
   getPosts,
   uploadPost,
+  updateEntry,
   getNewsPosts,
   uploadNewsPost,
   subscribe,
@@ -469,6 +493,7 @@ export {
   postEvent,
   getEvents,
   deletePost,
+  getSingleEntry,
   getUserData,
   updateUserData,
   increaseFitnessScore,

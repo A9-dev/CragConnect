@@ -11,7 +11,6 @@ import {
   Button,
   CardHeader,
   CardBody,
-  Select,
   IconButton,
 } from "@chakra-ui/react";
 import {
@@ -25,6 +24,7 @@ import { AppContext } from "../App";
 import { useContext } from "react";
 import CreatePartnerFind from "../components/CreatePartnerFind";
 import { DeleteIcon } from "@chakra-ui/icons";
+import SelectFromInterestedUsers from "../components/SelectFromInterestedUsers";
 
 const PartnerFind = () => {
   const [entries, setEntries] = useState([]);
@@ -165,17 +165,7 @@ const PartnerFind = () => {
                       </Button>
                     )}
                   {loggedIn && userData.username === entry.creator.username && (
-                    <Select
-                      placeholder="Select from interested users"
-                      width={"50%"}
-                      margin={"auto"}
-                    >
-                      {entry.usersInterested.map((user) => (
-                        <option key={user._id} value={user}>
-                          {user.fullName}
-                        </option>
-                      ))}
-                    </Select>
+                    <SelectFromInterestedUsers entryID={entry._id} />
                   )}
 
                   <CardFooter>
