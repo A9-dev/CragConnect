@@ -41,7 +41,9 @@ const EventList = () => {
   return (
     <Box margin="auto" py={5}>
       {userData.organisation && (
-        <CreateEventButton refreshEventList={refreshEventList} />
+        <Box textAlign={"center"}>
+          <CreateEventButton refreshEventList={refreshEventList} />
+        </Box>
       )}
       <VStack spacing={5}>
         {events.map((event) => (
@@ -52,6 +54,9 @@ const EventList = () => {
               </Heading>
               {userData._id && userData._id === event.creator._id && (
                 <IconButton
+                  position={"absolute"}
+                  left={"92%"}
+                  top={5}
                   onClick={() => {
                     console.log("Delete event");
                     deleteEvent(event._id)

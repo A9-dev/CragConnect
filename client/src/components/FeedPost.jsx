@@ -55,7 +55,7 @@ const FeedPost = () => {
       <Button
         onClick={() => setIsOpen(true)}
         data-testid="create-post-button"
-        m={5}
+        mb={5}
       >
         Create a Post
       </Button>
