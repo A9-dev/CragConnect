@@ -110,4 +110,52 @@ describe("Events tests", () => {
     expect(phoneNumberInput).toBeVisible();
     expect(dateAndTimeInput).toBeVisible();
   });
+  test("Create event form submit", async () => {
+    const createEventButton = await screen.findByTestId("create-event-button");
+    act(() => {
+      fireEvent.click(createEventButton);
+    });
+
+    const eventTitleInput = await screen.findByPlaceholderText(
+      "Enter event name"
+    );
+    const eventDescriptionInput = await screen.findByPlaceholderText(
+      "Enter event description"
+    );
+    const addressInput = await screen.findByPlaceholderText("Enter address");
+    const postcodeInput = await screen.findByPlaceholderText("Enter postcode");
+    const phoneNumberInput = await screen.findByPlaceholderText(
+      "Enter phone number"
+    );
+    const dateAndTimeInput = await screen.findByPlaceholderText(
+      "Select Date and Time"
+    );
+
+    expect(eventTitleInput).toBeVisible();
+    act(() => {
+      fireEvent.change(eventTitleInput, { target: { value: "Test event" } });
+      fireEvent.change(eventDescriptionInput, {
+        target: { value: "Test event description" },
+      });
+      fireEvent.change(addressInput, { target: { value: "Test address" } });
+      fireEvent.change(postcodeInput, { target: { value: "IG76QE" } });
+      fireEvent.change(phoneNumberInput, {
+        target: { value: "+1234567890" },
+      });
+      fireEvent.change(dateAndTimeInput, {
+        target: { value: "2025-12-12T12:00" },
+      });
+    });
+
+    const submitButton = await screen.findByTestId(
+      "create-event-submit-button"
+    );
+
+    act(() => {
+      fireEvent.click(submitButton);
+    });
+
+    const eventCard = await screen.findByText("Test event");
+    expect(eventCard).toBeVisible();
+  });
 });

@@ -66,11 +66,13 @@ const CreateEventButton = ({ refreshEventList }) => {
       !dateAndTime
     ) {
       setError("Please enter all required fields");
+      console.log("Please enter all required fields");
       return;
     }
 
     if (phoneNumber && !checkPhoneNumber(phoneNumber)) {
       setError("Please enter a valid phone number. Example: +1234567890");
+
       return;
     }
 
@@ -179,7 +181,12 @@ const CreateEventButton = ({ refreshEventList }) => {
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handleCreateEvent}>Done</Button>
+            <Button
+              data-testid="create-event-submit-button"
+              onClick={handleCreateEvent}
+            >
+              Done
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
