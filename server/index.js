@@ -515,10 +515,16 @@ app.get("/search/:searchTerm", async (req, res) => {
   try {
     logger.info("GET /search");
     const users = await User.find({
-      username: { $regex: req.params.searchTerm },
-    });
-    if (users) {
-      res.status(200).json(users);
+      $or: [
+        { username: { $regex: req.params.searchTerm } },
+        { fullName: { $regex: req.params.searchTerm } },
+      ],
+    }).distinct("_id");
+
+    const unique = await User.find({ _id: { $in: users } });
+
+    if (unique) {
+      res.status(200).json(unique);
       logger.info("GET /search 200");
     } else {
       throw new Error("User does not exist");
@@ -1013,5 +1019,4 @@ app.put("/partnerEntry/:entryId", async (req, res) => {
 // Start the server
 app.listen(port, myIP, () => {
   normalLogger.info(`Server is running on port ${port}`);
-  logger.error("DELETE /testPosts 400: Error deleting test posts");
 });
