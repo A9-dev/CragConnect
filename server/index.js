@@ -15,9 +15,17 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
 
 // Format for REST API logs
 const alignedFormat = printf(({ level, message, timestamp }) => {
-  var [method, endpoint, status] = message.split(" ");
+  // strip the whitespace from level
+  var [method, endpoint, status, ...error] = message.split(" ");
+  error = error.join(" ");
   // if status is undefined then make it an empty string
   status = status || "Received";
+
+  if (error) {
+    return `${timestamp} ${level}: ${method.padEnd(7)} ${endpoint.padEnd(
+      24
+    )} ${status} ${error}`;
+  }
   return `${timestamp} ${level}: ${method.padEnd(7)} ${endpoint.padEnd(
     24
   )} ${status}`;
@@ -282,7 +290,7 @@ app.post("/login", async (req, res) => {
     logger.info("POST /login 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("POST /login 400 " + error.message);
+    logger.error("POST /login 400: " + error.message);
   }
 });
 // Route to handle user creation
@@ -1005,4 +1013,5 @@ app.put("/partnerEntry/:entryId", async (req, res) => {
 // Start the server
 app.listen(port, myIP, () => {
   normalLogger.info(`Server is running on port ${port}`);
+  logger.error("DELETE /testPosts 400: Error deleting test posts");
 });
