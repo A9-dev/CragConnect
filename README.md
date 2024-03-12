@@ -46,3 +46,27 @@ To run the program please run the following command (from the root directory):
 ```bash
 cd client && npm run dev & cd ../server && npm start
 ```
+
+## Lines of code
+
+```bash
+cloc --exclude-dir=node_modules,build --not-match-f='(package\.json|package-lock\.json)' .
+```
+
+### Output:
+
+```
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+JSX                             29            218             56           2770
+JavaScript                       5            185            205           1594
+JSON                             5              2              0            306
+Markdown                         2             24              0             54
+HTML                             2              0              0             26
+YAML                             1              7              0             23
+TypeScript                       2              2              4             10
+-------------------------------------------------------------------------------
+SUM:                            46            438            265           4783
+-------------------------------------------------------------------------------
+```
