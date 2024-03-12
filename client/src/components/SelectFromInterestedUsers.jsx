@@ -17,7 +17,7 @@ import { updateEntry } from "../dbFunctions";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const SelectFromInterestedUsers = ({ entry, setEntries }) => {
+const SelectFromInterestedUsers = ({ entry, refreshEntries }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState([]);
   const [notSelected, setNotSelected] = useState([]);
@@ -31,7 +31,7 @@ const SelectFromInterestedUsers = ({ entry, setEntries }) => {
         )
       );
     }
-  }, []);
+  }, [entry]);
 
   const handleSelect = (user) => {
     setSelected([...selected, user]);
@@ -46,15 +46,9 @@ const SelectFromInterestedUsers = ({ entry, setEntries }) => {
   const handleSave = () => {
     const selectedIds = selected.map((user) => user._id) || [];
     const updatedEntry = { ...entry, selectedUsers: selectedIds };
-    updateEntry(updatedEntry).then((data) => {
-      if (data.status === 200) {
-        setEntries((prev) =>
-          prev.map((entry) =>
-            entry._id === updatedEntry._id ? updatedEntry : entry
-          )
-        );
-        onClose();
-      }
+    updateEntry(updatedEntry).then(() => {
+      refreshEntries();
+      onClose();
     });
   };
 

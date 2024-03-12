@@ -170,7 +170,7 @@ const PartnerFind = () => {
                   {loggedIn && userData.username === entry.creator.username && (
                     <SelectFromInterestedUsers
                       entry={entry}
-                      setEntries={setEntries}
+                      refreshEntries={refreshEntries}
                     />
                   )}
                   {entry.selectedUsers.length > 0 && (
