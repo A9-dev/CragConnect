@@ -145,6 +145,13 @@ const Feed = ({ posts }) => {
                     {post.likes.length}{" "}
                     {post.likes.length === 1 ? "like" : "likes"}
                   </Text>
+                  <Spacer />
+                  <Text>|</Text>
+                  <Spacer />
+                  <Text>
+                    {post.comments.length}{" "}
+                    {post.comments.length === 1 ? "comment" : "comments"}
+                  </Text>
                 </HStack>
                 <Spacer />
                 {/* Like button */}
