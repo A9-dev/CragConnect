@@ -17,7 +17,8 @@ This is a social media app built for rock climbers to organise and talk about ro
 
 ## Features that _might_ be added
 
-- Messaging/Links to a way to contact other users
+- Messaging/Links to a way to contact other users in profile
+- Notifications
 - Tailorable fitness plans
 - User authentication
 
