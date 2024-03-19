@@ -13,12 +13,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Heading,
-  Center,
   Text,
+  Center,
   Spacer,
   Flex,
 } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { unsubscribe } from "../dbFunctions";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
@@ -28,6 +28,7 @@ const ProfileButton = () => {
   const { setLoggedIn, userData, setUserData } = useContext(AppContext);
   const bgColor = useColorModeValue("gray.200", "gray.800");
   const color = useColorModeValue("black", "white");
+  const tabsColourScheme = useColorModeValue("blue", "purple");
 
   const handleSignout = () => {
     setLoggedIn(false);
@@ -77,28 +78,47 @@ const ProfileButton = () => {
           <ModalHeader>{userData.fullName}'s Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Center>
-              <Heading size="md" mb={5}>
-                Following
-              </Heading>
-            </Center>
+            <Tabs
+              align="center"
+              variant="enclosed"
+              colorScheme={tabsColourScheme}
+            >
+              <TabList>
+                <Tab>Following</Tab>
+                <Tab>Followers</Tab>
+              </TabList>
 
-            <Box width="75%" margin="auto">
-              {userData.subscribingTo &&
-                userData.subscribingTo.map((subscription) => (
-                  <Flex mb={3} key={subscription}>
-                    <Text key={subscription}>{subscription}</Text>
-                    <Spacer />
-                    <Button
-                      onClick={() => {
-                        handleUnfollowButton(subscription);
-                      }}
-                    >
-                      Unfollow
-                    </Button>
-                  </Flex>
-                ))}
-            </Box>
+              <TabPanels>
+                <TabPanel>
+                  <Box width="75%" margin="auto">
+                    {userData.subscribingTo &&
+                      userData.subscribingTo.sort().map((subscription) => (
+                        <Flex mb={3} key={subscription}>
+                          <Text key={subscription}>{subscription}</Text>
+                          <Spacer />
+                          <Button
+                            onClick={() => {
+                              handleUnfollowButton(subscription);
+                            }}
+                          >
+                            Unfollow
+                          </Button>
+                        </Flex>
+                      ))}
+                  </Box>
+                </TabPanel>
+                <TabPanel>
+                  <Box width="75%" margin="auto">
+                    {userData.subscribers &&
+                      userData.subscribers.sort().map((subscriber) => (
+                        <Center mb={3}>
+                          <Text key={subscriber}>{subscriber}</Text>
+                        </Center>
+                      ))}
+                  </Box>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </ModalBody>
         </ModalContent>
       </Modal>
