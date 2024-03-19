@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardBody,
   IconButton,
+  Center,
   Divider,
 } from "@chakra-ui/react";
 import {
@@ -91,7 +92,11 @@ const PartnerFind = () => {
 
   return (
     <Box width={"75%"} m={"auto"} mt={"15"}>
-      {loggedIn && <CreatePartnerFind refreshEntries={refreshEntries} />}
+      <Center>
+        <Box mb={3}>
+          {loggedIn && <CreatePartnerFind refreshEntries={refreshEntries} />}
+        </Box>
+      </Center>
       <VStack spacing={5}>
         {entries &&
           entries.map((entry) => (
