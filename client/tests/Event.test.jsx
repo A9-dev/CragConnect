@@ -158,4 +158,7 @@ describe("Events tests", () => {
     const eventCard = await screen.findByText("Test event");
     expect(eventCard).toBeVisible();
   });
+
+  // TODO: Finish writing this test
+  test.skip("Error message for malformed entry", async () => {});
 });
