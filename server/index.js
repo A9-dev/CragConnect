@@ -51,6 +51,42 @@ const myIP = process.env.IP_ADDR;
 // Enable CORS
 app.use(cors());
 
+app.use(express.static("../client/dist"));
+app.get("/", (req, res) => {
+  logger.info("GET /");
+  res.sendFile("index.html", { root: "../client/dist" });
+  logger.info("GET / 200");
+});
+
+app.get("/news", (req, res) => {
+  logger.info("GET /news");
+  res.sendFile("index.html", { root: "../client/dist" });
+  logger.info("GET /news 200");
+});
+app.get("/events", (req, res) => {
+  logger.info("GET /events");
+  res.sendFile("index.html", { root: "../client/dist" });
+  logger.info("GET /events 200");
+});
+
+app.get("/partnerFind", (req, res) => {
+  logger.info("GET /partner");
+  res.sendFile("index.html", { root: "../client/dist" });
+  logger.info("GET /partner 200");
+});
+
+app.get("/fitness", (req, res) => {
+  logger.info("GET /fitness");
+  res.sendFile("index.html", { root: "../client/dist" });
+  logger.info("GET /fitness 200");
+});
+
+app.get("/settings", (req, res) => {
+  logger.info("GET /settings");
+  res.sendFile("index.html", { root: "../client/dist" });
+  logger.info("GET /settings 200");
+});
+
 // Connect to MongoDB using Mongoose
 mongoose
   .connect(process.env.ATLAS_URI, {})
@@ -536,9 +572,9 @@ app.get("/search/:searchTerm", async (req, res) => {
 });
 
 // Route to handle creating an event
-app.post("/events", async (req, res) => {
+app.post("/eventPosts", async (req, res) => {
   try {
-    logger.info("POST /events");
+    logger.info("POST /eventPosts");
     const user = await User.findOne({
       username: req.body.username,
     });
@@ -568,17 +604,17 @@ app.post("/events", async (req, res) => {
 
     const savedEvent = await newEvent.save();
     res.status(201).json(savedEvent);
-    logger.info("POST /events 201");
+    logger.info("POST /eventPosts 201");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("POST /events 400: " + error.message);
+    logger.error("POST /eventPosts 400: " + error.message);
   }
 });
 
 // Route to handle getting all events
-app.get("/events", async (req, res) => {
+app.get("/eventPosts", async (req, res) => {
   try {
-    logger.info("GET /events");
+    logger.info("GET /eventPosts");
     let events = await Event.find({}).populate("creator", "username fullName");
     // Only show events that are in the future
     events = events.filter((event) => {
@@ -589,10 +625,10 @@ app.get("/events", async (req, res) => {
     events.sort((a, b) => new Date(a.dateAndTime) - new Date(b.dateAndTime));
 
     res.status(200).json(events);
-    logger.info("GET /events 200");
+    logger.info("GET /eventPosts 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("GET /events 400: " + error.message);
+    logger.error("GET /eventPosts 400: " + error.message);
   }
 });
 
@@ -866,15 +902,15 @@ app.delete("/testPosts", async (req, res) => {
 });
 
 // Route to handle deleting event by id
-app.delete("/events/:eventId", async (req, res) => {
+app.delete("/eventPosts/:eventId", async (req, res) => {
   try {
-    logger.info("DELETE /events");
+    logger.info("DELETE /eventPosts");
     const event = await Event.findByIdAndDelete(req.params.eventId);
     res.status(200).json(event);
-    logger.info("DELETE /events 200");
+    logger.info("DELETE /eventPosts 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
-    logger.error("DELETE /events 400: " + error.message);
+    logger.error("DELETE /eventPosts 400: " + error.message);
   }
 });
 

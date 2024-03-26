@@ -3,7 +3,7 @@ import axios from "axios";
 // Sends login request to server
 const loginUser = async (username, password) => {
   try {
-    const response = await axios.post("http://localhost:5000/login", {
+    const response = await axios.post("/login", {
       username,
       password,
     });
@@ -19,7 +19,7 @@ const loginUser = async (username, password) => {
 // Sends registration request to server
 const uploadUser = async (username, password, orgBool, fullName) => {
   try {
-    const response = await axios.post("http://localhost:5000/register", {
+    const response = await axios.post("/register", {
       username,
       password,
       organisation: orgBool,
@@ -37,7 +37,7 @@ const uploadUser = async (username, password, orgBool, fullName) => {
 // Fetches posts from server
 const getPosts = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/posts");
+    const response = await axios.get("/posts");
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -50,7 +50,7 @@ const getPosts = async () => {
 // Sends post to server
 const uploadPost = async (username, title, content) => {
   try {
-    const response = await axios.post("http://localhost:5000/posts", {
+    const response = await axios.post("/posts", {
       title,
       content,
       username,
@@ -67,7 +67,7 @@ const uploadPost = async (username, title, content) => {
 // Fetches news posts from server
 const getNewsPosts = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/newsPosts");
+    const response = await axios.get("/newsPosts");
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -80,7 +80,7 @@ const getNewsPosts = async () => {
 // Sends news post to server
 const uploadNewsPost = async (username, title, content) => {
   try {
-    const response = await axios.post("http://localhost:5000/newsPosts", {
+    const response = await axios.post("/newsPosts", {
       title,
       content,
       username,
@@ -97,7 +97,7 @@ const uploadNewsPost = async (username, title, content) => {
 // Sends subscription request to server
 const subscribe = async (subscriberUsername, subscribeeUsername) => {
   try {
-    const response = await axios.post("http://localhost:5000/subscriptions", {
+    const response = await axios.post("/subscriptions", {
       username: subscriberUsername,
       subscription: subscribeeUsername,
     });
@@ -113,7 +113,7 @@ const subscribe = async (subscriberUsername, subscribeeUsername) => {
 // Sends unsubscription request to server
 const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
   try {
-    const response = await axios.delete("http://localhost:5000/subscriptions", {
+    const response = await axios.delete("/subscriptions", {
       data: {
         username: subscriberUsername,
         subscription: subscribeeUsername,
@@ -131,9 +131,7 @@ const unsubscribe = async (subscriberUsername, subscribeeUsername) => {
 // Sends search request to server
 const searchUser = async (searchTerm) => {
   try {
-    const response = await axios.get(
-      "http://localhost:5000/search/" + searchTerm
-    );
+    const response = await axios.get("/search/" + searchTerm);
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -170,10 +168,7 @@ const postEvent = async (
       }
     });
 
-    const response = await axios.post(
-      "http://localhost:5000/events",
-      eventData
-    );
+    const response = await axios.post("/eventPosts", eventData);
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -185,7 +180,7 @@ const postEvent = async (
 // Fetches events from server
 const getEvents = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/events");
+    const response = await axios.get("/eventPosts");
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -197,9 +192,7 @@ const getEvents = async () => {
 // Deletes post from server
 const deletePost = async (postId) => {
   try {
-    const response = await axios.delete(
-      "http://localhost:5000/posts/" + postId
-    );
+    const response = await axios.delete("/posts/" + postId);
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -211,7 +204,7 @@ const deletePost = async (postId) => {
 // Fetches user data from server
 const getUserData = async (username) => {
   try {
-    const response = await axios.get("http://localhost:5000/user/" + username);
+    const response = await axios.get("/user/" + username);
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -225,7 +218,7 @@ const updateUserData = async (userData) => {
   // console.log("From update user data:", userData);
   try {
     const response = await axios.put(
-      "http://localhost:5000/user/" + userData.username,
+      "/user/" + userData.username,
 
       {
         data: userData,
@@ -242,9 +235,7 @@ const updateUserData = async (userData) => {
 // Increases user's fitness score on server
 const increaseFitnessScore = async (username) => {
   try {
-    const response = await axios.put(
-      "http://localhost:5000/user/fitnessScore/" + username
-    );
+    const response = await axios.put("/user/fitnessScore/" + username);
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -257,7 +248,7 @@ const increaseFitnessScore = async (username) => {
 // Fetches top ten fitness scores from server
 const getTopTenFitnessScores = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/fitnessScores/10");
+    const response = await axios.get("/fitnessScores/10");
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -269,9 +260,7 @@ const getTopTenFitnessScores = async () => {
 // Resets user's exercises done on server
 const resetExercisesDone = async (username) => {
   try {
-    const response = await axios.put(
-      "http://localhost:5000/user/resetExercisesDone/" + username
-    );
+    const response = await axios.put("/user/resetExercisesDone/" + username);
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -284,12 +273,9 @@ const resetExercisesDone = async (username) => {
 // Sets user's exercises done on server
 const setExercisesDoneDB = async (username, exercisesDone) => {
   try {
-    const response = await axios.put(
-      "http://localhost:5000/user/setExercisesDone/" + username,
-      {
-        exercisesDone,
-      }
-    );
+    const response = await axios.put("/user/setExercisesDone/" + username, {
+      exercisesDone,
+    });
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -302,12 +288,9 @@ const setExercisesDoneDB = async (username, exercisesDone) => {
 // Adds like to post on server
 const addLikeToPost = async (postId, userId) => {
   try {
-    const response = await axios.post(
-      "http://localhost:5000/posts/like/" + postId,
-      {
-        userId,
-      }
-    );
+    const response = await axios.post("/posts/like/" + postId, {
+      userId,
+    });
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -320,14 +303,11 @@ const addLikeToPost = async (postId, userId) => {
 // Deletes like from post on server
 const deleteLikeFromPost = async (postId, userId) => {
   try {
-    const response = await axios.delete(
-      "http://localhost:5000/posts/like/" + postId,
-      {
-        data: {
-          userId,
-        },
-      }
-    );
+    const response = await axios.delete("/posts/like/" + postId, {
+      data: {
+        userId,
+      },
+    });
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -340,13 +320,10 @@ const deleteLikeFromPost = async (postId, userId) => {
 // Adds comment to post on server
 const addCommentToPost = async (postId, userId, comment) => {
   try {
-    const response = await axios.post(
-      "http://localhost:5000/posts/comment/" + postId,
-      {
-        userId,
-        comment,
-      }
-    );
+    const response = await axios.post("/posts/comment/" + postId, {
+      userId,
+      comment,
+    });
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -360,7 +337,7 @@ const addCommentToPost = async (postId, userId, comment) => {
 const deleteCommentFromPost = async (postId, commentId) => {
   try {
     const response = await axios.delete(
-      "http://localhost:5000/posts/" + postId + "/comment/" + commentId
+      "/posts/" + postId + "/comment/" + commentId
     );
     // console.log(response.data);
     // console.log(response.status);
@@ -374,7 +351,7 @@ const deleteCommentFromPost = async (postId, commentId) => {
 // Deletes test posts from server
 const deleteTestPosts = async () => {
   try {
-    const response = await axios.delete("http://localhost:5000/testPosts");
+    const response = await axios.delete("/testPosts");
     // console.log(response.data);
     // console.log(response.status);
     return { data: response.data, status: response.status };
@@ -385,9 +362,7 @@ const deleteTestPosts = async () => {
 
 const deleteEvent = async (eventId) => {
   try {
-    const response = await axios.delete(
-      "http://localhost:5000/events/" + eventId
-    );
+    const response = await axios.delete("/eventPosts/" + eventId);
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -396,7 +371,7 @@ const deleteEvent = async (eventId) => {
 
 const getPartnerFindEntries = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/partnerEntry");
+    const response = await axios.get("/partnerEntry");
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -405,10 +380,7 @@ const getPartnerFindEntries = async () => {
 
 const createPartnerFindEntry = async (entry) => {
   try {
-    const response = await axios.post(
-      "http://localhost:5000/partnerEntry",
-      entry
-    );
+    const response = await axios.post("/partnerEntry", entry);
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -417,12 +389,9 @@ const createPartnerFindEntry = async (entry) => {
 
 const addInterestToPartnerFindEntry = async (entryId, userId) => {
   try {
-    const response = await axios.post(
-      "http://localhost:5000/partnerEntry/interest/" + entryId,
-      {
-        userId,
-      }
-    );
+    const response = await axios.post("/partnerEntry/interest/" + entryId, {
+      userId,
+    });
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -431,14 +400,11 @@ const addInterestToPartnerFindEntry = async (entryId, userId) => {
 
 const deleteInterestFromPartnerFindEntry = async (entryId, userId) => {
   try {
-    const response = await axios.delete(
-      "http://localhost:5000/partnerEntry/interest/" + entryId,
-      {
-        data: {
-          userId,
-        },
-      }
-    );
+    const response = await axios.delete("/partnerEntry/interest/" + entryId, {
+      data: {
+        userId,
+      },
+    });
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -447,9 +413,7 @@ const deleteInterestFromPartnerFindEntry = async (entryId, userId) => {
 
 const deletePartnerFindEntry = async (entryId) => {
   try {
-    const response = await axios.delete(
-      "http://localhost:5000/partnerEntry/" + entryId
-    );
+    const response = await axios.delete("/partnerEntry/" + entryId);
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -458,9 +422,7 @@ const deletePartnerFindEntry = async (entryId) => {
 
 const getSingleEntry = async (entryId) => {
   try {
-    const response = await axios.get(
-      "http://localhost:5000/partnerEntry/" + entryId
-    );
+    const response = await axios.get("/partnerEntry/" + entryId);
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
@@ -469,10 +431,7 @@ const getSingleEntry = async (entryId) => {
 
 const updateEntry = async (entry) => {
   try {
-    const response = await axios.put(
-      "http://localhost:5000/partnerEntry/" + entry._id,
-      entry
-    );
+    const response = await axios.put("/partnerEntry/" + entry._id, entry);
     return { data: response.data, status: response.status };
   } catch (error) {
     // console.log(error);
