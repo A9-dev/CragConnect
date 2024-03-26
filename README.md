@@ -45,7 +45,7 @@ IP_ADDR=your_ip_address (for the server)
 To run the program please run the following command (from the root directory):
 
 ```bash
-cd client && npm run dev & cd ../server && npm start
+cd client && npm run build && cd ../server && npm start
 ```
 
 ## Lines of code
@@ -60,16 +60,15 @@ cloc --exclude-dir=node_modules,build --not-match-f='(package\.json|package-lock
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-JSX                             29            218             56           2807
-JavaScript                       5            185            205           1594
+JSX                             29            219             60           2808
+JavaScript                       5            190            205           1584
 JSON                             5              2              0            306
-Markdown                         2             29              0             75
+Markdown                         2             30              0             75
 HTML                             2              0              0             26
 YAML                             1              7              0             23
 TypeScript                       2              2              4             10
 -------------------------------------------------------------------------------
-SUM:                            46            443            265           4841
+SUM:                            46            450            269           4832
 -------------------------------------------------------------------------------
-
 
 ```
