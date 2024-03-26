@@ -104,36 +104,39 @@ describe("Posting", () => {
   });
 
   test("Post is created when submitting a valid post", async () => {
-    // Count the number of posts with the title "Test Title"
-
+    // Find the create post button and click it
     const postForm = await screen.findByTestId("create-post-button");
-
     act(() => {
       fireEvent.click(postForm);
     });
+
+    // Find the modal and check if it is visible
     const modal = await screen.findByTestId("create-post-modal");
     await waitFor(() => {
       expect(modal).toBeVisible();
     });
+
+    // Find the input fields and change their values
     const titleInput = await screen.findByPlaceholderText("Enter title");
     const contentInput = await screen.findByPlaceholderText("Enter content");
     act(() => {
       fireEvent.change(titleInput, { target: { value: "Test Title" } });
       fireEvent.change(contentInput, { target: { value: "Test Content" } });
     });
-    const submitButton = await screen.findByTestId("create-post-button-submit");
 
+    // Find the submit button and click it
+    const submitButton = await screen.findByTestId("create-post-button-submit");
     act(() => {
       fireEvent.click(submitButton);
     });
+
+    // Wait for the modal to disappear
     await waitFor(() => {
       expect(screen.queryByTestId("create-post-modal")).toBeNull();
     });
 
+    // Check if the post is visible
     const posts = await screen.findAllByText("Test Title");
     expect(posts.length).toBe(1);
-
-    // Wait for 0.5 seconds
-    // await new Promise((r) => setTimeout(r, 500));
   });
 });
