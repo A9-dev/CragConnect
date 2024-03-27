@@ -37,16 +37,44 @@ To configure the environment variables, please create a `.env` file in the `serv
 ```env
 PORT=your_port
 ATLAS_URI=your_mongodb_uri
-IP_ADDR=your_ip_address (for the server)
+```
+
+To configure the environment variables for the client, please create a `.env` file in the `client` directory and add the following variables:
+
+```env
+VITE_SERVER_URL=http://localhost:same_port_as_server
+```
+
+## Build the client
+
+To build the client, please run the following command (from the root directory):
+
+```bash
+cd client && npm run build && cd ..
 ```
 
 ## Run
 
-To run the program please run the following command (from the root directory):
+To run the program please run either of the following commands (from the root directory):
+
+1. Requires built client:
 
 ```bash
-cd client && npm run build && cd ../server && npm start
+cd server && npm start
 ```
+
+2. Doesn't require built client (in separate terminals from the root directory):
+
+```bash
+cd client && npm run dev
+
+```
+
+```bash
+cd server && npm start
+```
+
+Then, go to http://localhost:5000
 
 ## Lines of code
 
@@ -61,14 +89,14 @@ cloc --exclude-dir=node_modules,build --not-match-f='(package\.json|package-lock
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
 JSX                             29            219             60           2808
-JavaScript                       5            190            205           1584
+JavaScript                       4            138            156           1285
 JSON                             5              2              0            306
-Markdown                         2             30              0             75
-HTML                             2              0              0             26
+Markdown                         2             40              0             92
 YAML                             1              7              0             23
+HTML                             1              0              0             13
 TypeScript                       2              2              4             10
 -------------------------------------------------------------------------------
-SUM:                            46            450            269           4832
+SUM:                            44            408            220           4537
 -------------------------------------------------------------------------------
 
 ```
