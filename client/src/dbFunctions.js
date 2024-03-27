@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// Get BASE_URL from .env file
+const BASE_URL = import.meta.env.BASE_URL || "http://localhost:5000";
+
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: BASE_URL,
   headers: {},
 });
 
