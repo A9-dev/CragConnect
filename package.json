@@ -1,0 +1,21 @@
+{
+  "name": "cragconnect",
+  "version": "1.0.0",
+  "description": "This is a social media app built for rock climbers to organise and talk about rock climbing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.2",
+    "winston": "^3.12.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
