@@ -75,27 +75,3 @@ cd server && npm start
 ```
 
 Then, go to http://localhost:your_port
-
-## Lines of code
-
-```bash
-cloc --exclude-dir=node_modules,build --not-match-f='(package\.json|package-lock\.json)' .
-```
-
-### Output:
-
-```
--------------------------------------------------------------------------------
-Language                     files          blank        comment           code
--------------------------------------------------------------------------------
-JSX                             29            219             60           2808
-JavaScript                       4            138            156           1285
-JSON                             5              2              0            306
-Markdown                         2             39              0             92
-YAML                             1              7              0             23
-HTML                             1              0              0             13
-TypeScript                       2              2              4             10
--------------------------------------------------------------------------------
-SUM:                            44            407            220           4537
--------------------------------------------------------------------------------
-```
