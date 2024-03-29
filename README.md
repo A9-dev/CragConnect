@@ -74,7 +74,7 @@ cd client && npm run dev
 cd server && npm start
 ```
 
-Then, go to http://localhost:5000
+Then, go to http://localhost:your_port
 
 ## Lines of code
 
