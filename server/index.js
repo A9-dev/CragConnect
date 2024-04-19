@@ -365,7 +365,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Route to handle user deletion
+// Route to handle user posting
 app.post("/posts", async (req, res) => {
   try {
     logger.info("POST /posts");
