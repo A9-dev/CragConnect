@@ -971,7 +971,7 @@ app.post("/partnerEntry/interest/:entryId", async (req, res) => {
     entry.usersInterested.push(user._id);
     const savedEntry = await entry.save();
     res.status(200).json(savedEntry);
-    logger.info("POST /partnerEntxry/interest 200");
+    logger.info("POST /partnerEntry/interest 200");
   } catch (error) {
     res.status(400).json({ message: error.message });
     logger.error("POST /partnerEntry/interest 400: " + error.message);
