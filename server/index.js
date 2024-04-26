@@ -6,10 +6,10 @@ require("dotenv").config();
 const winston = require("winston");
 
 const { createLogger, format, transports } = require("winston");
-const { combine, timestamp, label, printf, colorize } = format;
+const { combine, timestamp, printf, colorize } = format;
 
 // Format for non REST API logs
-const myFormat = printf(({ level, message, label, timestamp }) => {
+const myFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
