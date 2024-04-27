@@ -142,8 +142,26 @@ const PartnerFind = () => {
 
                   {loggedIn &&
                     userData.username !== entry.creator.username &&
+                    entry.followingOnly &&
                     entry.creator.subscribingTo &&
                     entry.creator.subscribingTo.includes(userData.username) &&
+                    !entry.usersInterested.some(
+                      (user) => user._id === userData._id
+                    ) && (
+                      <Button
+                        width={"80%"}
+                        margin={"auto"}
+                        onClick={() => {
+                          handleRegisterInterest(entry);
+                        }}
+                      >
+                        Register interest
+                      </Button>
+                    )}
+
+                  {loggedIn &&
+                    userData.username !== entry.creator.username &&
+                    !entry.followingOnly &&
                     !entry.usersInterested.some(
                       (user) => user._id === userData._id
                     ) && (

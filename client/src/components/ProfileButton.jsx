@@ -94,7 +94,7 @@ const ProfileButton = () => {
                     {userData.subscribingTo &&
                       userData.subscribingTo.sort().map((subscription) => (
                         <Flex mb={3} key={subscription}>
-                          <Text key={subscription}>{subscription}</Text>
+                          <Text>{subscription}</Text>
                           <Spacer />
                           <Button
                             onClick={() => {
@@ -111,8 +111,8 @@ const ProfileButton = () => {
                   <Box width="75%" margin="auto">
                     {userData.subscribers &&
                       userData.subscribers.sort().map((subscriber) => (
-                        <Center mb={3}>
-                          <Text key={subscriber}>{subscriber}</Text>
+                        <Center mb={3} key={subscriber}>
+                          <Text>{subscriber}</Text>
                         </Center>
                       ))}
                   </Box>
