@@ -9,6 +9,7 @@ This is a social media app built for rock climbers to organise and talk about ro
 - Event sharing
 - Fitness plans (strength and flexibility)
 - Fitness tracking and leaderboards
+- PartnerFind, to find a partner to climb with
 - User profiles and organisation profiles
 
 ## Features that _will_ be added
